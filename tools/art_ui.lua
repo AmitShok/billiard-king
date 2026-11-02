@@ -39,10 +39,10 @@ do
 end
 print("UI exported.")
 
--- Game icon (64x64): a classic black 8-ball, lit from the top left.
+-- Game icon (64x64): a black 8-ball wearing a gold crown.
 do
   local c = A.canvas(64, 64)
-  local cx, cy, r = 32, 32, 30
+  local cx, cy, r = 32, 38, 25
   local black = { "050507", "0e0e12", "1a1a20", "2a2a33", "3e3e4a" }
   for y = 0, 63 do for x = 0, 63 do
     local dx, dy = (x + 0.5 - cx) / r, (y + 0.5 - cy) / r
@@ -51,35 +51,52 @@ do
       local nz = math.sqrt(1 - d2)
       local lit = math.max(0, -dx * 0.5 - dy * 0.6 + nz * 0.62)
       local col = A.ramp(black, lit * 0.95, x, y)
-      -- Faint bounce light along the lower right rim.
       if d2 > 0.82 and dx + dy > 0.6 then col = "22222c" end
       c:px(x, y, col)
     end
   end end
-  -- White number disc, set a little up-left of centre like a ball turned toward the light.
-  local ox, oy = 29, 28
-  c:disc(ox, oy, 13.5, "c8c2b4")
-  c:disc(ox - 0.5, oy - 0.5, 12.5, "f4eedc")
-  for y = oy - 13, oy + 13 do for x = ox - 13, ox + 13 do
+  -- White number disc and a bold "8".
+  local ox, oy = 30, 40
+  c:disc(ox, oy, 11.5, "c8c2b4")
+  c:disc(ox - 0.5, oy - 0.5, 10.5, "f4eedc")
+  for y = oy - 11, oy + 11 do for x = ox - 11, ox + 11 do
     local dx, dy = x + 0.5 - ox, y + 0.5 - oy
-    if dx * dx + dy * dy <= 12.5 * 12.5 and dx + dy > 9 then c:px(x, y, "ddd6c4") end
+    if dx * dx + dy * dy <= 10.5 * 10.5 and dx + dy > 7.5 then c:px(x, y, "ddd6c4") end
   end end
-  -- A bold pixel "8".
-  c:grid(ox - 6, oy - 9, {
-    "..######..",
-    ".########.",
-    "###....###",
-    "###....###",
-    ".########.",
-    ".########.",
-    "###....###",
-    "###....###",
-    "###....###",
-    ".########.",
-    "..######..",
+  c:grid(ox - 5, oy - 7, {
+    ".######.",
+    "###..###",
+    "###..###",
+    ".######.",
+    ".######.",
+    "###..###",
+    "###..###",
+    "###..###",
+    ".######.",
   }, { ["#"] = "141418" })
-  -- Specular glint and rim.
-  c:disc(17, 15, 3, "6a6a78"); c:disc(16.5, 14.5, 1.6, "f0f0f8")
+  c:disc(20, 24, 2.5, "6a6a78"); c:disc(19.5, 23.5, 1.3, "f0f0f8")
   c:ring(cx, cy, r + 0.5, "000000")
+
+  -- Gold crown sitting on top of the ball, slightly tipped back.
+  local crown = {
+    "....e.........e.........e....",
+    "...eae.......eae.......eae...",
+    "....a.........a.........a....",
+    "....aa.......aaa.......aa....",
+    "...aaaa.....aaaaa.....aaaa...",
+    "...aabaa...aaabaaa...aabaa...",
+    "..aaaaaaa.aaaaaaaaa.aaaaaaa..",
+    "..aaaaaaaaaaaaaaaaaaaaaaaaa..",
+    "..aaaaaaaaaaaaaaaaaaaaaaaaa..",
+    "..bbbbbbbbbbbbbbbbbbbbbbbbb..",
+    "..cccdccccccfccccccdccccccc..",
+    "..ccdddcccccfffcccdddcccccc..",
+    "..cccdccccccfccccccdccccccc..",
+    "..bbbbbbbbbbbbbbbbbbbbbbbbb..",
+  }
+  c:grid(18, 3, crown, { a = "f2c440", b = "a87818", c = "d8a830", d = "c8302e", e = "fff6c0", f = "3a7ad8" })
+  -- Shine down the left of the band and points.
+  for y = 9, 15 do c:px(21, y, "ffe890") end
+  c:outline("11090c", 16, 1, 33, 18)
   c:save("game_icon")
 end

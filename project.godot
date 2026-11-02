@@ -14,11 +14,11 @@ config/name="Billiard King"
 config/description="A billiard-themed climb: one cue ball, one tall tower, no checkpoints."
 run/main_scene="res://scenes/ui/title.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
-config/icon="res://assets/textures/game_icon.png"
 boot_splash/bg_color=Color(0.05, 0.04, 0.05, 1)
-boot_splash/image="res://assets/textures/game_icon.png"
-boot_splash/fullsize=false
+boot_splash/stretch_mode=0
 boot_splash/use_filter=false
+boot_splash/image="res://assets/textures/game_icon.png"
+config/icon="res://assets/textures/game_icon.png"
 
 [autoload]
 
@@ -38,13 +38,13 @@ window/stretch/scale_mode="integer"
 
 common/physics_ticks_per_second=120
 common/max_physics_steps_per_frame=12
-common/physics_interpolation=true
 2d/default_gravity=0.0
+common/physics_interpolation=true
 
 [rendering]
 
+textures/canvas_textures/default_texture_filter=0
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
-textures/canvas_textures/default_texture_filter=0
-2d/snap/snap_2d_transforms_to_pixel=true
 environment/defaults/default_clear_color=Color(0.05, 0.04, 0.05, 1)
+2d/snap/snap_2d_transforms_to_pixel=true
