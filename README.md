@@ -53,7 +53,8 @@ Somewhere above the Back Room, past Lucky's Neon Bar and the Royal Club, there's
 | Action | Keyboard | Gamepad |
 | --- | --- | --- |
 | Aim (5° notches, hold to sweep) | A / D or ← / → | D-pad / left stick |
-| English: follow / draw | W / S or ↑ / ↓ | D-pad / left stick |
+| English: follow / draw | W / S | D-pad / left stick |
+| Look up / down (camera peek) | ↑ / ↓ (hold) | Right stick |
 | Charge, release to strike | Space, Z or J (hold) | A |
 | Pause | Esc or P | Start |
 

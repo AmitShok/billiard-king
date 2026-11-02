@@ -28,14 +28,19 @@ var finished := false
 var _title_label: Label
 var _toast: Label
 var _shake := 0.0
+var look := 0.0          # camera peek offset in px (negative = up)
+
+const LOOK_RANGE := 56.0
+const LOOK_SPEED := 160.0   # px/s while held
+const LOOK_RETURN := 260.0  # px/s easing back when released
 var _rng := RandomNumberGenerator.new()
 var _props_by_screen := {}   # screen index -> Array of Prop
 var _hint: RichTextLabel
 var _hint_wait := 0.0
 var _using_pad := false
 
-const HINT_KEYS := "[center][color=#f2d27a]A D[/color] aim    [color=#f2d27a]W S[/color] spin    hold [color=#f2d27a]SPACE[/color] to strike    [color=#f2d27a]ESC[/color] pause[/center]"
-const HINT_PAD := "[center][color=#f2d27a]D-PAD[/color] aim    [color=#f2d27a]UP DOWN[/color] spin    hold [color=#f2d27a]A[/color] to strike    [color=#f2d27a]START[/color] pause[/center]"
+const HINT_KEYS := "[center][color=#f2d27a]A D[/color] aim   [color=#f2d27a]W S[/color] spin   [color=#f2d27a]UP DOWN[/color] look   hold [color=#f2d27a]SPACE[/color] to strike   [color=#f2d27a]ESC[/color] pause[/center]"
+const HINT_PAD := "[center][color=#f2d27a]D-PAD[/color] aim and spin   [color=#f2d27a]R-STICK[/color] look   hold [color=#f2d27a]A[/color] to strike   [color=#f2d27a]START[/color] pause[/center]"
 
 
 func _ready() -> void:
@@ -128,11 +133,27 @@ func _process(delta: float) -> void:
 		SaveData.run_time += delta
 	_update_screen(false)
 	_update_hint(delta)
+	_update_look(delta)
+	var shake := Vector2.ZERO
 	if _shake > 0.0 and SaveData.screen_shake:
 		_shake = maxf(0.0, _shake - delta * 8.0)
-		camera.offset = Vector2(_rng.randf_range(-1, 1), _rng.randf_range(-1, 1)).round() * minf(_shake, 2.0)
-	else:
-		camera.offset = Vector2.ZERO
+		shake = Vector2(_rng.randf_range(-1, 1), _rng.randf_range(-1, 1)).round() * minf(_shake, 2.0)
+	camera.offset = Vector2(0, round(look)) + shake
+
+
+## Peeking a little above or below the current screen. View only: the screen
+## cut, the ball and its physics are untouched.
+func _update_look(delta: float) -> void:
+	var dir := 0.0
+	if not finished and not get_tree().paused:
+		dir = Input.get_action_strength("look_down") - Input.get_action_strength("look_up")
+	# Nothing is drawn below the bottom floor or above the summit.
+	if screen <= 0:
+		dir = minf(dir, 0.0)
+	if screen >= tower.screen_count() - 1:
+		dir = maxf(dir, 0.0)
+	var target := dir * LOOK_RANGE
+	look = move_toward(look, target, delta * (LOOK_SPEED if absf(target) > absf(look) else LOOK_RETURN))
 
 
 func _unhandled_input(event: InputEvent) -> void:

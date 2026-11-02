@@ -69,3 +69,7 @@ A fresh import (with `.godot/imported` removed) produces no errors or script war
 - **Controls hint:** it shows on the bottom floor and hides once the ball climbs. It stays hidden while the ball falls and returns when the ball lands back on the bottom floor. It switches between gamepad and keyboard prompts.
 
 Regression: gameplay 37/37, menus 14/14, route solver PASS with identical results (494 spots, hardest stroke per screen unchanged). Rendered captures: `hint.png` and `props_react.png`. Every test suite now runs with a frame limit (`--quit-after`), so a script error can't hang the runner.
+
+## Camera look: 2 November 2026
+
+The gameplay suite is now 43 / 43. The up arrow is bound to look, not spin. Holding look pans the camera a full 56 px up or down and it eases back to rest on release. Looking leaves the ball's position, spin and screen unchanged. Looking below the bottom floor is blocked.

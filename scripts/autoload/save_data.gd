@@ -50,8 +50,10 @@ func _setup_input() -> void:
 		"charge": [KEY_SPACE, KEY_Z, KEY_J, JOY_BUTTON_A],
 		"aim_left": [KEY_A, KEY_LEFT, JOY_BUTTON_DPAD_LEFT],
 		"aim_right": [KEY_D, KEY_RIGHT, JOY_BUTTON_DPAD_RIGHT],
-		"spin_up": [KEY_W, KEY_UP, JOY_BUTTON_DPAD_UP],
-		"spin_down": [KEY_S, KEY_DOWN, JOY_BUTTON_DPAD_DOWN],
+		"spin_up": [KEY_W, JOY_BUTTON_DPAD_UP],
+		"spin_down": [KEY_S, JOY_BUTTON_DPAD_DOWN],
+		"look_up": [KEY_UP],
+		"look_down": [KEY_DOWN],
 		"pause": [KEY_ESCAPE, KEY_P, JOY_BUTTON_START],
 	}
 	for action in binds:
@@ -69,7 +71,7 @@ func _setup_input() -> void:
 				j.button_index = code
 				ev = j
 			InputMap.action_add_event(action, ev)
-	var axes := { "aim_left": [JOY_AXIS_LEFT_X, -1.0], "aim_right": [JOY_AXIS_LEFT_X, 1.0], "spin_up": [JOY_AXIS_LEFT_Y, -1.0], "spin_down": [JOY_AXIS_LEFT_Y, 1.0] }
+	var axes := { "aim_left": [JOY_AXIS_LEFT_X, -1.0], "aim_right": [JOY_AXIS_LEFT_X, 1.0], "spin_up": [JOY_AXIS_LEFT_Y, -1.0], "spin_down": [JOY_AXIS_LEFT_Y, 1.0], "look_up": [JOY_AXIS_RIGHT_Y, -1.0], "look_down": [JOY_AXIS_RIGHT_Y, 1.0] }
 	for action in axes:
 		var m := InputEventJoypadMotion.new()
 		m.axis = axes[action][0]

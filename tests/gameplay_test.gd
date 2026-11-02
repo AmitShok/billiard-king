@@ -273,6 +273,30 @@ func _game_tests() -> void:
 	await _physics_frames(200)
 	check("resting saves the ball position", SaveData.ball_pos.distance_to(p.sim.pos) < 0.5 and SaveData.ball_pos != Vector2.ZERO)
 
+	# Camera look: arrows peek up/down a little; view only.
+	p.place(Vector2(200, -300 - 140))
+	await _physics_frames(200)
+	var rest_pos := p.sim.pos
+	check("up arrow is look, not spin", not InputMap.action_has_event("spin_up", _key(KEY_UP)) and InputMap.action_has_event("look_up", _key(KEY_UP)))
+	var spin_before := p.spin_level
+	Input.action_press("look_up")
+	await _physics_frames(90)
+	check("holding look up pans the camera up", absf(game.camera.offset.y + game.LOOK_RANGE) < 1.5, str(game.camera.offset))
+	check("looking changes nothing about the ball", p.sim.pos == rest_pos and p.spin_level == spin_before and game.screen == 1)
+	Input.action_release("look_up")
+	await _physics_frames(60)
+	check("camera eases back on release", absf(game.camera.offset.y) < 0.5, str(game.camera.offset))
+	Input.action_press("look_down")
+	await _physics_frames(90)
+	check("holding look down pans down", absf(game.camera.offset.y - game.LOOK_RANGE) < 1.5, str(game.camera.offset))
+	Input.action_release("look_down")
+	p.place(game.tower.spawn)
+	await _physics_frames(120)
+	Input.action_press("look_down")
+	await _physics_frames(60)
+	check("no peeking below the bottom floor", absf(game.camera.offset.y) < 0.5, str(game.camera.offset))
+	Input.action_release("look_down")
+
 	# Pause freezes the climb.
 	game.pause_menu.open()
 	check("pause stops the tree", get_tree().paused)
@@ -307,3 +331,9 @@ func _save_tests() -> void:
 func _physics_frames(n: int) -> void:
 	for i in n:
 		await get_tree().physics_frame
+
+
+func _key(code: Key) -> InputEventKey:
+	var k := InputEventKey.new()
+	k.physical_keycode = code
+	return k

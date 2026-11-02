@@ -11,11 +11,12 @@ You are the cue ball, and you have to climb a pool hall tower. The design takes 
 | Action | Keyboard | Gamepad |
 | --- | --- | --- |
 | Aim one 5° notch | A / D or Left / Right (hold to sweep) | D-pad / left stick |
-| English: follow / draw | W / S or Up / Down | D-pad / left stick |
+| English: follow / draw | W / S | D-pad / left stick |
+| Look up / down | Up / Down arrows (hold) | Right stick |
 | Charge, release to strike | Space, Z or J (hold) | A |
 | Pause | Esc or P | Start |
 
-You can aim and set spin at any time. You can only strike while the ball sits on felt that is flatter than about 30°, so on slopes you slide just like in Jump King. If you are holding the charge button when the ball lands, the charge starts on touchdown. A full charge fires by itself.
+Holding Look pans the camera up to 56 px toward the next or previous screen, easing in at 160 px/s and back at 260 px/s. It never peeks below the bottom floor or above the summit. Looking is view only: the screen cut, the ball and its physics are untouched. You can aim and set spin at any time. You can only strike while the ball sits on felt that is flatter than about 30°, so on slopes you slide just like in Jump King. If you are holding the charge button when the ball lands, the charge starts on touchdown. A full charge fires by itself.
 
 ## Tuning
 
