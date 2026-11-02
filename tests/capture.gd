@@ -21,6 +21,16 @@ func _ready() -> void:
 		game.player.aim_deg = -25.0 if spot.x > 256 else 25.0
 		await _frames(8)
 		_save("screen_%d.png" % k)
+	# Controls hint on the bottom floor, then props reacting.
+	game.player.place(tower.spawn)
+	await _physics(120)
+	_save("hint.png")
+	for n in tower.get_node("Decor").get_children():
+		if n is Prop and Tower.screen_of(n.global_position.y) == 0:
+			n.poke(n.global_position + n.hit_offset + (Vector2(0, n.length) if n is SwingProp else Vector2.ZERO), Vector2(420, -120))
+	await _physics(9)
+	_save("props_react.png")
+	await _physics(60)
 	# A real shot through input: charging, flight, landing.
 	game.player.place(Vector2(200, -232))
 	game.player.aim_deg = 35.0

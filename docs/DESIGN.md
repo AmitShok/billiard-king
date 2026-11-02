@@ -61,3 +61,21 @@ Lost balls 1–10 are hidden around the tower. Balls 11–15 are earned by finis
 ## Audio
 
 All foley is synthesised by `tools/build_sfx.gd` using modal synthesis: the cue tip on phenolic, the ball-on-ball clack, walnut rail knocks, rubber cushions, felt landings, the splat, the pocket rattling down the ball return, the bumper bell, the lost-ball chime and the felt roll loop. There are ambience beds for each zone: room tone with fluorescent hum, neon buzz with a jukebox through the wall, and a hushed club with a long-case clock. The summit wind, UI blips and the win jingle come from the CC0 Ninja Adventure pack.
+
+## Reactive decor
+
+The decor reacts to the ball but never pushes back. Every prop (`scripts/world/props/`) extends `Prop`. Each physics tick, `Game` checks which props on the current screen and its two neighbours overlap the ball and calls `poke(pos, vel)`. Hard landings, splats, bumper hits and big rail knocks call `rumble(pos, strength)` on props within 170 px. Props read the ball's state but never write to it, and they are not in the `CollisionWorld`. So the route solver, the physics and every trajectory are unaffected. `tests/props_test` checks this tick by tick against a bare simulation.
+
+| Prop | Map char | When the ball touches it | When a big impact lands nearby |
+| --- | --- | --- | --- |
+| Billiard lamp / chandelier | L / H | Damped pendulum swing (chain, body and light cone swing together); clink or crystal tinkle | Sways |
+| Window | W | Above 170 px/s it shatters into shards and stays broken for the rest of the climb (saved); slower brushes tick the glass | — |
+| Neon sign | P / E | Sparks, zap, a jolt, then 1.5 to 3 s of sputtering darkness | Flickers |
+| Portrait / wall clock | F / T | Swings on its nail; portraits settle crooked, clocks chime | Wobbles |
+| Cue rack | R | Cues rattle and clatter | Rattles |
+| Score wire | Q | Beads it touches slide, clack into their neighbours and bounce off the posts | Beads jiggle |
+| Chalk cube / triangle rack | k / r | Knocked flying, tumbles and lands on whatever terrain is below, then stays there | Hops off the ledge |
+
+## Controls hint
+
+`Game` shows the controls as gold-keyed text on the rail of the bottom table. It appears only while the ball is grounded on the tower's bottom floor, fading in after 0.35 s. It fades out as soon as the ball leaves that floor and returns when the ball falls back to it. It switches between keyboard and gamepad prompts based on the last device used.

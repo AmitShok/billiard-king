@@ -56,3 +56,16 @@ A fresh import (with `.godot/imported` removed) produces no errors or script war
 - **Feel:** human playtesting is still needed for charge timing, how punishing the falls are, and sound balance. The synthetic input confirms the controls work, not that they feel right.
 - **Audio playback:** headless runs check that sounds dispatch, not how they sound.
 - **Gamepad:** gamepad bindings are registered but were not tested with a physical controller.
+
+## Reactive decor and controls hint: 2 November 2026
+
+`tests/props_test.tscn`: 27 / 27 passed.
+
+- The tower contains all seven prop kinds.
+- **No effect on the ball.** For flights through a window, a hanging lamp and a score wire, the ball overlaps the prop and its position and velocity match a bare `BallSim` (same terrain, no props) exactly on every tick.
+- **Windows:** a slow brush leaves the window intact and a fast ball smashes it. The break is saved, survives a reload, and a new climb restores whole windows.
+- **Lamps:** they swing when clipped and settle back.
+- **Other props:** neon shorts out, hung pictures swing, beads slide and keep their order on the wire, and chalk is knocked flying, then lands and rests on solid terrain.
+- **Controls hint:** it shows on the bottom floor and hides once the ball climbs. It stays hidden while the ball falls and returns when the ball lands back on the bottom floor. It switches between gamepad and keyboard prompts.
+
+Regression: gameplay 37/37, menus 14/14, route solver PASS with identical results (494 spots, hardest stroke per screen unchanged). Rendered captures: `hint.png` and `props_react.png`. Every test suite now runs with a frame limit (`--quit-after`), so a script error can't hang the runner.

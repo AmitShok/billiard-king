@@ -31,6 +31,7 @@ Somewhere above the Back Room, past Lucky's Neon Bar and the Royal Club, there's
 - **Fallosophy's pinball.** Big numbered bumper balls kick you away in their brass collars. Rubber cushions stay lively, and pockets swallow you and drop you far below through the ball return.
 - **Ballgame's collection.** Ten lost balls are hidden in the tower and five more are earned by finishing. Each one becomes a ball you can climb as, picked from the **Ball Rack**.
 - **Balls that really roll.** Every ball is a pixel-art sphere drawn with spherical UV mapping, so numbers, stripes and the cue ball's red dots roll across the surface.
+- **A room that reacts.** Lamps and chandeliers swing on their chains, windows shatter and stay broken, neon shorts out, portraits hang crooked, beads slide along the score wire and chalk gets knocked off ledges. All of it is cosmetic: the ball's path never changes.
 - **Three zones and a summit:** the Back Room, Lucky's Neon Bar, the Royal Club (fast felt) and the King's Table under the moon.
 - **Proven climbable.** A headless solver fires every shot from every resting spot using the real physics. It checks that the gold pocket can be reached and measures how forgiving each jump is.
 
@@ -44,6 +45,8 @@ Somewhere above the Back Room, past Lucky's Neon Bar and the Royal Club, there's
 | *The Royal Club* | *The King's Table* |
 | <img src="docs/screenshots/ball_rack.png" width="420"> | <img src="docs/screenshots/pause.png" width="420"> |
 | *Ball Rack* | *Pause and run stats* |
+| <img src="docs/screenshots/props_react.png" width="420"> | <img src="docs/screenshots/hint.png" width="420"> |
+| *A window gives way* | *Controls hint on the bottom rail* |
 
 ## Controls
 
@@ -53,6 +56,8 @@ Somewhere above the Back Room, past Lucky's Neon Bar and the Royal Club, there's
 | English: follow / draw | W / S or ↑ / ↓ | D-pad / left stick |
 | Charge, release to strike | Space, Z or J (hold) | A |
 | Pause | Esc or P | Start |
+
+A controls hint appears on the rail of the bottom table while the ball sits there. It hides as you climb and comes back if you fall all the way down, switching to gamepad prompts when you use a pad.
 
 You can only strike from flat felt; slopes make you slide. A full charge fires by itself. If you hold the charge button while you land, the charge starts on touchdown.
 
@@ -97,11 +102,12 @@ resources/     tiles.tres (generated), ui_theme.tres
 scenes/        ui/title.tscn, world/game.tscn, world/tower.tscn (generated)
 scripts/core   ball_sim.gd (physics), collision_world.gd (tiles, bumpers, pockets)
 scripts/world  player_ball, ball_visual, cue_stick, tower, game, bumper, pocket, lost_ball
+scripts/world/props  reactive decor (swing, window, neon, tilt, rattle, beads, knock)
 scripts/ui     title, pause, options, ball rack, ending, ui_kit
 scripts/autoload  save_data.gd, sfx.gd
 shaders/       ball.gdshader (rolling-ball sphere mapping), vignette.gdshader
 tools/         art_*.lua (Aseprite), build_tower.gd, build_sfx.gd, *.ps1 helpers
-tests/         gameplay_test, menu_test, route_solver, capture
+tests/         gameplay_test, menu_test, props_test, route_solver, capture
 docs/          DESIGN.md, VALIDATION.md, screenshots/
 ```
 

@@ -250,32 +250,13 @@ do
   c:save("bumper_ring")
 end
 
--- Wall clock (20x20) and a night window (40x52).
+-- Wall clock (20x20). The window lives in art_interactive.lua.
 do
   local c = A.canvas(20, 20)
   c:disc(10, 10, 9.5, "3a2414"); c:disc(10, 10, 8.5, "8c5a30"); c:disc(10, 10, 7.5, "e8dcc0")
   for i = 0, 11 do local a = i * math.pi / 6; c:px(10 + math.cos(a) * 6, 10 + math.sin(a) * 6, "6a5a4a") end
   c:line(10, 10, 10, 5, "1c1a1f"); c:line(10, 10, 13, 12, "1c1a1f"); c:px(10, 10, "c8302e")
   c:save("clock")
-end
-do
-  local c = A.canvas(40, 52)
-  local wood = { "2a160e", "4a2a18", "6a4024", "8c5a32" }
-  c:rect(0, 0, 40, 52, wood[2]); c:rect(1, 1, 38, 50, wood[3]); c:hline(1, 38, 1, wood[4])
-  c:rect(3, 3, 34, 44, "0c1028")
-  for y = 3, 46 do for x = 3, 36 do
-    if A.bayer(x, y) < (y - 3) / 60 then c:px(x, y, "1a1a40") end
-    if A.hash(x, y, 77) > 0.985 then c:px(x, y, "9a9ac8") end
-  end end
-  for i = 0, 4 do
-    local bx, bh = 3 + i * 7, 8 + math.floor(A.hash(i, 0, 5) * 16)
-    c:rect(bx, 47 - bh, 6, bh, "141230")
-    for wy = 47 - bh + 2, 45, 4 do if A.hash(bx, wy, 3) > 0.5 then c:px(bx + 2, wy, "c8a050") end end
-  end
-  c:vline(19, 3, 46, wood[2]); c:vline(20, 3, 46, wood[1]); c:hline(3, 36, 24, wood[2]); c:hline(3, 36, 25, wood[1])
-  c:rect(0, 47, 40, 5, wood[3]); c:hline(0, 39, 47, wood[4]); c:hline(0, 39, 51, wood[1])
-  for y = 4, 20 do if y % 3 ~= 0 then c:px(5 + (y // 3), y, "3a3a6a") end end
-  c:save("window")
 end
 
 -- Chalk cube (6x6) and a wooden triangle rack lying flat (24x10).

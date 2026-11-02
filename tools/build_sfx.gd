@@ -36,6 +36,15 @@ func _initialize() -> void:
 	_save(_lost_ball(), "lost_ball")
 	_save(_tick(), "aim_tick")
 	_save(_chalk(), "chalk")
+	_save(_glass_break(), "glass_break")
+	for v in 3:
+		rng.seed = 600 + v
+		_save(_tinkle(v), "tinkle_%d" % v)
+		rng.seed = 700 + v
+		_save(_clatter(v), "clatter_%d" % v)
+	rng.seed = 800
+	_save(_zap(), "zap")
+	_save(_chime(), "chime")
 	_save(_loop(_roll_bed(2.0), 0.25), "roll_loop")
 	_save(_loop(_amb_backroom(10.0), 1.0), "amb_backroom")
 	_save(_loop(_amb_neonbar(10.0), 1.0), "amb_neonbar")
@@ -301,3 +310,59 @@ func _amb_royal(seconds: float) -> PackedFloat32Array:
 		t += 1.0
 		i += 1
 	return out
+
+
+# --- Reactive decor -----------------------------------------------------------------
+
+## A window giving way: crack, a burst of glass, then shards tinkling down.
+func _glass_break() -> PackedFloat32Array:
+	var out := _buffer(1.6)
+	_mix(out, _noise_burst(0.02, 0.004, 0.95), 0.0, 1.0)
+	_mix(out, _modes([[3100.0, 0.05, 0.8], [4700.0, 0.04, 0.6], [6900.0, 0.03, 0.5], [9100.0, 0.02, 0.35]], 0.25, 0.05), 0.0, 0.8)
+	_mix(out, _noise_burst(0.3, 0.08, 0.7), 0.005, 0.35)
+	for i in 22:
+		var t := 0.06 + pow(rng.randf(), 1.6) * 1.2
+		var f := rng.randf_range(3500.0, 9500.0)
+		_mix(out, _modes([[f, 0.03, 1.0], [f * 1.53, 0.02, 0.5]], 0.08, 0.0), t, rng.randf_range(0.08, 0.3) * (1.0 - t / 1.4))
+	return _normalize(out, 0.85)
+
+
+## Chandelier crystals knocking together.
+func _tinkle(v: int) -> PackedFloat32Array:
+	var out := _buffer(1.2)
+	var base: float = [2637.0, 3136.0, 3520.0][v]
+	for i in 5:
+		var f: float = base * [1.0, 1.26, 1.5, 1.68, 2.0][rng.randi() % 5]
+		_mix(out, _modes([[f, 0.25, 1.0], [f * 2.76, 0.08, 0.3]], 0.6, 0.01), i * rng.randf_range(0.04, 0.09), rng.randf_range(0.35, 0.8))
+	return _normalize(out, 0.55)
+
+
+## Cues or wood rattling: a quick run of small knocks.
+func _clatter(v: int) -> PackedFloat32Array:
+	var out := _buffer(0.5)
+	var t := 0.0
+	for i in 5 + v:
+		_mix(out, _modes([[rng.randf_range(600.0, 1400.0), 0.025, 1.0], [rng.randf_range(2000.0, 3200.0), 0.01, 0.4]], 0.08, 0.0), t, rng.randf_range(0.4, 1.0) * (1.0 - t * 1.6))
+		t += rng.randf_range(0.025, 0.07)
+	return _normalize(out, 0.7)
+
+
+## Neon tube shorting out: a buzzing crackle.
+func _zap() -> PackedFloat32Array:
+	var out := _buffer(0.45)
+	var ph := 0.0
+	for i in out.size():
+		var t := float(i) / RATE
+		ph += TAU * 120.0 / RATE
+		var buzz := signf(sin(ph)) * 0.35 + sin(ph * 7.0) * 0.15
+		var crackle := rng.randf_range(-1.0, 1.0) if rng.randf() < 0.25 else 0.0
+		var env := exp(-t / 0.12) * (0.6 + 0.4 * signf(sin(TAU * 31.0 * t)))
+		out[i] = (buzz + crackle * 0.8) * env
+	return _normalize(out, 0.6)
+
+
+## A knocked wall clock's bell.
+func _chime() -> PackedFloat32Array:
+	var out := _modes([[1567.0, 0.5, 1.0], [3134.0, 0.2, 0.35], [4322.0, 0.12, 0.2]], 1.2, 0.0)
+	_mix(out, _modes([[2900.0, 0.01, 0.3]], 0.05, 0.0), 0.0)
+	return _normalize(out, 0.5)

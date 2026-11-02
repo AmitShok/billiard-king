@@ -29,12 +29,20 @@ var _title_label: Label
 var _toast: Label
 var _shake := 0.0
 var _rng := RandomNumberGenerator.new()
+var _props_by_screen := {}   # screen index -> Array of Prop
+var _hint: RichTextLabel
+var _hint_wait := 0.0
+var _using_pad := false
+
+const HINT_KEYS := "[center][color=#f2d27a]A D[/color] aim    [color=#f2d27a]W S[/color] spin    hold [color=#f2d27a]SPACE[/color] to strike    [color=#f2d27a]ESC[/color] pause[/center]"
+const HINT_PAD := "[center][color=#f2d27a]D-PAD[/color] aim    [color=#f2d27a]UP DOWN[/color] spin    hold [color=#f2d27a]A[/color] to strike    [color=#f2d27a]START[/color] pause[/center]"
 
 
 func _ready() -> void:
 	tower = TOWER.instantiate()
 	add_child(tower)
 	tower.build_world(SaveData.collected)
+	_setup_props()
 
 	player = PlayerBall.new()
 	player.z_index = 5
@@ -56,8 +64,8 @@ func _ready() -> void:
 	_build_hud()
 	player.shot_taken.connect(_on_shot)
 	player.fell.connect(_on_fell)
-	player.landed.connect(func(impact: float): if impact > 300.0: _add_shake(1.5))
-	player.wall_hit.connect(func(impact: float): if impact > 380.0: _add_shake(1.0))
+	player.landed.connect(_on_landed)
+	player.wall_hit.connect(_on_wall_hit)
 	player.bumped.connect(_on_bumped)
 	player.settled.connect(_on_settled)
 	player.won.connect(_on_won)
@@ -94,6 +102,22 @@ func _build_hud() -> void:
 	_toast.size = Vector2(512, 12)
 	_toast.modulate = Color(1.0, 0.86, 0.45, 0.0)
 	hud.add_child(_toast)
+	# Controls hint: engraved on the rail of the bottom table, only while the ball sits there.
+	_hint = RichTextLabel.new()
+	_hint.theme = UIKit.theme()
+	_hint.bbcode_enabled = true
+	_hint.scroll_active = false
+	_hint.autowrap_mode = TextServer.AUTOWRAP_OFF
+	_hint.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_hint.position = Vector2(0, 277)
+	_hint.size = Vector2(512, 10)
+	_hint.add_theme_color_override("default_color", Color("d8d0bc"))
+	_hint.add_theme_color_override("font_shadow_color", Color("0a0604"))
+	_hint.add_theme_constant_override("shadow_offset_x", 1)
+	_hint.add_theme_constant_override("shadow_offset_y", 1)
+	_hint.text = HINT_KEYS
+	_hint.modulate.a = 0.0
+	hud.add_child(_hint)
 	pause_menu = PAUSE_MENU.new()
 	pause_menu.game = self
 	hud.add_child(pause_menu)
@@ -103,6 +127,7 @@ func _process(delta: float) -> void:
 	if not finished:
 		SaveData.run_time += delta
 	_update_screen(false)
+	_update_hint(delta)
 	if _shake > 0.0 and SaveData.screen_shake:
 		_shake = maxf(0.0, _shake - delta * 8.0)
 		camera.offset = Vector2(_rng.randf_range(-1, 1), _rng.randf_range(-1, 1)).round() * minf(_shake, 2.0)
@@ -160,6 +185,7 @@ func _on_shot() -> void:
 
 func _on_fell(_drop: float) -> void:
 	SaveData.falls += 1
+	rumble(player.sim.pos, 1.0)
 	_add_shake(2.0)
 
 
@@ -167,6 +193,7 @@ func _on_bumped(id: int) -> void:
 	var b := tower.object_by_id(id)
 	if b is Bumper:
 		b.hit(player.sim.vel.normalized())
+		rumble(b.position, 0.6)
 	_add_shake(1.0)
 
 
@@ -221,3 +248,85 @@ func quit_to_title() -> void:
 	Sfx.set_ambience(-1)
 	get_tree().paused = false
 	get_tree().change_scene_to_file("res://scenes/ui/title.tscn")
+
+
+# --- Controls hint ------------------------------------------------------------------
+
+## True while the ball sits on the very bottom floor of the tower.
+func on_bottom_floor() -> bool:
+	return player.sim.grounded and player.sim.pos.y > -2.0 * CollisionWorld.TILE - 1.0
+
+
+func _update_hint(delta: float) -> void:
+	var show := on_bottom_floor() and not finished
+	if show:
+		_hint_wait += delta
+	else:
+		_hint_wait = 0.0
+	var target := 1.0 if show and _hint_wait > 0.35 else 0.0
+	_hint.modulate.a = move_toward(_hint.modulate.a, target, delta * (2.5 if target > 0.0 else 6.0))
+
+
+func _input(event: InputEvent) -> void:
+	var pad := _using_pad
+	if event is InputEventJoypadButton or (event is InputEventJoypadMotion and absf(event.axis_value) > 0.5):
+		pad = true
+	elif event is InputEventKey or event is InputEventMouseButton:
+		pad = false
+	if pad != _using_pad:
+		_using_pad = pad
+		_hint.text = HINT_PAD if pad else HINT_KEYS
+
+
+# --- Reactive decor -----------------------------------------------------------------
+# Props only read the ball's position and velocity. They are never part of the
+# CollisionWorld, so swinging lamps or smashed windows can't change a shot.
+
+func _setup_props() -> void:
+	for node in tower.get_node("Decor").get_children():
+		if node is Prop:
+			node.world = tower.world
+			var k := Tower.screen_of(node.global_position.y)
+			if not _props_by_screen.has(k):
+				_props_by_screen[k] = []
+			_props_by_screen[k].append(node)
+			if node is WindowProp and SaveData.broken.has(String(node.name)):
+				node.smash(Vector2.ZERO, true)
+
+
+func _props_near_screen() -> Array:
+	var out: Array = []
+	for k in [screen - 1, screen, screen + 1]:
+		out.append_array(_props_by_screen.get(k, []))
+	return out
+
+
+func _physics_process(_delta: float) -> void:
+	if player == null or finished:
+		return
+	var p := player.sim.pos
+	for prop in _props_near_screen():
+		if prop.visible and prop.touches(p, BallSim.RADIUS):
+			prop.poke(p, player.sim.vel)
+
+
+## Heavy impacts nudge nearby props (lamps sway, beads jiggle, chalk hops).
+func rumble(at: Vector2, strength: float) -> void:
+	for prop in _props_near_screen():
+		var d: float = prop.global_position.distance_to(at)
+		if d < 170.0:
+			prop.rumble(at, clampf(strength * (1.0 - d / 170.0), 0.0, 1.0))
+
+
+func _on_landed(impact: float) -> void:
+	if impact > 300.0:
+		_add_shake(1.5)
+	if impact > 180.0:
+		rumble(player.sim.pos, impact / 600.0)
+
+
+func _on_wall_hit(impact: float) -> void:
+	if impact > 380.0:
+		_add_shake(1.0)
+	if impact > 220.0:
+		rumble(player.sim.pos, impact / 800.0)

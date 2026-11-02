@@ -26,6 +26,7 @@ var strokes := 0
 var falls := 0
 var best_screen := 0
 var seen_zones: Array[int] = []
+var broken: Array[String] = []     # windows smashed this climb (they stay broken)
 
 # Persistent across runs (the Ball Rack)
 var collected: Array[int] = []      # lost balls 1..15 found
@@ -94,6 +95,7 @@ func load_data() -> void:
 	falls = cfg.get_value("run", "falls", 0)
 	best_screen = cfg.get_value("run", "best_screen", 0)
 	seen_zones.assign(cfg.get_value("run", "seen_zones", []))
+	broken.assign(cfg.get_value("run", "broken", []))
 	collected.assign(cfg.get_value("rack", "collected", []))
 	skin = cfg.get_value("rack", "skin", 0)
 	wins = cfg.get_value("rack", "wins", 0)
@@ -120,6 +122,7 @@ func save() -> void:
 	cfg.set_value("run", "falls", falls)
 	cfg.set_value("run", "best_screen", best_screen)
 	cfg.set_value("run", "seen_zones", seen_zones)
+	cfg.set_value("run", "broken", broken)
 	cfg.set_value("rack", "collected", collected)
 	cfg.set_value("rack", "skin", skin)
 	cfg.set_value("rack", "wins", wins)
@@ -138,6 +141,7 @@ func start_new_run() -> void:
 	falls = 0
 	best_screen = 0
 	seen_zones.clear()
+	broken.clear()
 	save()
 
 
@@ -149,6 +153,11 @@ func finish_run() -> void:
 		best_strokes = strokes
 	has_run = false
 	save()
+
+
+func mark_broken(prop_name: String) -> void:
+	if not broken.has(prop_name):
+		broken.append(prop_name)
 
 
 func collect_ball(number: int) -> void:

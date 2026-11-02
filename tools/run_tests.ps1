@@ -10,8 +10,9 @@ function Run($label, [string[]]$argv) {
     $out -split "`n" | Where-Object { $_ -match 'ok  |FAIL|passed|PASS|Explored|Lost balls|Most forgiving|Hardest|SCRIPT ERROR' } | ForEach-Object { $_.TrimEnd() }
     if ($LASTEXITCODE -ne 0) { $script:failed++ }
 }
-Run 'Gameplay' @('--headless', 'res://tests/gameplay_test.tscn', '--', '--save-profile=test')
-Run 'Menus and ending' @('--headless', 'res://tests/menu_test.tscn', '--', '--save-profile=menu')
+Run 'Gameplay' @('--headless', '--quit-after', '20000', 'res://tests/gameplay_test.tscn', '--', '--save-profile=test')
+Run 'Menus and ending' @('--headless', '--quit-after', '20000', 'res://tests/menu_test.tscn', '--', '--save-profile=menu')
+Run 'Reactive props and controls hint' @('--headless', '--quit-after', '20000', 'res://tests/props_test.tscn', '--', '--save-profile=props')
 if (-not $SkipSolver) { Run 'Route solver (about 3 minutes)' @('--headless', '--script', 'tests/route_solver.gd') }
 if ($failed -gt 0) { Write-Output "$failed suite(s) FAILED"; exit 1 }
 Write-Output 'All suites passed.'

@@ -133,48 +133,70 @@ func _initialize() -> void:
 					crown.name = "Crown"
 					_glow(lights, p.position + Vector2(0, -18), Color(1.0, 0.85, 0.4, 0.8), 1.4)
 			"L", "H":
+				# Hanging light: a pendulum rooted at the ceiling hook.
 				var top := _ceiling_y(grid, cell)
 				var lamp_pos := _center(cell)
+				var length := lamp_pos.y - top
+				var swing := _prop(decor, "swing", ch, cell, Vector2(lamp_pos.x, top))
+				swing.set("length", length)
+				swing.set("crystal", ch == "H")
 				var chain := Sprite2D.new()
+				chain.name = "Chain"
 				chain.texture = _tex("chain")
 				chain.region_enabled = true
 				chain.texture_repeat = CanvasItem.TEXTURE_REPEAT_ENABLED
-				var length := lamp_pos.y - 8 - top
-				chain.region_rect = Rect2(0, 0, 4, maxf(length, 2))
+				chain.region_rect = Rect2(0, 0, 4, maxf(length - 8.0, 2.0))
 				chain.centered = false
-				chain.position = Vector2(lamp_pos.x - 2, top)
-				_add(decor, chain)
+				chain.position = Vector2(-2, 0)
+				_add(swing, chain)
 				_motes(lights, lamp_pos + Vector2(0, 50))
 				if ch == "L":
-					_sprite(decor, "lamp", lamp_pos)
-					var cone := _sprite(lights, "light_cone", lamp_pos + Vector2(0, 82))
+					_sprite(swing, "lamp", Vector2(0, length)).name = "Body"
+					var cone := _sprite(swing, "light_cone", Vector2(0, length + 82))
+					cone.name = "Light"
 					cone.material = _additive()
+					cone.z_index = 1
 				else:
-					_sprite(decor, "chandelier", lamp_pos + Vector2(0, 6))
-					_glow(lights, lamp_pos + Vector2(0, 12), Color(1.0, 0.86, 0.6, 0.9), 2.2)
+					_sprite(swing, "chandelier", Vector2(0, length + 6)).name = "Body"
+					var g := _glow(swing, Vector2(0, length + 12), Color(1.0, 0.86, 0.6, 0.9), 2.2)
+					g.name = "Light"
+					g.z_index = 1
 			"R":
-				_sprite(decor, "cue_rack", _center(cell))
+				var rack := _prop(decor, "rattle", ch, cell, _center(cell))
+				rack.set("hit_size", Vector2(28, 62))
+				_sprite(rack, "cue_rack", Vector2.ZERO).name = "Body"
 			"Q":
-				_sprite(decor, "score_beads", _center(cell))
+				var wire := _prop(decor, "beads", ch, cell, _center(cell))
+				_sprite(wire, "score_wire", Vector2.ZERO).name = "Wire"
 			"P", "E":
-				var sign := Sprite2D.new()
-				sign.texture = _tex("neon_pool" if ch == "P" else "neon_eight")
-				sign.hframes = 2
-				sign.position = _center(cell)
-				sign.set_script(load("res://scripts/world/flicker.gd"))
-				_add(decor, sign)
-				var g := _glow(lights, sign.position, Color(1.0, 0.4, 0.75, 0.7) if ch == "P" else Color(0.4, 0.95, 1.0, 0.7), 1.6)
-				sign.set("glow_path", sign.get_path_to(g) if sign.is_inside_tree() else NodePath("../../Lights/" + String(g.name)))
-			"F":
-				_sprite(decor, "portrait", _center(cell))
+				var neon := _prop(decor, "neon", ch, cell, _center(cell))
+				neon.set("hit_size", Vector2(56, 20) if ch == "P" else Vector2(28, 28))
+				var sign := _sprite(neon, "neon_pool" if ch == "P" else "neon_eight", Vector2.ZERO, 2)
+				sign.name = "Sign"
+				var ng := _glow(neon, Vector2.ZERO, Color(1.0, 0.4, 0.75, 0.7) if ch == "P" else Color(0.4, 0.95, 1.0, 0.7), 1.6)
+				ng.name = "Glow"
+				ng.z_index = 1
+			"F", "T":
+				# Hung on a nail at the top edge, so it swings about the nail.
+				var h := 34.0 if ch == "F" else 20.0
+				var nail := _center(cell) - Vector2(0, h / 2.0)
+				var hung := _prop(decor, "tilt", ch, cell, nail)
+				hung.set("hit_size", Vector2(28, 34) if ch == "F" else Vector2(20, 20))
+				hung.set("hit_offset", Vector2(0, h / 2.0))
+				hung.set("crooked", ch == "F")
+				hung.set("chime", ch == "T")
+				_sprite(hung, "portrait" if ch == "F" else "clock", Vector2(0, h / 2.0)).name = "Body"
 			"W":
-				_sprite(decor, "window", _center(cell))
-			"T":
-				_sprite(decor, "clock", _center(cell))
-			"k":
-				_sprite(decor, "chalk", _center(cell) + Vector2(0, 5))
-			"r":
-				_sprite(decor, "rack", _center(cell) + Vector2(0, -2))
+				var win := _prop(decor, "window", ch, cell, _center(cell))
+				_sprite(win, "window", Vector2.ZERO, 2).name = "Glass"
+			"k", "r":
+				var chalk := ch == "k"
+				var loose := _prop(decor, "knock", ch, cell, _center(cell) + (Vector2(0, 5) if chalk else Vector2(0, -2)))
+				loose.set("half_size", Vector2(3, 3) if chalk else Vector2(11, 10))
+				loose.set("hit_size", Vector2(8, 8) if chalk else Vector2(22, 18))
+				loose.set("heavy", not chalk)
+				loose.set("min_speed", 40.0)
+				_sprite(loose, "chalk" if chalk else "rack", Vector2.ZERO).name = "Body"
 			_:
 				var n := "123456789abcdef".find(ch)
 				if n >= 0:
@@ -326,3 +348,24 @@ func _make_tileset() -> TileSet:
 			src.create_tile(Vector2i(x, y))
 	ts.add_source(src, 0)
 	return ts
+
+
+const PROP_SCRIPTS := {
+	"swing": "res://scripts/world/props/swing_prop.gd",
+	"rattle": "res://scripts/world/props/rattle_prop.gd",
+	"beads": "res://scripts/world/props/beads_prop.gd",
+	"neon": "res://scripts/world/props/neon_prop.gd",
+	"tilt": "res://scripts/world/props/tilt_prop.gd",
+	"window": "res://scripts/world/props/window_prop.gd",
+	"knock": "res://scripts/world/props/knock_prop.gd",
+}
+
+
+## A reactive decor prop, named uniquely by kind and cell (broken windows are saved by name).
+func _prop(parent: Node, kind: String, ch: String, cell: Vector2i, pos: Vector2) -> Node2D:
+	var p := Node2D.new()
+	p.set_script(load(PROP_SCRIPTS[kind]))
+	p.name = "%s_%s_%d_%d" % [kind.capitalize(), "abcdefghijklmnopqrstuvwxyz".find(ch.to_lower()), cell.x, absi(cell.y)]
+	p.position = pos.round()
+	_add(parent, p)
+	return p
