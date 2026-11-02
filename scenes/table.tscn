@@ -1,0 +1,118 @@
+[gd_scene format=3 uid="uid://b0p06pyc8axwv"]
+
+[ext_resource type="Texture2D" uid="uid://c30kxtghmk4bd" path="res://assets/Billiard Kit/Billiards Table Big.png" id="1_02ppr"]
+[ext_resource type="PackedScene" uid="uid://rej4btsqhsuw" path="res://scenes/object_ball.tscn" id="2_eotx8"]
+[ext_resource type="PackedScene" uid="uid://cst0dfkofqyug" path="res://scenes/player_cue_ball.tscn" id="3_x8522"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_eotx8"]
+texture = ExtResource("1_02ppr")
+texture_region_size = Vector2i(76, 54)
+0:0/size_in_atlas = Vector2i(2, 2)
+0:0/0 = 0
+0:2/size_in_atlas = Vector2i(2, 3)
+0:2/0 = 0
+0:5/size_in_atlas = Vector2i(2, 2)
+0:5/0 = 0
+2:5/size_in_atlas = Vector2i(2, 2)
+2:5/0 = 0
+4:5/size_in_atlas = Vector2i(2, 2)
+4:5/0 = 0
+6:5/size_in_atlas = Vector2i(2, 2)
+6:5/0 = 0
+8:5/size_in_atlas = Vector2i(2, 2)
+8:5/0 = 0
+8:2/size_in_atlas = Vector2i(2, 3)
+8:2/0 = 0
+8:0/size_in_atlas = Vector2i(2, 2)
+8:0/0 = 0
+6:0/size_in_atlas = Vector2i(2, 2)
+6:0/0 = 0
+4:0/size_in_atlas = Vector2i(2, 2)
+4:0/0 = 0
+2:0/size_in_atlas = Vector2i(2, 2)
+2:0/0 = 0
+2:2/size_in_atlas = Vector2i(2, 3)
+2:2/0 = 0
+4:2/size_in_atlas = Vector2i(2, 3)
+4:2/0 = 0
+6:2/size_in_atlas = Vector2i(2, 3)
+6:2/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_vynk6"]
+sources/0 = SubResource("TileSetAtlasSource_eotx8")
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_x8522"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vynk6"]
+size = Vector2(297.75, 67)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kkuor"]
+size = Vector2(72.625, 280)
+
+[node name="Table" type="Node2D" unique_id=1163768420]
+
+[node name="TileMap" type="TileMap" parent="." unique_id=1882986982]
+tile_set = SubResource("TileSet_vynk6")
+format = 2
+layer_0/tile_data = PackedInt32Array(196612, 0, 0, 196621, 131072, 0, 196630, 262144, 0, 196639, 393216, 0, 196648, 524288, 0, 720936, 524288, 2, 1245224, 524288, 5, 720927, 393216, 2, 720918, 393216, 2, 720909, 393216, 2, 720900, 0, 2, 1245188, 0, 5, 1245197, 131072, 5, 1245206, 262144, 5, 1245215, 393216, 5)
+
+[node name="PlayerCueBall" parent="." unique_id=494340538 instance=ExtResource("3_x8522")]
+position = Vector2(407, 161)
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=2147464841]
+position = Vector2(358, 195)
+
+[node name="CushionWalls" type="StaticBody2D" parent="." unique_id=1849349428]
+collision_layer = 3
+collision_mask = 0
+physics_material_override = SubResource("PhysicsMaterial_x8522")
+
+[node name="TopWall1" type="CollisionShape2D" parent="CushionWalls" unique_id=11350821]
+position = Vector2(190, -14)
+shape = SubResource("RectangleShape2D_vynk6")
+
+[node name="BottomWall1" type="CollisionShape2D" parent="CushionWalls" unique_id=1762371285]
+position = Vector2(190, 386)
+shape = SubResource("RectangleShape2D_vynk6")
+
+[node name="TopWall2" type="CollisionShape2D" parent="CushionWalls" unique_id=787232768]
+position = Vector2(533, -14)
+shape = SubResource("RectangleShape2D_vynk6")
+
+[node name="BottomWall2" type="CollisionShape2D" parent="CushionWalls" unique_id=1879291337]
+position = Vector2(532.5, 386)
+shape = SubResource("RectangleShape2D_vynk6")
+
+[node name="LeftWall" type="CollisionShape2D" parent="CushionWalls" unique_id=49637716]
+position = Vector2(-22, 185)
+shape = SubResource("RectangleShape2D_kkuor")
+
+[node name="RightWall2" type="CollisionShape2D" parent="CushionWalls" unique_id=1897817522]
+position = Vector2(744, 185)
+shape = SubResource("RectangleShape2D_kkuor")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1484831730]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D" unique_id=1309276576]
+position = Vector2(-206, -118)
+polygon = PackedVector2Array(154, 1, 1, 1, 1, 627, 1129, 626, 1129, -3, 1043, -10, 1043, 41, 1037, 578, 83, 570, 83, 44, 1041, 40, 1043, -9)
+
+[node name="Balls" type="Node" parent="." unique_id=1561497409]
+
+[node name="ObjectBall" parent="Balls" unique_id=1743559033 instance=ExtResource("2_eotx8")]
+position = Vector2(245, 162)
+
+[node name="ObjectBall2" parent="Balls" unique_id=1996577439 instance=ExtResource("2_eotx8")]
+position = Vector2(245, 138)
+
+[node name="ObjectBall3" parent="Balls" unique_id=692427445 instance=ExtResource("2_eotx8")]
+position = Vector2(245, 185)
+
+[node name="ObjectBall4" parent="Balls" unique_id=1459814788 instance=ExtResource("2_eotx8")]
+position = Vector2(267, 173)
+
+[node name="ObjectBall5" parent="Balls" unique_id=493042297 instance=ExtResource("2_eotx8")]
+position = Vector2(267, 149)
+
+[node name="ObjectBall6" parent="Balls" unique_id=1857594821 instance=ExtResource("2_eotx8")]
+position = Vector2(288, 160)
