@@ -1,0 +1,170 @@
+extends Node
+## Settings and the run in progress. Like Jump King, the climb is saved where
+## you stand: quitting and returning puts the ball back on the same felt.
+## Tests pass --save-profile=<name> to use an isolated file.
+
+signal settings_changed
+
+const VERSION := 1
+
+var path := "user://billiard_king.cfg"
+
+# Settings
+var master_volume := 0.8
+var sfx_volume := 0.9
+var ambience_volume := 0.7
+var fullscreen := false
+var screen_shake := true
+
+# Run in progress
+var has_run := false
+var ball_pos := Vector2.ZERO
+var aim_deg := 0.0
+var spin_level := 0
+var run_time := 0.0
+var strokes := 0
+var falls := 0
+var best_screen := 0
+var seen_zones: Array[int] = []
+
+# Persistent across runs (the Ball Rack)
+var collected: Array[int] = []      # lost balls 1..15 found
+var skin := 0
+var wins := 0
+var best_time := 0.0
+var best_strokes := 0
+
+
+func _ready() -> void:
+	for arg in OS.get_cmdline_user_args() + OS.get_cmdline_args():
+		if arg.begins_with("--save-profile="):
+			path = "user://test_%s.cfg" % arg.get_slice("=", 1)
+	_setup_input()
+	load_data()
+	apply_settings()
+
+
+func _setup_input() -> void:
+	var binds := {
+		"charge": [KEY_SPACE, KEY_Z, KEY_J, JOY_BUTTON_A],
+		"aim_left": [KEY_A, KEY_LEFT, JOY_BUTTON_DPAD_LEFT],
+		"aim_right": [KEY_D, KEY_RIGHT, JOY_BUTTON_DPAD_RIGHT],
+		"spin_up": [KEY_W, KEY_UP, JOY_BUTTON_DPAD_UP],
+		"spin_down": [KEY_S, KEY_DOWN, JOY_BUTTON_DPAD_DOWN],
+		"pause": [KEY_ESCAPE, KEY_P, JOY_BUTTON_START],
+	}
+	for action in binds:
+		if InputMap.has_action(action):
+			continue
+		InputMap.add_action(action, 0.35)
+		for code in binds[action]:
+			var ev: InputEvent
+			if code >= KEY_SPACE: # joypad button indices are all below 32
+				var k := InputEventKey.new()
+				k.physical_keycode = code
+				ev = k
+			else:
+				var j := InputEventJoypadButton.new()
+				j.button_index = code
+				ev = j
+			InputMap.action_add_event(action, ev)
+	var axes := { "aim_left": [JOY_AXIS_LEFT_X, -1.0], "aim_right": [JOY_AXIS_LEFT_X, 1.0], "spin_up": [JOY_AXIS_LEFT_Y, -1.0], "spin_down": [JOY_AXIS_LEFT_Y, 1.0] }
+	for action in axes:
+		var m := InputEventJoypadMotion.new()
+		m.axis = axes[action][0]
+		m.axis_value = axes[action][1]
+		InputMap.action_add_event(action, m)
+
+
+func load_data() -> void:
+	var cfg := ConfigFile.new()
+	if cfg.load(path) != OK:
+		return
+	master_volume = cfg.get_value("settings", "master", master_volume)
+	sfx_volume = cfg.get_value("settings", "sfx", sfx_volume)
+	ambience_volume = cfg.get_value("settings", "ambience", ambience_volume)
+	fullscreen = cfg.get_value("settings", "fullscreen", fullscreen)
+	screen_shake = cfg.get_value("settings", "shake", screen_shake)
+	has_run = cfg.get_value("run", "active", false)
+	ball_pos = cfg.get_value("run", "pos", Vector2.ZERO)
+	aim_deg = cfg.get_value("run", "aim", 0.0)
+	spin_level = cfg.get_value("run", "spin", 0)
+	run_time = cfg.get_value("run", "time", 0.0)
+	strokes = cfg.get_value("run", "strokes", 0)
+	falls = cfg.get_value("run", "falls", 0)
+	best_screen = cfg.get_value("run", "best_screen", 0)
+	seen_zones.assign(cfg.get_value("run", "seen_zones", []))
+	collected.assign(cfg.get_value("rack", "collected", []))
+	skin = cfg.get_value("rack", "skin", 0)
+	wins = cfg.get_value("rack", "wins", 0)
+	best_time = cfg.get_value("rack", "best_time", 0.0)
+	best_strokes = cfg.get_value("rack", "best_strokes", 0)
+	if skin != 0 and not collected.has(skin):
+		skin = 0
+
+
+func save() -> void:
+	var cfg := ConfigFile.new()
+	cfg.set_value("meta", "version", VERSION)
+	cfg.set_value("settings", "master", master_volume)
+	cfg.set_value("settings", "sfx", sfx_volume)
+	cfg.set_value("settings", "ambience", ambience_volume)
+	cfg.set_value("settings", "fullscreen", fullscreen)
+	cfg.set_value("settings", "shake", screen_shake)
+	cfg.set_value("run", "active", has_run)
+	cfg.set_value("run", "pos", ball_pos)
+	cfg.set_value("run", "aim", aim_deg)
+	cfg.set_value("run", "spin", spin_level)
+	cfg.set_value("run", "time", run_time)
+	cfg.set_value("run", "strokes", strokes)
+	cfg.set_value("run", "falls", falls)
+	cfg.set_value("run", "best_screen", best_screen)
+	cfg.set_value("run", "seen_zones", seen_zones)
+	cfg.set_value("rack", "collected", collected)
+	cfg.set_value("rack", "skin", skin)
+	cfg.set_value("rack", "wins", wins)
+	cfg.set_value("rack", "best_time", best_time)
+	cfg.set_value("rack", "best_strokes", best_strokes)
+	cfg.save(path)
+
+
+func start_new_run() -> void:
+	has_run = true
+	ball_pos = Vector2.ZERO
+	aim_deg = 0.0
+	spin_level = 0
+	run_time = 0.0
+	strokes = 0
+	falls = 0
+	best_screen = 0
+	seen_zones.clear()
+	save()
+
+
+func finish_run() -> void:
+	wins += 1
+	if best_time == 0.0 or run_time < best_time:
+		best_time = run_time
+	if best_strokes == 0 or strokes < best_strokes:
+		best_strokes = strokes
+	has_run = false
+	save()
+
+
+func collect_ball(number: int) -> void:
+	if not collected.has(number):
+		collected.append(number)
+		collected.sort()
+		save()
+
+
+func apply_settings() -> void:
+	var mode := DisplayServer.WINDOW_MODE_FULLSCREEN if fullscreen else DisplayServer.WINDOW_MODE_WINDOWED
+	if DisplayServer.get_name() != "headless" and DisplayServer.window_get_mode() != mode:
+		DisplayServer.window_set_mode(mode)
+	settings_changed.emit()
+
+
+static func format_time(seconds: float) -> String:
+	var s := int(seconds)
+	return "%d:%02d:%02d" % [s / 3600, (s / 60) % 60, s % 60]

@@ -1,3 +1,6 @@
 # Godot 4+ specific ignores
 .godot/
 /android/
+
+# Upscaled art previews (regenerate with tools/build_art.ps1 -Preview)
+docs/art_preview/

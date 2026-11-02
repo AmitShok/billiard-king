@@ -10,33 +10,41 @@ config_version=5
 
 [application]
 
-config/name="biliard king"
-run/main_scene="uid://d0i0044va6mch"
-config/features=PackedStringArray("4.7", "Forward Plus")
-config/icon="res://icon.svg"
+config/name="Billiard King"
+config/description="A billiard-themed climb: one cue ball, one tall tower, no checkpoints."
+run/main_scene="res://scenes/ui/title.tscn"
+config/features=PackedStringArray("4.7", "GL Compatibility")
+config/icon="res://assets/textures/game_icon.png"
+boot_splash/bg_color=Color(0.05, 0.04, 0.05, 1)
+boot_splash/image="res://assets/textures/game_icon.png"
+boot_splash/fullsize=false
+boot_splash/use_filter=false
 
 [autoload]
 
-GameManager="*uid://drnges3447wk8"
+SaveData="*res://scripts/autoload/save_data.gd"
+Sfx="*res://scripts/autoload/sfx.gd"
 
 [display]
 
-window/stretch/mode="canvas_items"
-window/stretch/aspect="expand"
-
-[layer_names]
-
-2d_physics/layer_1="cue_ball"
-2d_physics/layer_2="object_balls"
-2d_physics/layer_3="cushions"
-2d_physics/layer_4="pockets"
-2d_physics/layer_5="hazards"
+window/size/viewport_width=512
+window/size/viewport_height=288
+window/size/window_width_override=1536
+window/size/window_height_override=864
+window/stretch/mode="viewport"
+window/stretch/scale_mode="integer"
 
 [physics]
 
-3d/physics_engine="Jolt Physics"
+common/physics_ticks_per_second=120
+common/max_physics_steps_per_frame=12
+common/physics_interpolation=true
 2d/default_gravity=0.0
 
 [rendering]
 
-rendering_device/driver.windows="d3d12"
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+textures/canvas_textures/default_texture_filter=0
+2d/snap/snap_2d_transforms_to_pixel=true
+environment/defaults/default_clear_color=Color(0.05, 0.04, 0.05, 1)
