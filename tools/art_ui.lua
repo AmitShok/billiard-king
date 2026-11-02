@@ -39,36 +39,47 @@ do
 end
 print("UI exported.")
 
--- Game icon (64x64): a crowned cue ball on green felt.
+-- Game icon (64x64): a classic black 8-ball, lit from the top left.
 do
   local c = A.canvas(64, 64)
-  c:disc(32, 34, 31, "11090c"); c:disc(32, 34, 30, "1e5a38"); c:disc(31, 33, 27, "2a7a4c")
+  local cx, cy, r = 32, 32, 30
+  local black = { "050507", "0e0e12", "1a1a20", "2a2a33", "3e3e4a" }
   for y = 0, 63 do for x = 0, 63 do
-    local dx, dy = x + 0.5 - 32, y + 0.5 - 40
-    local d = math.sqrt(dx * dx + dy * dy)
-    if d <= 18 then
-      local l = (-dx * 0.55 - dy * 0.65) / 18
-      local col = l > 0.45 and "ffffff" or (l > 0.1 and "f4eedc" or (l > -0.3 and "d8cfb8" or "a89e8a"))
-      if d > 17 then col = "1c1a1f" end
+    local dx, dy = (x + 0.5 - cx) / r, (y + 0.5 - cy) / r
+    local d2 = dx * dx + dy * dy
+    if d2 <= 1 then
+      local nz = math.sqrt(1 - d2)
+      local lit = math.max(0, -dx * 0.5 - dy * 0.6 + nz * 0.62)
+      local col = A.ramp(black, lit * 0.95, x, y)
+      -- Faint bounce light along the lower right rim.
+      if d2 > 0.82 and dx + dy > 0.6 then col = "22222c" end
       c:px(x, y, col)
     end
   end end
-  c:disc(38, 45, 3.5, "c8302e"); c:disc(24, 37, 2.2, "a82826")
-  c:px(25, 30, "ffffff"); c:px(26, 30, "ffffff"); c:px(25, 31, "ffffff")
-  local crown = {
-    "..e.......e.......e..",
-    ".eae.....eae.....eae.",
-    "..a.......a.......a..",
-    "..aa.....aaa.....aa..",
-    ".aaaa...aaaaa...aaaa.",
-    ".aabaa.aaabaaa.aabaa.",
-    "aaaaaaaaaaaaaaaaaaaaa",
-    "aaaaaaaaaaaaaaaaaaaaa",
-    "bbbbbbbbbbbbbbbbbbbbb",
-    "cdcccdcccdcccdcccdccc",
-    "bbbbbbbbbbbbbbbbbbbbb",
-  }
-  c:grid(22, 9, crown, { a = "f2c440", b = "b08020", c = "d8a830", d = "c8302e", e = "fff6c0" })
-  c:outline("11090c", 20, 6, 25, 16)
+  -- White number disc, set a little up-left of centre like a ball turned toward the light.
+  local ox, oy = 29, 28
+  c:disc(ox, oy, 13.5, "c8c2b4")
+  c:disc(ox - 0.5, oy - 0.5, 12.5, "f4eedc")
+  for y = oy - 13, oy + 13 do for x = ox - 13, ox + 13 do
+    local dx, dy = x + 0.5 - ox, y + 0.5 - oy
+    if dx * dx + dy * dy <= 12.5 * 12.5 and dx + dy > 9 then c:px(x, y, "ddd6c4") end
+  end end
+  -- A bold pixel "8".
+  c:grid(ox - 6, oy - 9, {
+    "..######..",
+    ".########.",
+    "###....###",
+    "###....###",
+    ".########.",
+    ".########.",
+    "###....###",
+    "###....###",
+    "###....###",
+    ".########.",
+    "..######..",
+  }, { ["#"] = "141418" })
+  -- Specular glint and rim.
+  c:disc(17, 15, 3, "6a6a78"); c:disc(16.5, 14.5, 1.6, "f0f0f8")
+  c:ring(cx, cy, r + 0.5, "000000")
   c:save("game_icon")
 end
