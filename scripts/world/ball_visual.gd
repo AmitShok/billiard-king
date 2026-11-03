@@ -8,7 +8,7 @@ extends Node2D
 const SKIN := preload("res://assets/textures/balls.png")
 const SHADER := preload("res://shaders/ball.gdshader")
 
-@export_range(0, 15) var number: int = 0:
+@export_range(0, 16) var number: int = 0:
 	set(v):
 		number = v
 		_apply()

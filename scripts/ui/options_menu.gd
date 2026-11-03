@@ -20,6 +20,7 @@ func _ready() -> void:
 	var controls: Array = []
 	controls.append(UIKit.slider(box, "Master", SaveData.master_volume, func(v): SaveData.master_volume = v; SaveData.apply_settings()))
 	controls.append(UIKit.slider(box, "Effects", SaveData.sfx_volume, func(v): SaveData.sfx_volume = v; SaveData.apply_settings()))
+	controls.append(UIKit.slider(box, "Music", SaveData.music_volume, func(v): SaveData.music_volume = v; SaveData.apply_settings()))
 	controls.append(UIKit.slider(box, "Ambience", SaveData.ambience_volume, func(v): SaveData.ambience_volume = v; SaveData.apply_settings()))
 	var full := UIKit.button(box, "", func(): pass)
 	full.pressed.connect(func():

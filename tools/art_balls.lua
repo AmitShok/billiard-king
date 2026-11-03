@@ -2,12 +2,13 @@
 -- Each ball is painted as an equirectangular "skin" (64x32: longitude across,
 -- latitude down) that the ball shader wraps around a sphere and rotates, so
 -- the numbers, stripes and the cue ball's dots visibly roll.
--- Atlas: 4x4 cells -> 256x128. Cell 0 = player cue ball, cells 1..15 = numbers.
+-- Atlas: 4x5 cells -> 256x160. Cell 0 = player cue ball, cells 1..15 = numbers,
+-- cell 16 = the plain white ball pushed around in Hardcore mode.
 --   aseprite -b --script-param root=<project> --script tools/art_balls.lua
 local A = dofile(app.params["root"] .. "/tools/art_lib.lua")
 
 local CW, CH = 64, 32
-local c = A.canvas(CW * 4, CH * 4)
+local c = A.canvas(CW * 4, CH * 5)
 
 local IVORY = "f4eedc"
 local INK = "1c1a1f"
@@ -57,7 +58,11 @@ local function paint_ball(cell, num)
     for x = 0, CW - 1 do
       local dx, dy, dz = dir_of((x + 0.5) / CW, (y + 0.5) / CH)
       local col
-      if num == 0 then
+      if num == 16 then
+        -- Hardcore white ball: plain ivory, two faint grey great circles so it still reads as rolling.
+        col = "f8f6f0"
+        if math.abs(dy) < 0.05 or math.abs(dx) < 0.05 then col = "c8c4bc" end
+      elseif num == 0 then
         -- Cue ball: ivory with six red "measles" dots on the axes, so any
         -- rotation reads instantly.
         col = IVORY
@@ -86,6 +91,6 @@ local function paint_ball(cell, num)
   end
 end
 
-for n = 0, 15 do paint_ball(n, n) end
+for n = 0, 16 do paint_ball(n, n) end
 c:save("balls")
 print("Ball skins exported.")

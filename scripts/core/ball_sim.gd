@@ -39,8 +39,10 @@ const LANDING_GRIP_HARD := 0.4     # tangential speed kept on a hard landing
 const LANDING_GRIP_SOFT := 0.75
 const HARD_LANDING := 260.0
 const SPLAT_FALL := 200.0           # px of drop that counts as a fall / splat landing
+const FLOAT_DRAG := 260.0          # Hardcore white ball: felt drag in every direction (no gravity)
+const BALL_BOUNCE := 0.92           # ball-on-ball restitution (phenolic balls are lively)
 
-enum Event { SHOT, LAND, SPLAT, WALL, CUSHION, BUMPER, POCKET, GOAL, LOST_BALL }
+enum Event { SHOT, LAND, SPLAT, WALL, CUSHION, BUMPER, POCKET, GOAL, LOST_BALL, BALL_HIT }
 
 var pos := Vector2.ZERO
 var vel := Vector2.ZERO
@@ -53,6 +55,8 @@ var pending_spin := 0.0             # px/s along the shot, applied on first floo
 var shot_dir_x := 0.0
 var spin_rate := 0.0                # visual angular speed about the view axis (rad/s)
 var tumble_rate := 0.0              # visual angular speed about the horizontal axis
+var floating := false            # Hardcore white ball: no gravity, drag everywhere
+var ignore_goal := false         # Hardcore player: only the white ball may sink the gold pocket
 var takeoff_y := 0.0
 var apex_y := 0.0
 var events: Array[Dictionary] = []
@@ -119,14 +123,16 @@ func step(world: CollisionWorld, dt: float = DT) -> void:
 	if in_pocket:
 		return
 	_was_grounded = grounded
-	if grounded and not resting:
+	if floating:
+		vel = vel.move_toward(Vector2.ZERO, FLOAT_DRAG * dt)
+	elif grounded and not resting:
 		# Rolling resistance along the surface.
 		var t := Vector2(-ground_normal.y, ground_normal.x)
 		var vt := vel.dot(t)
 		var vn := vel.dot(ground_normal)
 		vt = move_toward(vt, 0.0, ROLL_DECEL[clampi(ground_zone, 0, 2)] * dt)
 		vel = t * vt + ground_normal * vn
-	if not resting:
+	if not resting and not floating:
 		vel.y = minf(vel.y + GRAVITY * dt, MAX_FALL)
 
 	var touched_floor := false
@@ -143,7 +149,7 @@ func step(world: CollisionWorld, dt: float = DT) -> void:
 			var any_push := false
 			for c in contacts:
 				var n: Vector2 = c.normal
-				if n.y <= FLOOR_NORMAL_Y and c.kind == CollisionWorld.Kind.TILE:
+				if n.y <= FLOOR_NORMAL_Y and c.kind == CollisionWorld.Kind.TILE and not floating:
 					touched_floor = true
 					if n.y < floor_normal.y or floor_normal == Vector2.ZERO:
 						floor_normal = n
@@ -164,6 +170,14 @@ func step(world: CollisionWorld, dt: float = DT) -> void:
 			return
 
 	grounded = touched_floor
+	if floating:
+		resting = vel.length() < REST_SPEED
+		if resting:
+			vel = Vector2.ZERO
+		spin_rate = vel.x / RADIUS
+		tumble_rate = -vel.y / RADIUS
+		_check_lost_balls(world)
+		return
 	if grounded:
 		ground_normal = floor_normal
 		ground_zone = floor_zone
@@ -196,7 +210,7 @@ func _respond(c: Dictionary, n: Vector2, vn: float) -> void:
 		spin_rate = -spin_rate * 0.5 + vt / RADIUS
 		events.append({ "type": Event.BUMPER, "id": c.id, "impact": impact, "normal": n })
 		return
-	var is_floor := n.y <= FLOOR_NORMAL_Y
+	var is_floor := n.y <= FLOOR_NORMAL_Y and not floating
 	var e := WALL_BOUNCE
 	var grip := 0.92
 	if c.mat == CollisionWorld.Mat.CUSHION:
@@ -230,6 +244,8 @@ func _respond(c: Dictionary, n: Vector2, vn: float) -> void:
 
 func _check_pockets(world: CollisionWorld) -> void:
 	for p in world.pockets:
+		if p.goal and ignore_goal:
+			continue
 		if pos.distance_to(p.pos) < p.radius:
 			in_pocket = true
 			vel = Vector2.ZERO
@@ -247,4 +263,29 @@ func _check_lost_balls(world: CollisionWorld) -> void:
 ## After a pocket swallows the ball, the ball-return drops it at the exit.
 func release_from_pocket(exit: Vector2) -> void:
 	reset(exit)
-	vel = Vector2(0, 60)
+	vel = Vector2.ZERO if floating else Vector2(0, 60)
+
+
+## Equal-mass billiard collision between two balls (Hardcore: your ball and
+## the floating white ball). Separates them and trades momentum along the
+## line of centres. Returns the closing speed (0 if they didn't meet).
+static func collide_pair(a: BallSim, b: BallSim) -> float:
+	if a.in_pocket or b.in_pocket:
+		return 0.0
+	var d := b.pos - a.pos
+	var dist := d.length()
+	if dist >= RADIUS * 2.0 or dist < 0.0001:
+		return 0.0
+	var n := d / dist
+	var overlap := RADIUS * 2.0 - dist
+	a.pos -= n * overlap * 0.5
+	b.pos += n * overlap * 0.5
+	var closing := (a.vel - b.vel).dot(n)
+	if closing <= 0.0:
+		return 0.0
+	var j := (1.0 + BALL_BOUNCE) * 0.5 * closing
+	a.vel -= n * j
+	b.vel += n * j
+	a.resting = false
+	b.resting = false
+	return closing

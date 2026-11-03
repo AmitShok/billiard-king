@@ -73,3 +73,29 @@ Regression: gameplay 37/37, menus 14/14, route solver PASS with identical result
 ## Camera look: 2 November 2026
 
 The gameplay suite is now 43 / 43. The up arrow is bound to look, not spin. Holding look pans the camera a full 56 px up or down and it eases back to rest on release. Looking leaves the ball's position, spin and screen unchanged. Looking below the bottom floor is blocked.
+
+## Hardcore mode and music: 3 November 2026
+
+`tests/hardcore_test.tscn` passed 35 of 35 checks.
+
+**White ball physics**
+- It hangs in mid-air with no gravity, and felt drag stops it at the predicted distance.
+- It banks off rails.
+- A ball-on-ball knock conserves momentum, transfers the expected 96%, separates the balls, and isn't counted twice.
+- Your ball rolls over the gold pocket while the white ball sinks it.
+- The ball return releases it at rest.
+
+**Hardcore game**
+- A fresh Hardcore run starts without touching the Classic run in progress.
+- The white ball is placed beside the spawn and stays put.
+- Your normal ball is partnered to it, and a real strike knocks it so it travels and then stops.
+- The edge arrow counts screens, and Re-rack works and counts a fall.
+- The white ball's position is saved, and sinking it in the gold pocket wins the run, unlocks the white ball and records the win separately.
+- Classic games have no white ball.
+
+**Music**
+- The title and the Back Room play the Back Room theme, and the Neon Bar and the summit switch tracks.
+- All four tracks exist and are 30 seconds or longer.
+- Options has a Music volume, and it persists.
+
+**Not proven:** whether Hardcore can be completed. The route solver covers only the single-ball Classic climb. A two-ball search (where you must stand to reach the floating ball, and every knock) is a much larger problem. Re-rack is there as the escape hatch, and Hardcore needs human playtesting for difficulty.

@@ -14,7 +14,9 @@ var _first: Button
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	theme = UIKit.theme()
+	SaveData.set_mode(SaveData.CLASSIC)
 	Sfx.set_ambience(0)
+	Sfx.play_music(Sfx.MUSIC[0])
 	var bg := TextureRect.new()
 	bg.texture = load("res://assets/textures/bg_backroom.png")
 	add_child(bg)
@@ -94,7 +96,7 @@ func _ready() -> void:
 	add_child(sub)
 
 	_menu = VBoxContainer.new()
-	_menu.position = Vector2(196, 126)
+	_menu.position = Vector2(196, 120)
 	_menu.size = Vector2(120, 100)
 	_menu.add_theme_constant_override("separation", 1)
 	add_child(_menu)
@@ -105,9 +107,11 @@ func _build_menu() -> void:
 	for c in _menu.get_children():
 		c.queue_free()
 	var buttons: Array = []
-	if SaveData.has_run:
-		buttons.append(UIKit.button(_menu, "Continue", _start.bind(false)))
-	buttons.append(UIKit.button(_menu, "New climb", _start.bind(true)))
+	if SaveData.has_run_for(SaveData.CLASSIC):
+		buttons.append(UIKit.button(_menu, "Continue", _start.bind(SaveData.CLASSIC, false)))
+	buttons.append(UIKit.button(_menu, "New climb", _start.bind(SaveData.CLASSIC, true)))
+	var hc_running := SaveData.has_run_for(SaveData.HARDCORE)
+	buttons.append(UIKit.button(_menu, "Hardcore: continue" if hc_running else "Hardcore mode", _start.bind(SaveData.HARDCORE, not hc_running)))
 	buttons.append(UIKit.button(_menu, "Ball Rack", _open.bind(BallRack)))
 	buttons.append(UIKit.button(_menu, "Options", _open.bind(OptionsMenu)))
 	buttons.append(UIKit.button(_menu, "Quit", func(): get_tree().quit()))
@@ -116,15 +120,21 @@ func _build_menu() -> void:
 	UIKit.chain_focus(buttons)
 	_first = buttons[0]
 	_first.grab_focus.call_deferred()
-	if SaveData.wins > 0:
+	if SaveData.wins > 0 or SaveData.hc_wins > 0:
 		var best := Label.new()
-		best.text = "Climbs %d   Best %s   Fewest strokes %d" % [SaveData.wins, SaveData.format_time(SaveData.best_time), SaveData.best_strokes]
+		var parts: Array[String] = []
+		if SaveData.wins > 0:
+			parts.append("Climbs %d  best %s" % [SaveData.wins, SaveData.format_time(SaveData.best_time)])
+		if SaveData.hc_wins > 0:
+			parts.append("Hardcore %d  best %s" % [SaveData.hc_wins, SaveData.format_time(SaveData.hc_best_time)])
+		best.text = "   ".join(parts)
 		best.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		best.add_theme_color_override("font_color", Color("8a8070"))
 		_menu.add_child(best)
 
 
-func _start(fresh: bool) -> void:
+func _start(mode: String, fresh: bool) -> void:
+	SaveData.set_mode(mode)
 	if fresh:
 		SaveData.start_new_run()
 	Sfx.play("cue", -2.0)

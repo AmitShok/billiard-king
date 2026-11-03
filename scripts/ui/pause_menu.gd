@@ -24,8 +24,21 @@ func _ready() -> void:
 	_box.add_child(gap)
 	_resume = UIKit.button(_box, "Resume", close)
 	var opts := UIKit.button(_box, "Options", _open_options)
-	var quit := UIKit.button(_box, "Save and quit", func(): game.quit_to_title())
-	UIKit.chain_focus([_resume, opts, quit])
+	var buttons: Array = [_resume, opts]
+	if game.hardcore():
+		buttons.append(UIKit.button(_box, "Re-rack white ball", func():
+			game.rerack_white()
+			close()))
+	var restart := UIKit.button(_box, "Restart climb", func(): pass)
+	restart.pressed.connect(func():
+		if restart.text == "Press again to restart":
+			game.restart_climb()
+		else:
+			restart.text = "Press again to restart")
+	restart.focus_exited.connect(func(): restart.text = "Restart climb")
+	buttons.append(restart)
+	buttons.append(UIKit.button(_box, "Save and quit", func(): game.quit_to_title()))
+	UIKit.chain_focus(buttons)
 
 
 func open() -> void:

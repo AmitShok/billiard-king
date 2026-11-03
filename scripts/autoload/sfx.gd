@@ -1,10 +1,13 @@
 extends Node
-## All game audio. One-shots come from a small voice pool; the felt-roll loop
-## and the per-zone ambience beds are dedicated players.
-## Sounds are baked by tools/build_sfx.gd (+ a few CC0 Ninja Adventure cues).
+## All game audio. One-shots come from a small voice pool; the felt-roll loop,
+## the per-zone ambience beds and the music each have dedicated players.
+## Sounds are baked by tools/build_sfx.gd (+ a few CC0 Ninja Adventure cues),
+## music by tools/build_music.gd.
 
 const DIR := "res://assets/audio/"
 const AMBIENCE := ["amb_backroom", "amb_neonbar", "amb_royal", "amb_summit"]
+const MUSIC := ["music/music_backroom", "music/music_neonbar", "music/music_royal", "music/music_summit"]
+const MUSIC_FADE := 2.0
 const VOICES := 14
 
 var _streams := {}
@@ -14,12 +17,15 @@ var _roll: AudioStreamPlayer
 var _amb_a: AudioStreamPlayer
 var _amb_b: AudioStreamPlayer
 var _amb_zone := -1
+var _mus_a: AudioStreamPlayer
+var _mus_b: AudioStreamPlayer
+var _music := ""
 var _rng := RandomNumberGenerator.new()
 
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
-	for bus in ["SFX", "Ambience"]:
+	for bus in ["SFX", "Ambience", "Music"]:
 		if AudioServer.get_bus_index(bus) == -1:
 			AudioServer.add_bus()
 			AudioServer.set_bus_name(AudioServer.bus_count - 1, bus)
@@ -39,6 +45,12 @@ func _ready() -> void:
 		p.bus = "Ambience"
 		p.volume_db = -80.0
 		add_child(p)
+	_mus_a = AudioStreamPlayer.new()
+	_mus_b = AudioStreamPlayer.new()
+	for p in [_mus_a, _mus_b]:
+		p.bus = "Music"
+		p.volume_db = -80.0
+		add_child(p)
 	var roll_stream := _stream("roll_loop")
 	if roll_stream:
 		_roll.stream = roll_stream
@@ -50,6 +62,7 @@ func _apply_volumes() -> void:
 	AudioServer.set_bus_volume_db(0, linear_to_db(maxf(SaveData.master_volume, 0.0001)))
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("SFX"), linear_to_db(maxf(SaveData.sfx_volume, 0.0001)))
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Ambience"), linear_to_db(maxf(SaveData.ambience_volume, 0.0001)))
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"), linear_to_db(maxf(SaveData.music_volume, 0.0001)))
 
 
 func _stream(sound: String) -> AudioStream:
@@ -60,7 +73,7 @@ func _stream(sound: String) -> AudioStream:
 		if ResourceLoader.exists(DIR + sound + ext):
 			stream = load(DIR + sound + ext)
 			break
-	if stream is AudioStreamWAV and (sound.begins_with("amb_") or sound.ends_with("_loop")):
+	if stream is AudioStreamWAV and (sound.begins_with("amb_") or sound.begins_with("music/") or sound.ends_with("_loop")):
 		var wav := stream as AudioStreamWAV
 		wav.loop_mode = AudioStreamWAV.LOOP_FORWARD
 		wav.loop_begin = 0
@@ -133,3 +146,33 @@ func set_ambience(zone: int) -> void:
 			fresh.volume_db = -60.0
 			fresh.play()
 			create_tween().tween_property(fresh, "volume_db", 0.0, 1.2)
+
+
+## Crossfades to a zone's music (0..3), or -1 to fade the music out.
+func set_music_zone(zone: int) -> void:
+	play_music(MUSIC[zone] if zone >= 0 and zone < MUSIC.size() else "")
+
+
+func play_music(track: String) -> void:
+	if track == _music:
+		return
+	_music = track
+	var old := _mus_a if _mus_a.playing and _mus_a.volume_db > -60.0 else _mus_b
+	var fresh := _mus_b if old == _mus_a else _mus_a
+	if old.playing:
+		var tw := create_tween()
+		tw.tween_property(old, "volume_db", -80.0, MUSIC_FADE)
+		tw.tween_callback(old.stop)
+	if track == "":
+		return
+	var stream := _stream(track)
+	if stream == null:
+		return
+	fresh.stream = stream
+	fresh.volume_db = -40.0
+	fresh.play()
+	create_tween().tween_property(fresh, "volume_db", 0.0, MUSIC_FADE)
+
+
+func current_music() -> String:
+	return _music

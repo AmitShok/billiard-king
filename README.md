@@ -31,6 +31,8 @@ Somewhere above the Back Room, past Lucky's Neon Bar and the Royal Club, there's
 - **Fallosophy's pinball.** Big numbered bumper balls kick you away in their brass collars. Rubber cushions stay lively, and pockets swallow you and drop you far below through the ball return.
 - **Ballgame's collection.** Ten lost balls are hidden in the tower and five more are earned by finishing. Each one becomes a ball you can climb as, picked from the **Ball Rack**.
 - **Balls that really roll.** Every ball is a pixel-art sphere drawn with spherical UV mapping, so numbers, stripes and the cue ball's red dots roll across the surface.
+- **Hardcore mode.** You play your normal ball with the same rules, plus a second, plain white ball that floats with no gravity. Knock it up through the whole tower and sink it in the gold pocket. Felt drag stops it wherever it runs out of speed, even in mid-air, and if it drops into a pocket it goes down the ball return. An arrow at the screen edge points to it when it's on another screen.
+- **Pool-hall jazz.** Four synthesised loops, one per zone: slow Back Room blues, a Neon Bar shuffle, a Royal Club waltz and a moonlit summit theme. They crossfade as you climb.
 - **A room that reacts.** Lamps and chandeliers swing on their chains, windows shatter and stay broken, neon shorts out, portraits hang crooked, beads slide along the score wire and chalk gets knocked off ledges. All of it is cosmetic: the ball's path never changes.
 - **Three zones and a summit:** the Back Room, Lucky's Neon Bar, the Royal Club (fast felt) and the King's Table under the moon.
 - **Proven climbable.** A headless solver fires every shot from every resting spot using the real physics. It checks that the gold pocket can be reached and measures how forgiving each jump is.
@@ -47,6 +49,8 @@ Somewhere above the Back Room, past Lucky's Neon Bar and the Royal Club, there's
 | *Ball Rack* | *Pause and run stats* |
 | <img src="docs/screenshots/props_react.png" width="420"> | <img src="docs/screenshots/hint.png" width="420"> |
 | *A window gives way* | *Controls hint on the bottom rail* |
+| <img src="docs/screenshots/hardcore.png" width="420"> | <img src="docs/screenshots/hardcore_arrow.png" width="420"> |
+| *Hardcore: your ball and the floating white ball* | *The edge arrow points to it off screen* |
 
 ## Controls
 
@@ -82,6 +86,7 @@ You can only strike from flat felt; slopes make you slide. A full charge fires b
 | 13 | Finish in under 30 minutes |
 | 14 | Finish with 10 falls or fewer |
 | 15 | Finish holding lost balls 1–10 |
+| White ball | Finish Hardcore mode |
 
 ## Getting started
 
@@ -97,7 +102,7 @@ Saves live in `user://billiard_king.cfg` (on Windows, `%APPDATA%\Godot\app_userd
 ## Project structure
 
 ```
-assets/        textures (exported PNGs), source/ (.aseprite), fonts/, audio/
+assets/        textures (exported PNGs), source/ (.aseprite), fonts/, audio/ (+ music/)
 levels/        tower.txt: the whole climb as ASCII screens
 resources/     tiles.tres (generated), ui_theme.tres
 scenes/        ui/title.tscn, world/game.tscn, world/tower.tscn (generated)
@@ -108,7 +113,7 @@ scripts/ui     title, pause, options, ball rack, ending, ui_kit
 scripts/autoload  save_data.gd, sfx.gd
 shaders/       ball.gdshader (rolling-ball sphere mapping), vignette.gdshader
 tools/         art_*.lua (Aseprite), build_tower.gd, build_sfx.gd, *.ps1 helpers
-tests/         gameplay_test, menu_test, props_test, route_solver, capture
+tests/         gameplay_test, menu_test, props_test, hardcore_test, route_solver, capture
 docs/          DESIGN.md, VALIDATION.md, screenshots/
 ```
 
@@ -119,6 +124,7 @@ docs/          DESIGN.md, VALIDATION.md, screenshots/
 | Rebuild all pixel art (Aseprite Lua) | `powershell -File tools/build_art.ps1` (add `-Preview` for 4× previews) |
 | Rebuild the tower after editing `levels/tower.txt` | `powershell -File tools/godot.ps1 --headless --script tools/build_tower.gd` |
 | Re-synthesise the sound effects | `powershell -File tools/godot.ps1 --headless --script tools/build_sfx.gd` |
+| Recompose the music | `powershell -File tools/godot.ps1 --headless --script tools/build_music.gd` |
 | Run every test (with the climbability solver) | `powershell -File tools/run_tests.ps1` |
 | Retake screenshots | `powershell -File tools/godot.ps1 res://tests/capture.tscn -- --save-profile=capture` |
 
@@ -128,7 +134,7 @@ Tuning values and how the rolling ball is rendered are in [docs/DESIGN.md](docs/
 
 ## Credits
 
-- **Game, code, pixel art and synthesised audio:** Floor 38 Studio. Art is authored in Aseprite via `tools/art_*.lua`, sounds are designed in `tools/build_sfx.gd`.
+- **Game, code, pixel art, synthesised audio and music:** Floor 38 Studio. Art is authored in Aseprite via `tools/art_*.lua`, sounds are designed in `tools/build_sfx.gd`.
 - **UI blips, win jingle and summit wind:** [Ninja Adventure Asset Pack](https://pixel-boy.itch.io/ninja-adventure-asset-pack) by Pixel-boy & AAA (CC0).
 - **Billiard Kit** (the original prototype's sprites, kept in `assets/Billiard Kit/`): Luca Pixel (CC0).
 - **Inspired by** *Jump King* (Nexile), *Fallosophy* (Reliable Plumbing Services) and *Ballgame* (Human Computer).

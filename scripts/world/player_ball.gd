@@ -14,6 +14,9 @@ signal pocketed
 signal won
 signal lost_ball_found(number: int)
 signal settled
+## Hardcore: events from the floating white ball, and ball-on-ball knocks.
+signal partner_event(event: Dictionary)
+signal ball_hit(impact: float)
 
 const DUST := preload("res://assets/textures/dust.png")
 const SPIN_ICON := preload("res://assets/textures/spin_icon.png")
@@ -30,6 +33,8 @@ var spin_level := 0
 var charging := false
 var charge_ticks := 0
 var input_enabled := true
+## Hardcore: the floating white ball, stepped and collided together with ours.
+var partner: BallSim
 
 var _lock := 0.0
 var _aim_hold := 0.0
@@ -85,12 +90,16 @@ func _physics_process(_delta: float) -> void:
 			reset_physics_interpolation()
 			_visual.set_alpha(1.0)
 			_visual.scale = Vector2.ONE
+		if partner:
+			partner.step(world, dt)
+			for e in partner.events:
+				partner_event.emit(e)
 		return
 	_lock = maxf(0.0, _lock - dt)
 	if input_enabled:
 		_read_aim_input(dt)
 		_read_charge_input()
-	sim.step(world, dt)
+	_step(dt)
 	_handle_events()
 	position = sim.pos
 	if sim.resting and not _was_resting:
@@ -205,6 +214,9 @@ func _handle_events() -> void:
 				_pocket_timer = 0.0
 				Sfx.play("pocket", 0.0, 0.9)
 				won.emit()
+			BallSim.Event.BALL_HIT:
+				Sfx.impact("clack", e.impact, 450.0)
+				ball_hit.emit(e.impact)
 			BallSim.Event.LOST_BALL:
 				Sfx.play("lost_ball", -2.0)
 				lost_ball_found.emit(e.number)
@@ -252,3 +264,23 @@ func _process(delta: float) -> void:
 	var spin_target := 1.0 if (show_cue and spin_level != 0) else 0.0
 	_spin_icon.modulate.a = move_toward(_spin_icon.modulate.a, spin_target, dt * (12.0 if spin_target == 0.0 else 6.0))
 	_spin_icon.position = Vector2(-16 if aim_deg > 0.0 else 16, -14)
+
+
+## One physics tick. With a partner ball (Hardcore) both balls advance in two
+## half-steps and collide with each other after each, so fast knocks can't
+## pass through. Without one this is exactly the Classic step.
+func _step(dt: float) -> void:
+	if partner == null:
+		sim.step(world, dt)
+		return
+	var ours: Array[Dictionary] = []
+	for half in 2:
+		sim.step(world, dt * 0.5)
+		ours.append_array(sim.events)
+		partner.step(world, dt * 0.5)
+		for e in partner.events:
+			partner_event.emit(e)
+		var hit := BallSim.collide_pair(sim, partner)
+		if hit > 20.0:
+			ours.append({ "type": BallSim.Event.BALL_HIT, "impact": hit })
+	sim.events = ours

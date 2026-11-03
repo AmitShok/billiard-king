@@ -61,6 +61,23 @@ func _ready() -> void:
 	await _frames(20)
 	_save("ball_rack.png")
 	SaveData.collected.clear()
+	title.queue_free()
+	await _frames(2)
+	# Hardcore: the floating white ball, then the edge arrow when it's off screen.
+	SaveData.set_mode(SaveData.HARDCORE)
+	SaveData.start_new_run()
+	var hc: Node2D = load("res://scenes/world/game.tscn").instantiate()
+	add_child(hc)
+	await _physics(20)
+	hc.player.place(Vector2(200, -232))
+	hc.white.place(Vector2(250, -262))
+	await _physics(90)
+	_save("hardcore.png")
+	hc.white.place(Vector2(330, -288 - 120))
+	await _physics(10)
+	_save("hardcore_arrow.png")
+	hc.queue_free()
+	SaveData.set_mode(SaveData.CLASSIC)
 	get_tree().quit()
 
 

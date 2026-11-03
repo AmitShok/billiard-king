@@ -6,6 +6,8 @@ extends Node
 signal settings_changed
 
 const VERSION := 1
+const CLASSIC := "classic"
+const HARDCORE := "hardcore"
 
 var path := "user://billiard_king.cfg"
 
@@ -13,12 +15,17 @@ var path := "user://billiard_king.cfg"
 var master_volume := 0.8
 var sfx_volume := 0.9
 var ambience_volume := 0.7
+var music_volume := 0.6
 var fullscreen := false
 var screen_shake := true
+
+# Which climb is being played. Each mode keeps its own run.
+var mode := CLASSIC
 
 # Run in progress
 var has_run := false
 var ball_pos := Vector2.ZERO
+var white_pos := Vector2.ZERO   # Hardcore: where the white ball rests
 var aim_deg := 0.0
 var spin_level := 0
 var run_time := 0.0
@@ -34,6 +41,9 @@ var skin := 0
 var wins := 0
 var best_time := 0.0
 var best_strokes := 0
+var hc_wins := 0
+var hc_best_time := 0.0
+var hc_best_strokes := 0
 
 
 func _ready() -> void:
@@ -79,6 +89,33 @@ func _setup_input() -> void:
 		InputMap.action_add_event(action, m)
 
 
+func run_section(for_mode: String = "") -> String:
+	var m := mode if for_mode == "" else for_mode
+	return "run" if m == CLASSIC else "run_" + m
+
+
+## Switches between Classic and Hardcore. Each mode keeps its own run.
+func set_mode(new_mode: String) -> void:
+	if new_mode == mode:
+		return
+	save()
+	mode = new_mode
+	_load_run(_read())
+
+
+## Is there a run in progress for a mode (without switching to it)?
+func has_run_for(for_mode: String) -> bool:
+	if for_mode == mode:
+		return has_run
+	return _read().get_value(run_section(for_mode), "active", false)
+
+
+func _read() -> ConfigFile:
+	var cfg := ConfigFile.new()
+	cfg.load(path)
+	return cfg
+
+
 func load_data() -> void:
 	var cfg := ConfigFile.new()
 	if cfg.load(path) != OK:
@@ -86,56 +123,75 @@ func load_data() -> void:
 	master_volume = cfg.get_value("settings", "master", master_volume)
 	sfx_volume = cfg.get_value("settings", "sfx", sfx_volume)
 	ambience_volume = cfg.get_value("settings", "ambience", ambience_volume)
+	music_volume = cfg.get_value("settings", "music", music_volume)
 	fullscreen = cfg.get_value("settings", "fullscreen", fullscreen)
 	screen_shake = cfg.get_value("settings", "shake", screen_shake)
-	has_run = cfg.get_value("run", "active", false)
-	ball_pos = cfg.get_value("run", "pos", Vector2.ZERO)
-	aim_deg = cfg.get_value("run", "aim", 0.0)
-	spin_level = cfg.get_value("run", "spin", 0)
-	run_time = cfg.get_value("run", "time", 0.0)
-	strokes = cfg.get_value("run", "strokes", 0)
-	falls = cfg.get_value("run", "falls", 0)
-	best_screen = cfg.get_value("run", "best_screen", 0)
-	seen_zones.assign(cfg.get_value("run", "seen_zones", []))
-	broken.assign(cfg.get_value("run", "broken", []))
+	_load_run(cfg)
 	collected.assign(cfg.get_value("rack", "collected", []))
 	skin = cfg.get_value("rack", "skin", 0)
 	wins = cfg.get_value("rack", "wins", 0)
 	best_time = cfg.get_value("rack", "best_time", 0.0)
 	best_strokes = cfg.get_value("rack", "best_strokes", 0)
+	hc_wins = cfg.get_value("rack", "hc_wins", 0)
+	hc_best_time = cfg.get_value("rack", "hc_best_time", 0.0)
+	hc_best_strokes = cfg.get_value("rack", "hc_best_strokes", 0)
 	if skin != 0 and not collected.has(skin):
 		skin = 0
 
 
+func _load_run(cfg: ConfigFile) -> void:
+	var s := run_section()
+	has_run = cfg.get_value(s, "active", false)
+	ball_pos = cfg.get_value(s, "pos", Vector2.ZERO)
+	white_pos = cfg.get_value(s, "white_pos", Vector2.ZERO)
+	aim_deg = cfg.get_value(s, "aim", 0.0)
+	spin_level = cfg.get_value(s, "spin", 0)
+	run_time = cfg.get_value(s, "time", 0.0)
+	strokes = cfg.get_value(s, "strokes", 0)
+	falls = cfg.get_value(s, "falls", 0)
+	best_screen = cfg.get_value(s, "best_screen", 0)
+	seen_zones.assign(cfg.get_value(s, "seen_zones", []))
+	broken.assign(cfg.get_value(s, "broken", []))
+
+
+## Writes settings, the Ball Rack and the current mode's run. The other
+## mode's run is read back from disk first so it is never lost.
 func save() -> void:
-	var cfg := ConfigFile.new()
+	var cfg := _read()
 	cfg.set_value("meta", "version", VERSION)
 	cfg.set_value("settings", "master", master_volume)
 	cfg.set_value("settings", "sfx", sfx_volume)
 	cfg.set_value("settings", "ambience", ambience_volume)
+	cfg.set_value("settings", "music", music_volume)
 	cfg.set_value("settings", "fullscreen", fullscreen)
 	cfg.set_value("settings", "shake", screen_shake)
-	cfg.set_value("run", "active", has_run)
-	cfg.set_value("run", "pos", ball_pos)
-	cfg.set_value("run", "aim", aim_deg)
-	cfg.set_value("run", "spin", spin_level)
-	cfg.set_value("run", "time", run_time)
-	cfg.set_value("run", "strokes", strokes)
-	cfg.set_value("run", "falls", falls)
-	cfg.set_value("run", "best_screen", best_screen)
-	cfg.set_value("run", "seen_zones", seen_zones)
-	cfg.set_value("run", "broken", broken)
+	var s := run_section()
+	cfg.set_value(s, "active", has_run)
+	cfg.set_value(s, "pos", ball_pos)
+	cfg.set_value(s, "white_pos", white_pos)
+	cfg.set_value(s, "aim", aim_deg)
+	cfg.set_value(s, "spin", spin_level)
+	cfg.set_value(s, "time", run_time)
+	cfg.set_value(s, "strokes", strokes)
+	cfg.set_value(s, "falls", falls)
+	cfg.set_value(s, "best_screen", best_screen)
+	cfg.set_value(s, "seen_zones", seen_zones)
+	cfg.set_value(s, "broken", broken)
 	cfg.set_value("rack", "collected", collected)
 	cfg.set_value("rack", "skin", skin)
 	cfg.set_value("rack", "wins", wins)
 	cfg.set_value("rack", "best_time", best_time)
 	cfg.set_value("rack", "best_strokes", best_strokes)
+	cfg.set_value("rack", "hc_wins", hc_wins)
+	cfg.set_value("rack", "hc_best_time", hc_best_time)
+	cfg.set_value("rack", "hc_best_strokes", hc_best_strokes)
 	cfg.save(path)
 
 
 func start_new_run() -> void:
 	has_run = true
 	ball_pos = Vector2.ZERO
+	white_pos = Vector2.ZERO
 	aim_deg = 0.0
 	spin_level = 0
 	run_time = 0.0
@@ -148,11 +204,18 @@ func start_new_run() -> void:
 
 
 func finish_run() -> void:
-	wins += 1
-	if best_time == 0.0 or run_time < best_time:
-		best_time = run_time
-	if best_strokes == 0 or strokes < best_strokes:
-		best_strokes = strokes
+	if mode == HARDCORE:
+		hc_wins += 1
+		if hc_best_time == 0.0 or run_time < hc_best_time:
+			hc_best_time = run_time
+		if hc_best_strokes == 0 or strokes < hc_best_strokes:
+			hc_best_strokes = strokes
+	else:
+		wins += 1
+		if best_time == 0.0 or run_time < best_time:
+			best_time = run_time
+		if best_strokes == 0 or strokes < best_strokes:
+			best_strokes = strokes
 	has_run = false
 	save()
 

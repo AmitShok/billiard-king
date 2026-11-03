@@ -80,3 +80,24 @@ The decor reacts to the ball but never pushes back. Every prop (`scripts/world/p
 ## Controls hint
 
 `Game` shows the controls as gold-keyed text on the rail of the bottom table. It appears only while the ball is grounded on the tower's bottom floor, fading in after 0.35 s. It fades out as soon as the ball leaves that floor and returns when the ball falls back to it. It switches between keyboard and gamepad prompts based on the last device used.
+
+## Hardcore mode
+
+In Hardcore your ball plays exactly as in Classic mode. The difference is a second ball, a plain white one (Ball Rack skin 16), that has **no gravity**. Felt drag of 260 px/s² slows it in every direction until it stops, even in mid-air. Its contacts are all wall-style: wood rails at 0.5, rubber cushions at 0.9, and bumpers kick it. Pockets send it down the ball return; it reappears at the exit at rest, and that counts as a fall. You win only by sinking the **white ball** in the gold pocket. Your own ball rolls straight over it.
+
+The two balls collide as equal masses, with a restitution of 0.92 along the line of centres. A ball hit dead-on at 300 px/s sends the white ball off at about 288 px/s. Both balls step together in two half-ticks and collide after each one, so fast knocks can't pass through each other. Classic mode never gets a partner ball, so its physics are exactly as before.
+
+Each mode keeps its own run in the save file (`[run]` for Classic, `[run_hardcore]` for Hardcore, which also stores the white ball's position) and its own best time. The pause menu has **Re-rack white ball**, which returns it beside the spawn and counts as a fall, for when it ends up somewhere out of reach. **Restart climb**, which asks you to press it twice, is available in both modes. Winning Hardcore adds the white ball to the Ball Rack.
+
+## Music
+
+`tools/build_music.gd` composes and synthesises four mono 22.05 kHz loops. The instruments are an FM Rhodes, an upright bass with finger thump, vibes with motor tremolo, a string section made of detuned partials, and a brush kit with a swung ride. A small comb-filter room reverb has its tail wrapped back onto the start, so each loop is seamless.
+
+| Track | Zone | Feel |
+| --- | --- | --- |
+| Back Room Blues | Title, The Back Room | 76 BPM, D-minor ii–V–i, Rhodes comping, walking bass, brushes; vibes melody on the second chorus |
+| Neon Shuffle | Lucky's Neon Bar | 108 BPM 12-bar blues in F, shuffle kit, vibes riff |
+| Royal Waltz | The Royal Club | 3/4 at 132 BPM in C, strings, waltz bass, music-box vibes |
+| Moon Over the Table | The King's Table | 60 BPM, floating string pads, sparse Rhodes motif |
+
+Tracks crossfade over 2 s when you change zone, and fade out before the win jingle. The Music volume is under Options.

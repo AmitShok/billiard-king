@@ -24,6 +24,9 @@ var hud: CanvasLayer
 var pause_menu: Control
 var screen := -1
 var finished := false
+var white: WhiteBall          # Hardcore only
+var white_start := Vector2.ZERO
+var _arrow: WhiteBallArrow
 
 var _title_label: Label
 var _toast: Label
@@ -75,6 +78,8 @@ func _ready() -> void:
 	player.settled.connect(_on_settled)
 	player.won.connect(_on_won)
 	player.lost_ball_found.connect(_on_lost_ball)
+	if hardcore():
+		_setup_white()
 	_update_screen(true)
 
 
@@ -134,6 +139,7 @@ func _process(delta: float) -> void:
 	_update_screen(false)
 	_update_hint(delta)
 	_update_look(delta)
+	_update_arrow()
 	var shake := Vector2.ZERO
 	if _shake > 0.0 and SaveData.screen_shake:
 		_shake = maxf(0.0, _shake - delta * 8.0)
@@ -173,6 +179,7 @@ func _update_screen(force: bool) -> void:
 	camera.force_update_scroll()
 	var zone := tower.zone_of_screen(k)
 	Sfx.set_ambience(zone)
+	Sfx.set_music_zone(zone)
 	if k > SaveData.best_screen:
 		SaveData.best_screen = k
 	if zone != old_zone and not SaveData.seen_zones.has(zone):
@@ -227,6 +234,8 @@ func save_progress() -> void:
 		return
 	if player.sim.resting:
 		SaveData.ball_pos = player.sim.pos
+	if white and white.sim.resting and not white.sim.in_pocket:
+		SaveData.white_pos = white.sim.pos
 	SaveData.aim_deg = player.aim_deg
 	SaveData.spin_level = player.spin_level
 	SaveData.save()
@@ -245,18 +254,24 @@ func _on_won() -> void:
 	player.input_enabled = false
 	Sfx.stop_roll()
 	var unlocked: Array[int] = []
+	if hardcore():
+		# Hardcore's prize is the white ball itself, for the Ball Rack.
+		if not SaveData.collected.has(16):
+			SaveData.collected.append(16)
+			unlocked.append(16)
 	var all_found := true
 	for n in range(1, 11):
 		if not SaveData.collected.has(n):
 			all_found = false
 	var checks := [true, SaveData.strokes < 400, SaveData.run_time < 1800.0, SaveData.falls <= 10, all_found]
-	for i in AWARDS.size():
+	for i in (0 if hardcore() else AWARDS.size()):
 		var n: int = AWARDS[i][0]
 		if checks[i] and not SaveData.collected.has(n):
 			SaveData.collected.append(n)
 			unlocked.append(n)
 	var stats := { "time": SaveData.run_time, "strokes": SaveData.strokes, "falls": SaveData.falls, "unlocked": unlocked }
 	SaveData.finish_run()
+	Sfx.set_music_zone(-1)
 	Sfx.play("win", 0.0, 1.0, 0.0)
 	var ending: Control = ENDING.new()
 	ending.stats = stats
@@ -329,6 +344,9 @@ func _physics_process(_delta: float) -> void:
 	for prop in _props_near_screen():
 		if prop.visible and prop.touches(p, BallSim.RADIUS):
 			prop.poke(p, player.sim.vel)
+		# The white ball disturbs decor too (on any screen).
+		if white and not white.sim.in_pocket and prop.visible and prop.touches(white.sim.pos, BallSim.RADIUS):
+			prop.poke(white.sim.pos, white.sim.vel)
 
 
 ## Heavy impacts nudge nearby props (lamps sway, beads jiggle, chalk hops).
@@ -351,3 +369,89 @@ func _on_wall_hit(impact: float) -> void:
 		_add_shake(1.0)
 	if impact > 220.0:
 		rumble(player.sim.pos, impact / 800.0)
+
+
+# --- Hardcore: the floating white ball ---------------------------------------------
+
+func hardcore() -> bool:
+	return SaveData.mode == SaveData.HARDCORE
+
+
+func _setup_white() -> void:
+	white_start = tower.spawn + Vector2(64, 0)
+	white = WhiteBall.new()
+	white.z_index = 4
+	add_child(white)
+	white.place(SaveData.white_pos if SaveData.white_pos != Vector2.ZERO else white_start)
+	player.partner = white.sim
+	player.sim.ignore_goal = true
+	player.partner_event.connect(_on_partner_event)
+	player.ball_hit.connect(func(impact: float):
+		white.knock(impact)
+		if impact > 300.0:
+			_add_shake(1.0))
+	_arrow = WhiteBallArrow.new()
+	hud.add_child(_arrow)
+	hud.move_child(_arrow, 0)
+	toast("Hardcore: knock the white ball into the gold pocket")
+
+
+func _update_arrow() -> void:
+	if _arrow == null:
+		return
+	if white.sim.in_pocket:
+		_arrow.screens_away = 0
+		return
+	_arrow.screens_away = Tower.screen_of(white.sim.pos.y) - screen
+	_arrow.target_x = white.sim.pos.x
+
+
+func _on_partner_event(e: Dictionary) -> void:
+	match e.type:
+		BallSim.Event.WALL:
+			Sfx.impact("rail", e.impact)
+		BallSim.Event.CUSHION:
+			Sfx.impact("cushion", e.impact)
+		BallSim.Event.BUMPER:
+			Sfx.play("clack", -2.0)
+			Sfx.play("bumper", -6.0)
+			var b := tower.object_by_id(e.id)
+			if b is Bumper:
+				b.hit(white.sim.vel.normalized())
+			rumble(white.sim.pos, 0.6)
+		BallSim.Event.POCKET:
+			# The white ball drops down the ball return: a fall for the run.
+			white.sink(e.pos)
+			Sfx.play("pocket", 0.0)
+			SaveData.falls += 1
+			toast("The white ball dropped down the ball return")
+			var exit: Vector2 = e.exit
+			get_tree().create_timer(0.9, false).timeout.connect(func():
+				white.sim.release_from_pocket(exit)
+				white.place(exit)
+				save_progress())
+		BallSim.Event.GOAL:
+			white.sink(e.pos)
+			Sfx.play("pocket", 0.0, 0.9)
+			_on_won()
+		BallSim.Event.LOST_BALL:
+			Sfx.play("lost_ball", -2.0)
+			_on_lost_ball(e.number)
+
+
+## Pause-menu escape hatch: put the white ball back by the start (counts as a fall).
+func rerack_white() -> void:
+	if white == null:
+		return
+	white.place(white_start)
+	SaveData.falls += 1
+	SaveData.white_pos = white_start
+	SaveData.save()
+
+
+## Abandon this mode's run and start it again from the bottom.
+func restart_climb() -> void:
+	SaveData.start_new_run()
+	get_tree().paused = false
+	Sfx.stop_roll()
+	get_tree().reload_current_scene()
