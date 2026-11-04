@@ -69,13 +69,6 @@ func _ready() -> void:
 	add_child(_ball)
 
 	# Logo.
-	var crown := TextureRect.new()
-	var cr := AtlasTexture.new()
-	cr.atlas = load("res://assets/textures/crown.png")
-	cr.region = Rect2(0, 0, 20, 16)
-	crown.texture = cr
-	crown.position = Vector2(246, 52)
-	add_child(crown)
 	var logo := Label.new()
 	logo.text = "VERTICAL BILLIARD"
 	logo.add_theme_font_size_override("font_size", 32)
