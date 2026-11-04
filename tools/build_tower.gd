@@ -1,5 +1,6 @@
 extends SceneTree
-## Bakes levels/tower.txt into scenes/world/tower.tscn (+ resources/tiles.tres).
+## Bakes every level's ASCII map into its scene (+ resources/tiles.tres):
+##   levels/tower.txt -> scenes/world/tower.tscn, levels/tower2.txt -> scenes/world/tower2.tscn
 ##   godot --headless --path <project> --script tools/build_tower.gd
 ##
 ## Map legend (one char = one 16px tile, 32x18 per screen):
@@ -13,6 +14,13 @@ extends SceneTree
 ##          E neon 8-ball  F portrait  W window  T clock  k chalk  r rack
 ## Solid tiles are autotiled from their neighbours; zone comes from the
 ## screen header ("== screen 3 zone 1").
+##
+## Moving things are listed under a screen header, in that screen's tile
+## coordinates (x 0..31, y 0..17):
+##   @ platform x y tiles dx dy period phase   carriage with its top-left at (x, y),
+##                                             travelling (dx, dy) tiles and back
+##   @ spinner x y arms length speed angle     spinning arm trap centred on tile (x, y)
+##   @ spike x0 y0 x1 y1 period phase          spiked ball between two tile centres
 
 const TILE := 16
 const W := 32
@@ -25,11 +33,17 @@ var _bad := false
 
 
 func _initialize() -> void:
-	var screens := _parse("res://levels/tower.txt")
+	var ok := _bake("res://levels/tower.txt", "res://scenes/world/tower.tscn", ["The Back Room", "Lucky's Neon Bar", "The Royal Club", "The King's Table"])
+	ok = _bake("res://levels/tower2.txt", "res://scenes/world/tower2.tscn", ["The Cellar", "The Jukebox Floor", "The Grand Salon", "The Rooftop Final"]) and ok
+	quit(0 if ok else 1)
+
+
+func _bake(source: String, target: String, zone_names: PackedStringArray) -> bool:
+	_bad = false
+	var screens := _parse(source)
 	if screens.is_empty() or _bad:
-		push_error("no screens parsed")
-		quit(1)
-		return
+		push_error("no screens parsed from %s" % source)
+		return false
 	var count := 0
 	for s in screens:
 		count = maxi(count, s.index + 1)
@@ -54,6 +68,7 @@ func _initialize() -> void:
 	root.name = "Tower"
 	root.set_script(load("res://scripts/world/tower.gd"))
 	root.set("screen_zones", zones)
+	root.set("zone_names", zone_names)
 
 	var backdrop := Node2D.new()
 	backdrop.name = "Backdrop"
@@ -85,6 +100,12 @@ func _initialize() -> void:
 	objects.name = "Objects"
 	objects.z_index = 1
 	_add(root, objects)
+
+	var movers := Node2D.new()
+	movers.name = "Movers"
+	_add(root, movers)
+	for s in screens:
+		_add_movers(movers, s)
 
 	var exits: Array[Vector2] = []
 	for cell in grid:
@@ -211,12 +232,11 @@ func _initialize() -> void:
 	var err := packed.pack(root)
 	if err != OK:
 		push_error("pack failed %d" % err)
-		quit(1)
-		return
-	ResourceSaver.save(packed, "res://scenes/world/tower.tscn")
-	print("Tower baked: %d screens, %d tiles, %d objects." % [count, terrain.get_used_cells().size(), objects.get_child_count()])
+		return false
+	ResourceSaver.save(packed, target)
+	print("%s baked: %d screens, %d tiles, %d objects, %d movers." % [target.get_file(), count, terrain.get_used_cells().size(), objects.get_child_count(), movers.get_child_count()])
 	root.free()
-	quit(0)
+	return true
 
 
 func _parse(path: String) -> Array:
@@ -231,11 +251,13 @@ func _parse(path: String) -> Array:
 		line_no += 1
 		if line.begins_with("=="):
 			var parts := line.split(" ", false)
-			cur = { "index": int(parts[2]), "zone": int(parts[4]), "rows": [] }
+			cur = { "index": int(parts[2]), "zone": int(parts[4]), "rows": [], "movers": [] }
 			screens.append(cur)
+		elif line.begins_with("@"):
+			cur.movers.append(line.split(" ", false))
 		elif not cur.is_empty() and line.length() > 0 and not line.begins_with(";"):
 			if line.length() != W:
-				push_error("tower.txt line %d: expected %d chars, got %d" % [line_no, W, line.length()])
+				push_error("%s line %d: expected %d chars, got %d" % [path, line_no, W, line.length()])
 				_bad = true
 			cur.rows.append(line.rpad(W, "."))
 	for s in screens:
@@ -369,3 +391,46 @@ func _prop(parent: Node, kind: String, ch: String, cell: Vector2i, pos: Vector2)
 	p.position = pos.round()
 	_add(parent, p)
 	return p
+
+
+## Moving platforms and traps listed under this screen's header.
+func _add_movers(parent: Node, s: Dictionary) -> void:
+	var top: int = -(s.index + 1) * SCREEN_H
+	var i := 0
+	for m in s.movers:
+		var kind: String = m[1]
+		var node := Node2D.new()
+		node.name = "%s_s%d_%d" % [kind.capitalize(), s.index, i]
+		i += 1
+		match kind:
+			"platform":
+				node.set_script(load("res://scripts/world/moving_platform.gd"))
+				var a := Vector2(float(m[2]) * TILE, float(m[3]) * TILE + top)
+				node.position = a
+				node.set("a", a)
+				node.set("b", a + Vector2(float(m[5]), float(m[6])) * TILE)
+				node.set("tiles", int(m[4]))
+				node.set("period", float(m[7]))
+				node.set("phase", float(m[8]))
+				node.set("zone", mini(s.zone, 2))
+			"spinner":
+				node.set_script(load("res://scripts/world/trap_spinner.gd"))
+				node.position = Vector2(float(m[2]) * TILE + TILE / 2.0, float(m[3]) * TILE + TILE / 2.0 + top)
+				node.set("arms", int(m[4]))
+				node.set("length", float(m[5]))
+				node.set("speed", float(m[6]))
+				node.set("angle0", float(m[7]))
+				node.z_index = 6
+			"spike":
+				node.set_script(load("res://scripts/world/trap_spike.gd"))
+				var a := Vector2(float(m[2]) * TILE + TILE / 2.0, float(m[3]) * TILE + TILE / 2.0 + top)
+				node.position = a
+				node.set("a", a)
+				node.set("b", Vector2(float(m[4]) * TILE + TILE / 2.0, float(m[5]) * TILE + TILE / 2.0 + top))
+				node.set("period", float(m[6]))
+				node.set("phase", float(m[7]))
+				node.z_index = 6
+			_:
+				push_error("unknown mover '%s'" % kind)
+				_bad = true
+		_add(parent, node)

@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" path="res://assets/textures/tiles.png" id="1_4eb6g"]
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ojpid"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_4eb6g"]
 texture = ExtResource("1_4eb6g")
 0:0/0 = 0
 1:0/0 = 0
@@ -114,4 +114,4 @@ texture = ExtResource("1_4eb6g")
 3:8/0 = 0
 
 [resource]
-sources/0 = SubResource("TileSetAtlasSource_ojpid")
+sources/0 = SubResource("TileSetAtlasSource_4eb6g")

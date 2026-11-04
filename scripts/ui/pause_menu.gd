@@ -45,7 +45,7 @@ func open() -> void:
 	if visible:
 		return
 	game.save_progress()
-	_stats.text = "Time  %s\nStrokes  %d\nFalls  %d\nLost balls  %d / 10" % [
+	_stats.text = ("Level %d\n" % SaveData.level) + "Time  %s\nStrokes  %d\nFalls  %d\nLost balls  %d / 10" % [
 		SaveData.format_time(SaveData.run_time), SaveData.strokes, SaveData.falls,
 		SaveData.collected.filter(func(n): return n <= 10).size()]
 	visible = true

@@ -3,7 +3,7 @@ extends Node2D
 ## edges (Jump King), area title cards, stats, saving where the ball rests,
 ## and the ending at the gold pocket.
 
-const TOWER := preload("res://scenes/world/tower.tscn")
+const TOWERS := { 1: "res://scenes/world/tower.tscn", 2: "res://scenes/world/tower2.tscn" }
 const PAUSE_MENU := preload("res://scripts/ui/pause_menu.gd")
 const ENDING := preload("res://scripts/ui/ending.gd")
 const FONT_SIZE_TITLE := 16
@@ -49,9 +49,10 @@ const HINT_PAD := "[center][color=#f2d27a]D-PAD[/color] aim and spin   [color=#f
 
 
 func _ready() -> void:
-	tower = TOWER.instantiate()
+	tower = load(TOWERS.get(SaveData.level, TOWERS[1])).instantiate()
 	add_child(tower)
 	tower.build_world(SaveData.collected)
+	tower.resume_movers(SaveData.world_time)
 	_setup_props()
 
 	player = PlayerBall.new()
@@ -80,14 +81,16 @@ func _ready() -> void:
 	player.settled.connect(_on_settled)
 	player.won.connect(_on_won)
 	player.lost_ball_found.connect(_on_lost_ball)
+	player.trapped.connect(_on_trapped)
 	if hardcore():
 		_setup_white()
 	# A fresh climb (nothing struck yet) states the goal first.
 	if show_intro and SaveData.strokes == 0 and SaveData.run_time < 1.0:
+		var warning := "\nRed traps fling you. Brass carriages carry you." if SaveData.level > 1 else ""
 		if hardcore():
-			intro = GoalIntro.new().setup("Hardcore", "Push the white ball up the tower\ninto the gold pocket at the top.", 16)
+			intro = GoalIntro.new().setup("Hardcore", "Push the white ball up the tower\ninto the gold pocket at the top." + warning, 16)
 		else:
-			intro = GoalIntro.new().setup("The climb", "Reach the gold pocket\nat the top of the tower.", SaveData.skin)
+			intro = GoalIntro.new().setup("The climb", "Reach the gold pocket\nat the top of the tower." + warning, SaveData.skin)
 		hud.add_child(intro)
 	_update_screen(true)
 
@@ -193,7 +196,7 @@ func _update_screen(force: bool) -> void:
 		SaveData.best_screen = k
 	if zone != old_zone and not SaveData.seen_zones.has(zone):
 		SaveData.seen_zones.append(zone)
-		show_area_title(Tower.ZONE_NAMES[zone])
+		show_area_title(tower.zone_names[zone])
 
 
 func show_area_title(text: String) -> void:
@@ -247,6 +250,7 @@ func save_progress() -> void:
 		SaveData.white_pos = white.sim.pos
 	SaveData.aim_deg = player.aim_deg
 	SaveData.spin_level = player.spin_level
+	SaveData.world_time = tower.world.time
 	SaveData.save()
 
 
@@ -273,7 +277,7 @@ func _on_won() -> void:
 		if not SaveData.collected.has(n):
 			all_found = false
 	var checks := [true, SaveData.strokes < 400, SaveData.run_time < 1800.0, SaveData.falls <= 10, all_found]
-	for i in (0 if hardcore() else AWARDS.size()):
+	for i in (0 if hardcore() or SaveData.level > 1 else AWARDS.size()):
 		var n: int = AWARDS[i][0]
 		if checks[i] and not SaveData.collected.has(n):
 			SaveData.collected.append(n)
@@ -446,6 +450,10 @@ func _on_partner_event(e: Dictionary) -> void:
 		BallSim.Event.LOST_BALL:
 			Sfx.play("lost_ball", -2.0)
 			_on_lost_ball(e.number)
+		BallSim.Event.TRAP:
+			Sfx.play("trap_hit", -3.0)
+			white.knock(500.0)
+			_flash_trap(e.id)
 
 
 ## Pause-menu escape hatch: put the white ball back by the start (counts as a fall).
@@ -464,3 +472,16 @@ func restart_climb() -> void:
 	get_tree().paused = false
 	Sfx.stop_roll()
 	get_tree().reload_current_scene()
+
+
+# --- Traps ----------------------------------------------------------------------------
+
+func _on_trapped(e: Dictionary) -> void:
+	_flash_trap(e.id)
+	_add_shake(2.0)
+	rumble(player.sim.pos, 0.5)
+
+
+func _flash_trap(id: int) -> void:
+	if id < tower.trap_nodes.size():
+		tower.trap_nodes[id].hit()

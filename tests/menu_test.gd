@@ -28,7 +28,7 @@ func _ready() -> void:
 	add_child(title)
 	await _frames(3)
 	var labels := _button_texts(title)
-	check("no Continue without a run", not labels.has("Continue") and labels.has("New climb"), str(labels))
+	check("title offers both modes", labels.has("Normal mode") and labels.has("Hardcore mode"), str(labels))
 	check("menu has rack, options, quit", labels.has("Ball Rack") and labels.has("Options") and labels.has("Quit"))
 	check("first button has focus", get_viewport().gui_get_focus_owner() is Button)
 

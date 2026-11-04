@@ -14,7 +14,7 @@ var _first: Button
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	theme = UIKit.theme()
-	SaveData.set_mode(SaveData.CLASSIC)
+	SaveData.set_run(SaveData.CLASSIC, 1)
 	Sfx.set_ambience(0)
 	Sfx.play_music(Sfx.MUSIC[0])
 	var bg := TextureRect.new()
@@ -107,11 +107,8 @@ func _build_menu() -> void:
 	for c in _menu.get_children():
 		c.queue_free()
 	var buttons: Array = []
-	if SaveData.has_run_for(SaveData.CLASSIC):
-		buttons.append(UIKit.button(_menu, "Continue", _start.bind(SaveData.CLASSIC, false)))
-	buttons.append(UIKit.button(_menu, "New climb", _start.bind(SaveData.CLASSIC, true)))
-	var hc_running := SaveData.has_run_for(SaveData.HARDCORE)
-	buttons.append(UIKit.button(_menu, "Hardcore: continue" if hc_running else "Hardcore mode", _start.bind(SaveData.HARDCORE, not hc_running)))
+	buttons.append(UIKit.button(_menu, "Normal mode", _open_levels.bind(SaveData.CLASSIC)))
+	buttons.append(UIKit.button(_menu, "Hardcore mode", _open_levels.bind(SaveData.HARDCORE)))
 	buttons.append(UIKit.button(_menu, "Ball Rack", _open.bind(BallRack)))
 	buttons.append(UIKit.button(_menu, "Options", _open.bind(OptionsMenu)))
 	buttons.append(UIKit.button(_menu, "Quit", func(): get_tree().quit()))
@@ -122,23 +119,20 @@ func _build_menu() -> void:
 	_first.grab_focus.call_deferred()
 	if SaveData.wins > 0 or SaveData.hc_wins > 0:
 		var best := Label.new()
-		var parts: Array[String] = []
-		if SaveData.wins > 0:
-			parts.append("Climbs %d  best %s" % [SaveData.wins, SaveData.format_time(SaveData.best_time)])
-		if SaveData.hc_wins > 0:
-			parts.append("Hardcore %d  best %s" % [SaveData.hc_wins, SaveData.format_time(SaveData.hc_best_time)])
-		best.text = "   ".join(parts)
+		best.text = "Climbs %d   Hardcore wins %d" % [SaveData.wins, SaveData.hc_wins]
 		best.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		best.add_theme_color_override("font_color", Color("8a8070"))
 		_menu.add_child(best)
 
 
-func _start(mode: String, fresh: bool) -> void:
-	SaveData.set_mode(mode)
-	if fresh:
-		SaveData.start_new_run()
-	Sfx.play("cue", -2.0)
-	get_tree().change_scene_to_file("res://scenes/world/game.tscn")
+func _open_levels(mode: String) -> void:
+	var m := LevelSelect.new()
+	m.mode = mode
+	add_child(m)
+	_menu.visible = false
+	m.closed.connect(func():
+		_menu.visible = true
+		_build_menu())
 
 
 func _open(kind: Variant) -> void:

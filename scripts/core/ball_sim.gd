@@ -40,9 +40,12 @@ const LANDING_GRIP_SOFT := 0.75
 const HARD_LANDING := 260.0
 const SPLAT_FALL := 200.0           # px of drop that counts as a fall / splat landing
 const FLOAT_DRAG := 260.0          # Hardcore white ball: felt drag in every direction (no gravity)
+const TRAP_KNOCK := 430.0          # traps fling the ball away at this speed
+const TRAP_MAX := 620.0
+const TRAP_COOLDOWN := 0.25
 const BALL_BOUNCE := 0.92           # ball-on-ball restitution (phenolic balls are lively)
 
-enum Event { SHOT, LAND, SPLAT, WALL, CUSHION, BUMPER, POCKET, GOAL, LOST_BALL, BALL_HIT }
+enum Event { SHOT, LAND, SPLAT, WALL, CUSHION, BUMPER, POCKET, GOAL, LOST_BALL, BALL_HIT, TRAP }
 
 var pos := Vector2.ZERO
 var vel := Vector2.ZERO
@@ -61,6 +64,11 @@ var takeoff_y := 0.0
 var apex_y := 0.0
 var events: Array[Dictionary] = []
 
+## The moving platform we are standing on (-1 for none). While riding, `vel` is
+## relative to the platform; the carry is applied to `pos` each step.
+var riding := -1
+var ride_vel := Vector2.ZERO
+var _trap_cd := 0.0
 var _was_grounded := false
 var _queued: Array[Dictionary] = []
 
@@ -68,6 +76,9 @@ var _queued: Array[Dictionary] = []
 func reset(at: Vector2) -> void:
 	pos = at
 	vel = Vector2.ZERO
+	riding = -1
+	ride_vel = Vector2.ZERO
+	_trap_cd = 0.0
 	grounded = false
 	resting = false
 	in_pocket = false
@@ -95,7 +106,9 @@ static func shot_speed(charge_ticks: int) -> float:
 func shoot(aim_deg: float, charge_ticks: int, spin_level: int) -> void:
 	var dir := aim_vector(aim_deg)
 	var speed := shot_speed(charge_ticks)
-	vel = dir * speed
+	# Shots keep the platform's momentum.
+	vel = dir * speed + (ride_vel if riding >= 0 else Vector2.ZERO)
+	riding = -1
 	grounded = false
 	resting = false
 	shot_dir_x = signf(dir.x) if absf(dir.x) > 0.05 else 0.0
@@ -123,6 +136,10 @@ func step(world: CollisionWorld, dt: float = DT) -> void:
 	if in_pocket:
 		return
 	_was_grounded = grounded
+	_trap_cd = maxf(0.0, _trap_cd - dt)
+	if riding >= 0:
+		ride_vel = world.platforms[riding].vel
+		pos += ride_vel * dt
 	if floating:
 		vel = vel.move_toward(Vector2.ZERO, FLOAT_DRAG * dt)
 	elif grounded and not resting:
@@ -138,6 +155,7 @@ func step(world: CollisionWorld, dt: float = DT) -> void:
 	var touched_floor := false
 	var floor_normal := Vector2.ZERO
 	var floor_zone := 0
+	var floor_platform := -1
 	var motion := vel * dt
 	var substeps := maxi(1, ceili(motion.length() / 3.0))
 	for _s in substeps:
@@ -149,20 +167,33 @@ func step(world: CollisionWorld, dt: float = DT) -> void:
 			var any_push := false
 			for c in contacts:
 				var n: Vector2 = c.normal
-				if n.y <= FLOOR_NORMAL_Y and c.kind == CollisionWorld.Kind.TILE and not floating:
+				var is_plat: bool = c.kind == CollisionWorld.Kind.PLATFORM
+				if n.y <= FLOOR_NORMAL_Y and (is_plat or c.kind == CollisionWorld.Kind.TILE) and not floating:
 					touched_floor = true
 					if n.y < floor_normal.y or floor_normal == Vector2.ZERO:
 						floor_normal = n
 						floor_zone = c.zone
+						floor_platform = c.id if is_plat else -1
 				if c.depth > 0.0:
 					pos += n * c.depth
 					any_push = true
+				# Bounce in the frame of a moving platform we aren't already riding.
+				var frame := Vector2.ZERO
+				if is_plat and c.id != riding:
+					frame = world.platforms[c.id].vel
+				vel -= frame
 				var vn := vel.dot(n)
 				if vn < 0.0:
 					_respond(c, n, vn)
+				vel += frame
+				if vn < 0.0:
 					motion = vel * dt
 			if not any_push:
 				break
+		if _check_traps(world):
+			motion = vel * dt
+			floor_platform = -1
+			touched_floor = false
 		if in_pocket:
 			return
 		_check_pockets(world)
@@ -170,6 +201,7 @@ func step(world: CollisionWorld, dt: float = DT) -> void:
 			return
 
 	grounded = touched_floor
+	_update_ride(world, floor_platform)
 	if floating:
 		resting = vel.length() < REST_SPEED
 		if resting:
@@ -280,7 +312,7 @@ static func collide_pair(a: BallSim, b: BallSim) -> float:
 	var overlap := RADIUS * 2.0 - dist
 	a.pos -= n * overlap * 0.5
 	b.pos += n * overlap * 0.5
-	var closing := (a.vel - b.vel).dot(n)
+	var closing := (a.world_vel() - b.world_vel()).dot(n)
 	if closing <= 0.0:
 		return 0.0
 	var j := (1.0 + BALL_BOUNCE) * 0.5 * closing
@@ -289,3 +321,41 @@ static func collide_pair(a: BallSim, b: BallSim) -> float:
 	a.resting = false
 	b.resting = false
 	return closing
+
+
+## Switches `vel` between world frame and a platform's frame as we board and leave.
+func _update_ride(world: CollisionWorld, floor_platform: int) -> void:
+	if floating or floor_platform == riding:
+		return
+	if riding >= 0:
+		vel += ride_vel
+	if floor_platform >= 0:
+		ride_vel = world.platforms[floor_platform].vel
+		vel -= ride_vel
+	riding = floor_platform
+
+
+## Traps fling the ball away from the point of contact.
+func _check_traps(world: CollisionWorld) -> bool:
+	if world.traps.is_empty():
+		return false
+	var hit := world.trap_contact(pos, RADIUS)
+	if hit.is_empty():
+		return false
+	pos += hit.normal * hit.depth
+	if _trap_cd > 0.0:
+		return false
+	_trap_cd = TRAP_COOLDOWN
+	vel = (hit.normal * TRAP_KNOCK + hit.vel * 0.5).limit_length(TRAP_MAX)
+	riding = -1
+	resting = false
+	grounded = false
+	takeoff_y = pos.y
+	apex_y = pos.y
+	events.append({ "type": Event.TRAP, "id": hit.id, "normal": hit.normal, "pos": pos })
+	return true
+
+
+## Velocity in the world frame, whichever frame `vel` is in.
+func world_vel() -> Vector2:
+	return vel + ride_vel if riding >= 0 else vel

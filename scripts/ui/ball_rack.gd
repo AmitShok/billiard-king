@@ -64,12 +64,10 @@ func _on_focus(n: int, ball: BallVisual) -> void:
 	var unlocked := n == 0 or SaveData.collected.has(n)
 	if n == 0:
 		_info.text = "The cue ball\nThe original climber"
+	elif n == 16 and unlocked:
+		_info.text = "The white ball\nHardcore champion%s" % ("\nIn play" if SaveData.skin == n else "")
 	elif unlocked:
 		_info.text = "Ball #%d%s" % [n, "\nIn play" if SaveData.skin == n else "\nPress to climb with it"]
-	elif n == 16 and unlocked:
-		_info.text = "The white ball
-Hardcore champion%s" % ("
-In play" if SaveData.skin == n else "")
 	elif n <= 10:
 		_info.text = "Ball #%d is lost\nsomewhere in the tower" % n
 	else:

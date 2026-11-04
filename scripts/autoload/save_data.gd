@@ -21,11 +21,13 @@ var screen_shake := true
 
 # Which climb is being played. Each mode keeps its own run.
 var mode := CLASSIC
+var level := 1
 
 # Run in progress
 var has_run := false
 var ball_pos := Vector2.ZERO
 var white_pos := Vector2.ZERO   # Hardcore: where the white ball rests
+var world_time := 0.0           # where the moving platforms and traps are
 var aim_deg := 0.0
 var spin_level := 0
 var run_time := 0.0
@@ -44,6 +46,7 @@ var best_strokes := 0
 var hc_wins := 0
 var hc_best_time := 0.0
 var hc_best_strokes := 0
+var records := {}               # level 2+: "mode_level" -> {wins, best_time, best_strokes}
 
 
 func _ready() -> void:
@@ -89,25 +92,41 @@ func _setup_input() -> void:
 		InputMap.action_add_event(action, m)
 
 
-func run_section(for_mode: String = "") -> String:
+func run_section(for_mode: String = "", for_level: int = 0) -> String:
 	var m := mode if for_mode == "" else for_mode
-	return "run" if m == CLASSIC else "run_" + m
+	var l := level if for_level == 0 else for_level
+	var base := "run" if m == CLASSIC else "run_" + m
+	return base if l == 1 else "%s_l%d" % [base, l]
 
 
-## Switches between Classic and Hardcore. Each mode keeps its own run.
-func set_mode(new_mode: String) -> void:
-	if new_mode == mode:
+## Switches to a mode and level. Every mode + level keeps its own run.
+func set_run(new_mode: String, new_level: int) -> void:
+	if new_mode == mode and new_level == level:
 		return
 	save()
 	mode = new_mode
+	level = new_level
 	_load_run(_read())
 
 
-## Is there a run in progress for a mode (without switching to it)?
-func has_run_for(for_mode: String) -> bool:
-	if for_mode == mode:
+func set_mode(new_mode: String) -> void:
+	set_run(new_mode, level)
+
+
+## Is there a run in progress for a mode and level (without switching to it)?
+func has_run_for(for_mode: String, for_level: int = 1) -> bool:
+	if for_mode == mode and for_level == level:
 		return has_run
-	return _read().get_value(run_section(for_mode), "active", false)
+	return _read().get_value(run_section(for_mode, for_level), "active", false)
+
+
+## Wins and best results for a mode and level.
+func record(for_mode: String, for_level: int) -> Dictionary:
+	if for_level == 1:
+		if for_mode == HARDCORE:
+			return { "wins": hc_wins, "best_time": hc_best_time, "best_strokes": hc_best_strokes }
+		return { "wins": wins, "best_time": best_time, "best_strokes": best_strokes }
+	return records.get("%s_%d" % [for_mode, for_level], { "wins": 0, "best_time": 0.0, "best_strokes": 0 })
 
 
 func _read() -> ConfigFile:
@@ -135,6 +154,7 @@ func load_data() -> void:
 	hc_wins = cfg.get_value("rack", "hc_wins", 0)
 	hc_best_time = cfg.get_value("rack", "hc_best_time", 0.0)
 	hc_best_strokes = cfg.get_value("rack", "hc_best_strokes", 0)
+	records = cfg.get_value("rack", "records", {})
 	if skin != 0 and not collected.has(skin):
 		skin = 0
 
@@ -144,6 +164,7 @@ func _load_run(cfg: ConfigFile) -> void:
 	has_run = cfg.get_value(s, "active", false)
 	ball_pos = cfg.get_value(s, "pos", Vector2.ZERO)
 	white_pos = cfg.get_value(s, "white_pos", Vector2.ZERO)
+	world_time = cfg.get_value(s, "world_time", 0.0)
 	aim_deg = cfg.get_value(s, "aim", 0.0)
 	spin_level = cfg.get_value(s, "spin", 0)
 	run_time = cfg.get_value(s, "time", 0.0)
@@ -169,6 +190,7 @@ func save() -> void:
 	cfg.set_value(s, "active", has_run)
 	cfg.set_value(s, "pos", ball_pos)
 	cfg.set_value(s, "white_pos", white_pos)
+	cfg.set_value(s, "world_time", world_time)
 	cfg.set_value(s, "aim", aim_deg)
 	cfg.set_value(s, "spin", spin_level)
 	cfg.set_value(s, "time", run_time)
@@ -185,6 +207,7 @@ func save() -> void:
 	cfg.set_value("rack", "hc_wins", hc_wins)
 	cfg.set_value("rack", "hc_best_time", hc_best_time)
 	cfg.set_value("rack", "hc_best_strokes", hc_best_strokes)
+	cfg.set_value("rack", "records", records)
 	cfg.save(path)
 
 
@@ -192,6 +215,7 @@ func start_new_run() -> void:
 	has_run = true
 	ball_pos = Vector2.ZERO
 	white_pos = Vector2.ZERO
+	world_time = 0.0
 	aim_deg = 0.0
 	spin_level = 0
 	run_time = 0.0
@@ -204,7 +228,15 @@ func start_new_run() -> void:
 
 
 func finish_run() -> void:
-	if mode == HARDCORE:
+	if level > 1:
+		var r := record(mode, level)
+		r.wins += 1
+		if r.best_time == 0.0 or run_time < r.best_time:
+			r.best_time = run_time
+		if r.best_strokes == 0 or strokes < r.best_strokes:
+			r.best_strokes = strokes
+		records["%s_%d" % [mode, level]] = r
+	elif mode == HARDCORE:
 		hc_wins += 1
 		if hc_best_time == 0.0 or run_time < hc_best_time:
 			hc_best_time = run_time

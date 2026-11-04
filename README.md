@@ -31,6 +31,8 @@ Somewhere above the Back Room, past Lucky's Neon Bar and the Royal Club, there's
 - **Fallosophy's pinball.** Big numbered bumper balls kick you away in their brass collars. Rubber cushions stay lively, and pockets swallow you and drop you far below through the ball return.
 - **Ballgame's collection.** Ten lost balls are hidden in the tower and five more are earned by finishing. Each one becomes a ball you can climb as, picked from the **Ball Rack**.
 - **Balls that really roll.** Every ball is a pixel-art sphere drawn with spherical UV mapping, so numbers, stripes and the cue ball's red dots roll across the surface.
+- **Two levels, both modes.** The Tower (10 screens) and The Long Rack (20 screens), picked from a small level select. Normal and Hardcore share the levels and each keeps its own run for each level.
+- **Things that move.** The Long Rack adds brass carriages that ride their rails sideways, up and down, or diagonally, and carry you with them, plus red-and-yellow spinning arms and spiked balls that fling you away.
 - **Hardcore mode.** You play your normal ball with the same rules, plus a second, plain white ball that floats with no gravity. It starts floating just above you. Knock it up through the whole tower and sink it in the gold pocket. Each mode opens with a short goal pop-up when a new climb starts. Felt drag stops it wherever it runs out of speed, even in mid-air, and if it drops into a pocket it goes down the ball return. An arrow at the screen edge points to it when it's on another screen.
 - **Pool-hall jazz.** Four synthesised loops, one per zone: slow Back Room blues, a Neon Bar shuffle, a Royal Club waltz and a moonlit summit theme. They crossfade as you climb.
 - **A room that reacts.** Lamps and chandeliers swing on their chains, windows shatter and stay broken, neon shorts out, portraits hang crooked, beads slide along the score wire and chalk gets knocked off ledges. All of it is cosmetic: the ball's path never changes.
@@ -49,6 +51,8 @@ Somewhere above the Back Room, past Lucky's Neon Bar and the Royal Club, there's
 | *Ball Rack* | *Pause and run stats* |
 | <img src="docs/screenshots/props_react.png" width="420"> | <img src="docs/screenshots/hint.png" width="420"> |
 | *A window gives way* | *Controls hint on the bottom rail* |
+| <img src="docs/screenshots/level_select.png" width="420"> | <img src="docs/screenshots/l2_screen_15.png" width="420"> |
+| *Level select* | *The Long Rack: spinning arms and a carriage* |
 | <img src="docs/screenshots/hardcore.png" width="420"> | <img src="docs/screenshots/hardcore_arrow.png" width="420"> |
 | *Hardcore: your ball and the floating white ball* | *The edge arrow points to it off screen* |
 
@@ -65,6 +69,18 @@ Somewhere above the Back Room, past Lucky's Neon Bar and the Royal Club, there's
 A controls hint appears on the rail of the bottom table while the ball sits there. It hides as you climb and comes back if you fall all the way down, switching to gamepad prompts when you use a pad.
 
 You can only strike from flat felt; slopes make you slide. A full charge fires by itself. If you hold the charge button while you land, the charge starts on touchdown.
+
+## Level 2: The Long Rack
+
+Twice the length of The Tower, across The Cellar, The Jukebox Floor, The Grand Salon and The Rooftop Final.
+
+| New thing | What it does | How to spot it |
+| --- | --- | --- |
+| **Carriage** | Rides a rail sideways, up and down, or diagonally. It carries the ball, and shots keep its momentum. | Felt deck on a brass frame with wheels, on a dotted brass rail |
+| **Spinning arm** | Touch an arm and you're flung away. | Red and yellow stripes, a pulsing red glow, and a dotted ring showing its reach |
+| **Spike rail** | A spiked ball slides along a rail. Touch it and you're flung away. | Red ball with yellow spikes on a dotted red rail |
+
+Only traps use red and yellow hazard colours, so they can't be mistaken for decoration. Lost balls and the finish awards belong to The Tower.
 
 ## The tower
 
@@ -103,17 +119,18 @@ Saves live in `user://billiard_king.cfg` (on Windows, `%APPDATA%\Godot\app_userd
 
 ```
 assets/        textures (exported PNGs), source/ (.aseprite), fonts/, audio/ (+ music/)
-levels/        tower.txt: the whole climb as ASCII screens
+levels/        tower.txt, tower2.txt: each climb as ASCII screens
 resources/     tiles.tres (generated), ui_theme.tres
-scenes/        ui/title.tscn, world/game.tscn, world/tower.tscn (generated)
+scenes/        ui/title.tscn, world/game.tscn, world/tower.tscn + tower2.tscn (generated)
 scripts/core   ball_sim.gd (physics), collision_world.gd (tiles, bumpers, pockets)
 scripts/world  player_ball, ball_visual, cue_stick, tower, game, bumper, pocket, lost_ball
+scripts/world (movers)  moving_platform, trap_spinner, trap_spike, rail_line
 scripts/world/props  reactive decor (swing, window, neon, tilt, rattle, beads, knock)
 scripts/ui     title, pause, options, ball rack, ending, ui_kit
 scripts/autoload  save_data.gd, sfx.gd
 shaders/       ball.gdshader (rolling-ball sphere mapping), vignette.gdshader
 tools/         art_*.lua (Aseprite), build_tower.gd, build_sfx.gd, *.ps1 helpers
-tests/         gameplay_test, menu_test, props_test, hardcore_test, route_solver, capture
+tests/         gameplay_test, menu_test, props_test, hardcore_test, level2_test, route_solver, capture, capture_level2
 docs/          DESIGN.md, VALIDATION.md, screenshots/
 ```
 
@@ -125,7 +142,8 @@ docs/          DESIGN.md, VALIDATION.md, screenshots/
 | Rebuild the tower after editing `levels/tower.txt` | `powershell -File tools/godot.ps1 --headless --script tools/build_tower.gd` |
 | Re-synthesise the sound effects | `powershell -File tools/godot.ps1 --headless --script tools/build_sfx.gd` |
 | Recompose the music | `powershell -File tools/godot.ps1 --headless --script tools/build_music.gd` |
-| Run every test (with the climbability solver) | `powershell -File tools/run_tests.ps1` |
+| Run every test (with the Tower's climbability solver) | `powershell -File tools/run_tests.ps1` |
+| Prove level 2 climbable (about 20 minutes) | `powershell -File tools/godot.ps1 --headless --script tests/route_solver.gd -- --level=2` |
 | Retake screenshots | `powershell -File tools/godot.ps1 res://tests/capture.tscn -- --save-profile=capture` |
 
 The legend for the level map is at the top of `tools/build_tower.gd`. After any level edit, run the solver: it fails if the gold pocket can't be reached or if a required stroke has fewer than 5 working shots.

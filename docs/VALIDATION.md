@@ -103,3 +103,20 @@ The gameplay suite is now 43 / 43. The up arrow is bound to look, not spin. Hold
 **Update, 4 November 2026:** the Hardcore suite is now 40 / 40. New checks: the white ball starts just above your ball; the goal pop-up opens on a fresh climb, closes on release without starting a charge, and is skipped when continuing; a soft straight-up shot knocks the white ball upward.
 
 **Update:** each mode now has its own short goal pop-up (`GoalIntro`). The Hardcore suite is 44 / 44, checking that Classic opens its own pop-up (your ball, "reach the gold pocket at the top", no white ball) and that the Hardcore one is short and shows the white ball. Gameplay 43, menus 14, props 27. Captures: `classic_intro.png` and `hardcore_intro.png`.
+
+## Level 2, moving things and the level select
+
+`tests/level2_test.tscn`: 49 / 49 passed. It covers the following:
+
+- **Carriages:** the ball rides them sideways and up and down without dropping, keeps its spot on the deck, and can be struck from them. Shots inherit their momentum, and they are solid from the side and below. Moving worlds replay identically.
+- **Traps:** spinner arms and spike balls catch the ball, fling it once at the expected speed, and do nothing outside their reach. A trap knocks you off a carriage. In the real level a trap flings the ball and flashes, without counting as a fall.
+- **Level 2:** at least twice as long as level 1, with sideways and vertical carriages, spinners and spike rails. Level 1 has no movers.
+- **Saves:** every mode + level keeps its own run. The world clock is saved and moving things resume from it. Wins are recorded per level, and level 1's awards aren't handed out on level 2.
+- **Hardcore:** level 2 plays with the white ball, and sinking it wins.
+- **Level select:** both modes list both levels with a numbered ball each, and starting one sets the mode and level.
+
+**Route solver.** Level 2 passed: 854 resting spots explored in about 22 minutes, a 79-stroke route to the gold pocket, and the hardest required stroke has 5 of 238 working shots at its best moment (s0=9, s1=5, s2=5, s3=5, s4=5, s5=5, s6=13, s7=5, s8=6, s9=9, s10=5, s11=5, s12=5, s13=7, s14=5, s15=7, s16=5, s17=5, s18=6, s19=11). Level 1 also passed, with the same per-screen numbers as before.
+
+**Regression:** gameplay 43, menus 14, props 27, Hardcore and music 44.
+
+**Not verified:** how the timing feels, whether Hardcore can be completed on either level (the solver covers only your ball), and new sounds by ear. All of these need playtesting.

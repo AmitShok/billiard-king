@@ -17,6 +17,7 @@ signal settled
 ## Hardcore: events from the floating white ball, and ball-on-ball knocks.
 signal partner_event(event: Dictionary)
 signal ball_hit(impact: float)
+signal trapped(event: Dictionary)
 
 const DUST := preload("res://assets/textures/dust.png")
 const SPIN_ICON := preload("res://assets/textures/spin_icon.png")
@@ -90,6 +91,7 @@ func _physics_process(_delta: float) -> void:
 			reset_physics_interpolation()
 			_visual.set_alpha(1.0)
 			_visual.scale = Vector2.ONE
+		world.advance(dt)
 		if partner:
 			partner.step(world, dt)
 			for e in partner.events:
@@ -179,7 +181,7 @@ func _handle_events() -> void:
 				_squash = Vector2(0.82, 1.18)
 				shot_taken.emit()
 			BallSim.Event.LAND:
-				Sfx.impact("land", e.impact, 520.0)
+				Sfx.impact("platform_clank" if sim.riding >= 0 else "land", e.impact, 520.0)
 				if e.impact > 160.0:
 					_spawn_dust(e.normal, 0.7)
 				_squash = Vector2(1.0 + minf(e.impact / 1600.0, 0.22), 1.0 - minf(e.impact / 1600.0, 0.22))
@@ -214,6 +216,13 @@ func _handle_events() -> void:
 				_pocket_timer = 0.0
 				Sfx.play("pocket", 0.0, 0.9)
 				won.emit()
+			BallSim.Event.TRAP:
+				Sfx.play("trap_hit", -1.0)
+				_visual.flash = 0.8
+				_squash = Vector2(0.75, 1.25)
+				charging = false
+				charge_ticks = 0
+				trapped.emit(e)
 			BallSim.Event.BALL_HIT:
 				Sfx.impact("clack", e.impact, 450.0)
 				ball_hit.emit(e.impact)
@@ -271,10 +280,12 @@ func _process(delta: float) -> void:
 ## pass through. Without one this is exactly the Classic step.
 func _step(dt: float) -> void:
 	if partner == null:
+		world.advance(dt)
 		sim.step(world, dt)
 		return
 	var ours: Array[Dictionary] = []
 	for half in 2:
+		world.advance(dt * 0.5)
 		sim.step(world, dt * 0.5)
 		ours.append_array(sim.events)
 		partner.step(world, dt * 0.5)

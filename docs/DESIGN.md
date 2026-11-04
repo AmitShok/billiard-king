@@ -101,3 +101,30 @@ Each mode keeps its own run in the save file (`[run]` for Classic, `[run_hardcor
 | Moon Over the Table | The King's Table | 60 BPM, floating string pads, sparse Rhodes motif |
 
 Tracks crossfade over 2 s when you change zone, and fade out before the win jingle. The Music volume is under Options.
+
+## Levels and the level select
+
+The title's **Normal mode** and **Hardcore mode** buttons each open a small felt panel with one numbered ball per level. A level shows **Start**, or **Continue** and **New** (press New twice to confirm), and the focused level's best result. Every mode + level has its own run in the save file (`[run]`, `[run_hardcore]`, `[run_l2]`, `[run_hardcore_l2]`), including where the moving things were.
+
+Levels are ASCII files baked by `tools/build_tower.gd`. Moving things are `@` lines under a screen header (syntax at the top of that script).
+
+## The Long Rack (level 2)
+
+20 screens, twice The Tower, with 31 moving things:
+
+| Screens | Zone | Twist |
+| --- | --- | --- |
+| 0–6 | The Cellar | Learn carriages, then the first spinning arms and spike rail |
+| 7–13 | The Jukebox Floor | Spike rails, spinners, bumpers and pockets on the route |
+| 14–18 | The Grand Salon | Fast felt, trays on carriages' paths, spinners over long shots |
+| 19 | The Rooftop Final | A last carriage, a spinner, and the gold pocket |
+
+**Carriages** sweep along their rail with eased ends, as a pure function of the world clock. They are solid on every side. Landing on one carries the ball: while riding, the ball's velocity is relative to the deck, and leaving or being struck converts it back. Shots keep the carriage's momentum, so a shot from a rising elevator goes higher.
+
+**Traps** fling the ball at 430 px/s away from the contact point (plus half the trap's own speed, capped at 620). They don't scratch or reset you; the fall is the penalty. Hazard colours (hot red, warning yellow) are reserved for traps, which also pulse a red glow and draw in front of everything. Spinners show their reach with a dotted red ring; spike balls run on a dotted red rail.
+
+The clock only ticks with the physics, so pausing freezes everything, and it is saved with the run so moving things resume where they were.
+
+## Route solver with moving things
+
+Moving things are deterministic, so the solver replays them exactly. A spot on a carriage counts as one spot wherever the carriage is. Near moving things, each spot's shot sweep is repeated at several moments (a player can wait for the right one), and a move's score is its working shots at the best moment. To keep this tractable it writes off shots that fall over 300 px and doesn't explore from spots more than 48 px below the current one; that can only hide routes, never invent one. `--from-screen` and `--to-screen` check a stretch while tuning.

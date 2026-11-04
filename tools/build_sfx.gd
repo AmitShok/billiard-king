@@ -45,6 +45,8 @@ func _initialize() -> void:
 	rng.seed = 800
 	_save(_zap(), "zap")
 	_save(_chime(), "chime")
+	_save(_trap_hit(), "trap_hit")
+	_save(_platform_clank(), "platform_clank")
 	_save(_loop(_roll_bed(2.0), 0.25), "roll_loop")
 	_save(_loop(_amb_backroom(10.0), 1.0), "amb_backroom")
 	_save(_loop(_amb_neonbar(10.0), 1.0), "amb_neonbar")
@@ -366,3 +368,26 @@ func _chime() -> PackedFloat32Array:
 	var out := _modes([[1567.0, 0.5, 1.0], [3134.0, 0.2, 0.35], [4322.0, 0.12, 0.2]], 1.2, 0.0)
 	_mix(out, _modes([[2900.0, 0.01, 0.3]], 0.05, 0.0), 0.0)
 	return _normalize(out, 0.5)
+
+
+## Struck by a trap: a harsh metal clang with a downward zing.
+func _trap_hit() -> PackedFloat32Array:
+	var out := _buffer(0.7)
+	_mix(out, _noise_burst(0.02, 0.004, 0.9), 0.0, 1.0)
+	_mix(out, _modes([[740.0, 0.12, 1.0], [1187.0, 0.09, 0.8], [1963.0, 0.06, 0.6], [3210.0, 0.04, 0.5]], 0.5, 0.0), 0.0, 0.9)
+	var ph := 0.0
+	var zing := _buffer(0.35)
+	for i in zing.size():
+		var t := float(i) / RATE
+		ph += TAU * (2400.0 * exp(-t / 0.09) + 200.0) / RATE
+		zing[i] = signf(sin(ph)) * exp(-t / 0.1)
+	_mix(out, zing, 0.0, 0.25)
+	_mix(out, _thump(150.0, 60.0, 0.08, 0.25), 0.0, 0.6)
+	return _normalize(out, 0.85)
+
+
+## Landing on a brass carriage: a short metallic clank.
+func _platform_clank() -> PackedFloat32Array:
+	var out := _modes([[520.0, 0.05, 1.0], [1310.0, 0.03, 0.6], [2470.0, 0.015, 0.35]], 0.2, 0.02)
+	_mix(out, _thump(140.0, 70.0, 0.04, 0.15), 0.0, 0.5)
+	return _normalize(out, 0.7)

@@ -9,15 +9,24 @@ extends RefCounted
 
 enum Shape { NONE, SOLID, SLOPE_UP_RIGHT, SLOPE_UP_LEFT }
 enum Mat { TABLE, CUSHION }
-enum Kind { TILE, BUMPER }
+enum Kind { TILE, BUMPER, PLATFORM }
+enum Trap { SPINNER, SPIKE }
 
 const TILE := 16.0
+const SPINNER_HALF_WIDTH := 2.0
 
 ## Vector2i -> [shape, material, zone]
 var cells: Dictionary = {}
 var bumpers: Array[Dictionary] = []   # {pos, radius, id}
 var pockets: Array[Dictionary] = []   # {pos, radius, exit, goal, id}
 var lost_balls: Array[Dictionary] = [] # {pos, number}
+## Moving things, as pure functions of `time`, so a shot replays identically.
+var platforms: Array[Dictionary] = [] # {a, b, size, period, phase, zone, pos, vel}; pos = top-left
+var traps: Array[Dictionary] = []     # spinner {kind, center, arms, length, speed, angle0}, spike {kind, a, b, period, phase, radius, pos, vel}
+var time := 0.0
+## Set by set_active_window: only these movers tick and collide. Null means all of them.
+var _active_platforms: Variant = null
+var _active_traps: Variant = null
 
 
 static func from_tilemap(layer: TileMapLayer) -> CollisionWorld:
@@ -103,6 +112,20 @@ func collide_circle(p: Vector2, r: float, skin: float = 0.5) -> Array[Dictionary
 		var depth: float = b.radius + r - dist
 		if depth >= -skin and dist > 0.001:
 			out.append({ "normal": d / dist, "depth": depth, "mat": Mat.CUSHION, "zone": 0, "kind": Kind.BUMPER, "id": b.id })
+	for i: int in (range(platforms.size()) if _active_platforms == null else _active_platforms):
+		var plat := platforms[i]
+		# Quick reject: most platforms are nowhere near the ball.
+		var pp: Vector2 = plat.pos
+		var ps: Vector2 = plat.size
+		if p.y < pp.y - reach or p.y > pp.y + ps.y + reach or p.x < pp.x - reach or p.x > pp.x + ps.x + reach:
+			continue
+		var hit := _rect_contact(pp, ps, p, r)
+		if hit.depth >= -skin:
+			hit.mat = Mat.TABLE
+			hit.zone = plat.zone
+			hit.kind = Kind.PLATFORM
+			hit.id = i
+			out.append(hit)
 	return out
 
 
@@ -197,3 +220,100 @@ func _slope_contact(cell: Vector2i, shape: int, o: Vector2, p: Vector2, r: float
 		return {} if db.length() < 0.0001 else { "normal": db.normalized(), "depth": r - db.length() }
 	# Centre inside the triangle: push out along the hypotenuse.
 	return { "normal": hyp_normal, "depth": r - side }
+
+
+# --- Moving platforms and traps -----------------------------------------------------
+
+## Back-and-forth along a -> b with eased ends.
+static func path_pos(a: Vector2, b: Vector2, period: float, phase: float, t: float) -> Vector2:
+	var s := 0.5 - 0.5 * cos(TAU * (t / period + phase))
+	return a.lerp(b, s)
+
+
+## The route solver limits work to movers whose paths come near this y range.
+func set_active_window(y_lo: float, y_hi: float) -> void:
+	var ps: Array[int] = []
+	for i in platforms.size():
+		var p := platforms[i]
+		if maxf(p.a.y, p.b.y) >= y_lo and minf(p.a.y, p.b.y) <= y_hi:
+			ps.append(i)
+	var ts: Array[int] = []
+	for i in traps.size():
+		var tr := traps[i]
+		var top: float = tr.center.y if tr.kind == Trap.SPINNER else minf(tr.a.y, tr.b.y)
+		var bottom: float = tr.center.y if tr.kind == Trap.SPINNER else maxf(tr.a.y, tr.b.y)
+		if bottom >= y_lo and top <= y_hi:
+			ts.append(i)
+	_active_platforms = ps
+	_active_traps = ts
+
+
+## Moves everything to time t, with correct velocities.
+func set_time(t: float) -> void:
+	time = t - BallSim.DT
+	for p in platforms:
+		p.pos = path_pos(p.a, p.b, p.period, p.phase, time)
+	for tr in traps:
+		if tr.kind == Trap.SPIKE:
+			tr.pos = path_pos(tr.a, tr.b, tr.period, tr.phase, time)
+	advance(BallSim.DT)
+
+
+func advance(dt: float) -> void:
+	time += dt
+	for i: int in (range(platforms.size()) if _active_platforms == null else _active_platforms):
+		var p := platforms[i]
+		var next := path_pos(p.a, p.b, p.period, p.phase, time)
+		p.vel = (next - p.pos) / dt
+		p.pos = next
+	for i: int in (range(traps.size()) if _active_traps == null else _active_traps):
+		var tr := traps[i]
+		if tr.kind == Trap.SPIKE:
+			var next := path_pos(tr.a, tr.b, tr.period, tr.phase, time)
+			tr.vel = (next - tr.pos) / dt
+			tr.pos = next
+
+
+func spinner_angle(tr: Dictionary, arm: int) -> float:
+	return tr.angle0 + tr.speed * time + arm * TAU / tr.arms
+
+
+## A trap overlapping this circle: {normal, depth, vel (trap surface velocity), id}, or {}.
+func trap_contact(p: Vector2, r: float) -> Dictionary:
+	for i: int in (range(traps.size()) if _active_traps == null else _active_traps):
+		var tr := traps[i]
+		if tr.kind == Trap.SPIKE:
+			var d: Vector2 = p - tr.pos
+			if absf(d.y) > 40.0:
+				continue
+			var dist := d.length()
+			if dist < tr.radius + r and dist > 0.001:
+				return { "normal": d / dist, "depth": tr.radius + r - dist, "vel": tr.vel, "id": i }
+			continue
+		var reach: float = tr.length + r + SPINNER_HALF_WIDTH
+		if absf(p.y - tr.center.y) > reach or p.distance_squared_to(tr.center) > reach * reach:
+			continue
+		for arm in tr.arms:
+			var tip: Vector2 = tr.center + Vector2.from_angle(spinner_angle(tr, arm)) * tr.length
+			var q := Geometry2D.get_closest_point_to_segment(p, tr.center, tip)
+			var d := p - q
+			var dist := d.length()
+			if dist < SPINNER_HALF_WIDTH + r and dist > 0.001:
+				var along: Vector2 = q - tr.center
+				return { "normal": d / dist, "depth": SPINNER_HALF_WIDTH + r - dist, "vel": Vector2(-along.y, along.x) * tr.speed, "id": i }
+	return {}
+
+
+func _rect_contact(o: Vector2, size: Vector2, p: Vector2, r: float) -> Dictionary:
+	var q := Vector2(clampf(p.x, o.x, o.x + size.x), clampf(p.y, o.y, o.y + size.y))
+	var d := p - q
+	if d != Vector2.ZERO:
+		var dist := d.length()
+		return { "normal": d / dist, "depth": r - dist }
+	# Centre inside: push out through the nearest side.
+	var faces := [[Vector2.UP, p.y - o.y], [Vector2.DOWN, o.y + size.y - p.y], [Vector2.LEFT, p.x - o.x], [Vector2.RIGHT, o.x + size.x - p.x]]
+	var best: Array = faces[0]
+	for f in faces:
+		if f[1] < best[1]:
+			best = f
+	return { "normal": best[0], "depth": r + best[1] }
