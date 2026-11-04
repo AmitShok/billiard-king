@@ -26,7 +26,7 @@ func _ready() -> void:
 	crown.scale = Vector2(2, 2)
 	box.add_child(crown)
 	UIKit.heading(box, "The table is yours", 16)
-	UIKit.label(box, "Billiard King", Color("f2d27a"))
+	UIKit.label(box, "Vertical Billiard", Color("f2d27a"))
 	UIKit.label(box, "")
 	UIKit.label(box, "Time  %s" % SaveData.format_time(stats.get("time", 0.0)))
 	UIKit.label(box, "Strokes  %d     Falls  %d" % [stats.get("strokes", 0), stats.get("falls", 0)])

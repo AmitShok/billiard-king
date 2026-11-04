@@ -1,4 +1,4 @@
-// Billiard King: rolling ball via spherical UV mapping.
+// Vertical Billiard: rolling ball via spherical UV mapping.
 // The quad is treated as a sphere seen from the front. For every screen pixel
 // we rebuild the sphere normal, rotate it into the ball's own frame with the
 // inverse orientation, and look up an equirectangular "skin" (longitude ->

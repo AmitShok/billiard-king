@@ -1,4 +1,4 @@
--- Billiard King: terrain tiles (16x16), three zones.
+-- Vertical Billiard: terrain tiles (16x16), three zones.
 -- Atlas 256x144. For zone z (0 Back Room, 1 Neon Bar, 2 Royal Club):
 --   row 3z   : table block, 16 autotile variants (col = exposure mask)
 --   row 3z+1 : rubber cushion block, 16 autotile variants

@@ -1,4 +1,4 @@
-// Billiard King: soft corner darkening, quantised with a 4x4 ordered dither
+// Vertical Billiard: soft corner darkening, quantised with a 4x4 ordered dither
 // so it stays pixel-art crisp at the game's native 512x288.
 shader_type canvas_item;
 

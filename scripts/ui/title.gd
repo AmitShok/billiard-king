@@ -77,7 +77,7 @@ func _ready() -> void:
 	crown.position = Vector2(246, 52)
 	add_child(crown)
 	var logo := Label.new()
-	logo.text = "BILLIARD KING"
+	logo.text = "VERTICAL BILLIARD"
 	logo.add_theme_font_size_override("font_size", 32)
 	logo.add_theme_color_override("font_color", Color("f2d27a"))
 	logo.add_theme_color_override("font_shadow_color", Color("3a1a0c"))

@@ -23,6 +23,24 @@ func _ready() -> void:
 	SaveData.wins = 0
 	SaveData.save()
 
+	print("Rename")
+	var old_file := ProjectSettings.globalize_path("user://test_old_name.cfg")
+	var old := ConfigFile.new()
+	old.set_value("rack", "wins", 7)
+	old.save(old_file)
+	var keep_path := SaveData.path
+	SaveData.path = "user://test_new_name.cfg"
+	check("an old save is adopted", SaveData.adopt_old_save(old_file) and FileAccess.file_exists(SaveData.path))
+	var copied := ConfigFile.new()
+	copied.load(SaveData.path)
+	check("with its progress intact", copied.get_value("rack", "wins", 0) == 7)
+	check("the original is left in place", FileAccess.file_exists(old_file))
+	check("an existing save is never overwritten", not SaveData.adopt_old_save(old_file))
+	DirAccess.remove_absolute(ProjectSettings.globalize_path(SaveData.path))
+	check("no old save, nothing happens", not SaveData.adopt_old_save("user://no_such_file.cfg"))
+	DirAccess.remove_absolute(old_file)
+	SaveData.path = keep_path
+
 	print("Title")
 	var title: Control = load("res://scenes/ui/title.tscn").instantiate()
 	add_child(title)

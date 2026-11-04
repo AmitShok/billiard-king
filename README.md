@@ -1,8 +1,8 @@
 <div align="center">
 
-<img src="assets/textures/game_icon.png" alt="Billiard King icon" width="96">
+<img src="assets/textures/game_icon.png" alt="Vertical Billiard icon" width="96">
 
-# BILLIARD KING
+# VERTICAL BILLIARD
 
 ### One ball. One tower. No checkpoints.
 
@@ -113,7 +113,7 @@ The game renders at 512×288 and scales by whole numbers (1536×864 window by de
 
 ## Saves & settings
 
-Saves live in `user://billiard_king.cfg` (on Windows, `%APPDATA%\Godot\app_userdata\Billiard King\`). The file holds settings, the run in progress (ball position, aim, spin, time, strokes, falls, zones seen) and the Ball Rack. Tests use separate `test_*.cfg` profiles and never touch your save.
+Saves live in `user://vertical_billiard.cfg` (on Windows, `%APPDATA%\Godot\app_userdata\Vertical Billiard\`). A save from when the game was called Billiard King is copied across on first launch. The file holds settings, the run in progress (ball position, aim, spin, time, strokes, falls, zones seen) and the Ball Rack. Tests use separate `test_*.cfg` profiles and never touch your save.
 
 ## Project structure
 

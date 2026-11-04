@@ -1,4 +1,4 @@
--- Billiard King: decor and gameplay props. Multi-frame props are horizontal strips.
+-- Vertical Billiard: decor and gameplay props. Multi-frame props are horizontal strips.
 --   aseprite -b --script-param root=<project> --script tools/art_props.lua
 local A = dofile(app.params["root"] .. "/tools/art_lib.lua")
 local OUT = "11090c"

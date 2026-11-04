@@ -1,4 +1,4 @@
--- Billiard King: per-zone backdrops, 512x288 (one screen), tiling vertically
+-- Vertical Billiard: per-zone backdrops, 512x288 (one screen), tiling vertically
 -- so the tower reads as one continuous building.
 --   bg_backroom.png  bg_neonbar.png  bg_royal.png  bg_summit.png
 --   aseprite -b --script-param root=<project> --script tools/art_backgrounds.lua

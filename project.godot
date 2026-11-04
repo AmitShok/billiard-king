@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="Billiard King"
+config/name="Vertical Billiard"
 config/description="A billiard-themed climb: one cue ball, one tall tower, no checkpoints."
 run/main_scene="res://scenes/ui/title.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")

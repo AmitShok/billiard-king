@@ -1,4 +1,4 @@
-# Billiard King design
+# Vertical Billiard design
 
 You are the cue ball, and you have to climb a pool hall tower. The design takes from three games:
 

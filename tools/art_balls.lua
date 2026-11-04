@@ -1,4 +1,4 @@
--- Billiard King: rolling-ball textures.
+-- Vertical Billiard: rolling-ball textures.
 -- Each ball is painted as an equirectangular "skin" (64x32: longitude across,
 -- latitude down) that the ball shader wraps around a sphere and rotates, so
 -- the numbers, stripes and the cue ball's dots visibly roll.

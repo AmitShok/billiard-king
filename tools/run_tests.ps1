@@ -1,4 +1,4 @@
-# Runs every Billiard King check. Test saves are isolated (--save-profile).
+# Runs every Vertical Billiard check. Test saves are isolated (--save-profile).
 #   powershell -File tools/run_tests.ps1 [-SkipSolver]
 param([switch]$SkipSolver)
 $ErrorActionPreference = 'Continue'

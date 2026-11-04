@@ -9,7 +9,7 @@ const VERSION := 1
 const CLASSIC := "classic"
 const HARDCORE := "hardcore"
 
-var path := "user://billiard_king.cfg"
+var path := "user://vertical_billiard.cfg"
 
 # Settings
 var master_volume := 0.8
@@ -53,9 +53,19 @@ func _ready() -> void:
 	for arg in OS.get_cmdline_user_args() + OS.get_cmdline_args():
 		if arg.begins_with("--save-profile="):
 			path = "user://test_%s.cfg" % arg.get_slice("=", 1)
+	if path == "user://vertical_billiard.cfg":
+		adopt_old_save(OS.get_user_data_dir().get_base_dir().path_join("Billiard King/billiard_king.cfg"))
 	_setup_input()
 	load_data()
 	apply_settings()
+
+
+## The game used to be called Billiard King, and Godot keeps saves in a folder
+## named after the game. Copy the old save over once; the original is left alone.
+func adopt_old_save(old_path: String) -> bool:
+	if FileAccess.file_exists(path) or not FileAccess.file_exists(old_path):
+		return false
+	return DirAccess.copy_absolute(old_path, ProjectSettings.globalize_path(path)) == OK
 
 
 func _setup_input() -> void:

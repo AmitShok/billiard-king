@@ -1,4 +1,4 @@
--- Billiard King: moving platforms and traps.
+-- Vertical Billiard: moving platforms and traps.
 --   moving_platform.png  48x48: columns left/middle/right, rows = zone (0 Back Room, 1 Neon Bar, 2 Royal Club).
 --                        Felt deck on a bright brass carriage with wheels, so it reads as machinery.
 --   spike_ball.png       2 frames of 28x28: a red spiked ball. Danger colours (hot red and warning

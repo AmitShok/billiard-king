@@ -1,4 +1,4 @@
-; Billiard King level 2, The Long Rack. Top screen first; each screen is 32x18 tiles.
+; Vertical Billiard level 2, The Long Rack. Top screen first; each screen is 32x18 tiles.
 ; Legend and mover syntax: see tools/build_tower.gd. Rebuild with:
 ;   godot --headless --path . --script tools/build_tower.gd
 

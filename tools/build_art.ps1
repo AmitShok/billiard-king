@@ -1,4 +1,4 @@
-# Rebuilds all Billiard King pixel art from the Aseprite Lua scripts in tools/.
+# Rebuilds all Vertical Billiard pixel art from the Aseprite Lua scripts in tools/.
 # Usage: powershell -File tools/build_art.ps1 [-Only art_tiles] [-Preview]
 #   -Preview also writes 4x nearest-neighbour previews to docs/art_preview/ (not shipped).
 param(

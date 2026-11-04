@@ -1,4 +1,4 @@
--- Billiard King: art for the reactive decor.
+-- Vertical Billiard: art for the reactive decor.
 --   window.png      2 frames of 40x52: intact glass / shattered (jagged shards in the frame)
 --   glass_shard.png 4 frames of 4x4 falling glass bits
 --   spark.png       3 frames of 5x5 neon sparks

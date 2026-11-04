@@ -1,5 +1,5 @@
 extends SceneTree
-## Composes and renders Billiard King's four pool-hall jazz loops to
+## Composes and renders Vertical Billiard's four pool-hall jazz loops to
 ## assets/audio/music/*.wav (mono, 22.05 kHz, seamless).
 ##   godot --headless --path <project> --script tools/build_music.gd
 ##

@@ -1,4 +1,4 @@
--- Billiard King: 5x7 proportional pixel font, exported as a BMFont
+-- Vertical Billiard: 5x7 proportional pixel font, exported as a BMFont
 -- (assets/fonts/font.png + font.fnt) that Godot imports natively.
 -- Lowercase letters reuse the uppercase glyphs (small-caps look).
 --   aseprite -b --script-param root=<project> --script tools/art_font.lua

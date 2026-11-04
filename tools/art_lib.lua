@@ -1,4 +1,4 @@
--- Billiard King: shared helpers for the hand-authored pixel art.
+-- Vertical Billiard: shared helpers for the hand-authored pixel art.
 -- Every script builds a real .aseprite source in assets/source/ and exports
 -- the PNG the game loads from assets/textures/. Drawing is deterministic
 -- (fixed-seed hash noise) so re-running a script reproduces the same art.

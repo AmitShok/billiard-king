@@ -1,5 +1,5 @@
 extends SceneTree
-## Designs Billiard King's foley and ambience and bakes 16-bit mono WAVs to
+## Designs Vertical Billiard's foley and ambience and bakes 16-bit mono WAVs to
 ## assets/audio/. Deterministic (fixed seeds).
 ##   godot --headless --path <project> --script tools/build_sfx.gd
 ##
