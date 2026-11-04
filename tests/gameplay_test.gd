@@ -210,6 +210,7 @@ func _physics_tests() -> void:
 func _game_tests() -> void:
 	SaveData.start_new_run()
 	var game: Node2D = load("res://scenes/world/game.tscn").instantiate()
+	game.show_intro = false
 	add_child(game)
 	await _physics_frames(240)
 	var p: PlayerBall = game.player

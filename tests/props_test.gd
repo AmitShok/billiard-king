@@ -21,6 +21,7 @@ func check(name: String, ok: bool, detail: String = "") -> void:
 func _ready() -> void:
 	SaveData.start_new_run()
 	game = load("res://scenes/world/game.tscn").instantiate()
+	game.show_intro = false
 	add_child(game)
 	await _physics(30)
 	var decor: Node = game.tower.get_node("Decor")
@@ -94,6 +95,7 @@ func _ready() -> void:
 	await _frames(2)
 	SaveData.load_data()
 	game = load("res://scenes/world/game.tscn").instantiate()
+	game.show_intro = false
 	add_child(game)
 	await _physics(5)
 	var again: WindowProp = game.tower.get_node("Decor").get_node(win_name)
@@ -102,6 +104,7 @@ func _ready() -> void:
 	game.queue_free()
 	await _frames(2)
 	game = load("res://scenes/world/game.tscn").instantiate()
+	game.show_intro = false
 	add_child(game)
 	await _physics(5)
 	again = game.tower.get_node("Decor").get_node(win_name)

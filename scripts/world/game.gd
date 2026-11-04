@@ -27,7 +27,8 @@ var finished := false
 var white: WhiteBall          # Hardcore only
 var white_start := Vector2.ZERO
 var _arrow: WhiteBallArrow
-var intro: HardcoreIntro      # Hardcore goal pop-up, while it is open
+var intro: GoalIntro          # goal pop-up, while it is open
+var show_intro := true        # tests that aren't about the pop-up switch it off
 
 var _title_label: Label
 var _toast: Label
@@ -81,6 +82,13 @@ func _ready() -> void:
 	player.lost_ball_found.connect(_on_lost_ball)
 	if hardcore():
 		_setup_white()
+	# A fresh climb (nothing struck yet) states the goal first.
+	if show_intro and SaveData.strokes == 0 and SaveData.run_time < 1.0:
+		if hardcore():
+			intro = GoalIntro.new().setup("Hardcore", "Push the white ball up the tower\ninto the gold pocket at the top.", 16)
+		else:
+			intro = GoalIntro.new().setup("The climb", "Reach the gold pocket\nat the top of the tower.", SaveData.skin)
+		hud.add_child(intro)
 	_update_screen(true)
 
 
@@ -395,10 +403,6 @@ func _setup_white() -> void:
 	_arrow = WhiteBallArrow.new()
 	hud.add_child(_arrow)
 	hud.move_child(_arrow, 0)
-	# A fresh climb (nothing struck yet) explains the goal first.
-	if SaveData.strokes == 0 and SaveData.run_time < 1.0:
-		intro = HardcoreIntro.new()
-		hud.add_child(intro)
 
 
 func _update_arrow() -> void:

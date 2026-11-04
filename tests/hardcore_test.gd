@@ -124,6 +124,7 @@ func _game_tests() -> void:
 	check("a fresh Hardcore climb opens the goal pop-up", is_instance_valid(game.intro) and get_tree().paused)
 	var words := " ".join(game.intro.find_children("*", "Label", true, false).map(func(l): return l.text)).to_lower()
 	check("pop-up explains pushing the white ball into the top pocket", words.contains("white ball") and words.contains("gold pocket") and words.contains("top"), words)
+	check("Hardcore pop-up is short and shows the white ball", game.intro.get_meta("lines").length() < 70 and game.intro._ball.number == 16 and words.contains("hardcore"))
 	await get_tree().create_timer(0.8, true, false, true).timeout
 	var release := InputEventAction.new()
 	release.action = "charge"
@@ -227,6 +228,13 @@ func _music_tests() -> void:
 	SaveData.start_new_run()
 	var game: Node2D = load("res://scenes/world/game.tscn").instantiate()
 	add_child(game)
+	await _frames(3)
+	# Each mode has its own goal pop-up: Classic's is about you, not a white ball.
+	check("a fresh Classic climb opens its own goal pop-up", is_instance_valid(game.intro) and get_tree().paused)
+	var words := " ".join(game.intro.find_children("*", "Label", true, false).map(func(l): return l.text)).to_lower()
+	check("Classic pop-up: reach the gold pocket at the top", words.contains("the climb") and words.contains("gold pocket") and words.contains("top") and not words.contains("white ball"), words)
+	check("Classic pop-up shows your own ball", game.intro._ball.number == SaveData.skin)
+	game.intro.dismiss()
 	await _physics(5)
 	check("climb starts with the Back Room theme", Sfx.current_music() == Sfx.MUSIC[0])
 	game.player.place(Vector2(256, -3 * 288 - 100))

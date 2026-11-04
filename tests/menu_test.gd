@@ -69,6 +69,7 @@ func _ready() -> void:
 	for n in range(1, 11):
 		SaveData.collect_ball(n)
 	var game: Node2D = load("res://scenes/world/game.tscn").instantiate()
+	game.show_intro = false
 	add_child(game)
 	await _physics(10)
 	var goal: Dictionary = {}

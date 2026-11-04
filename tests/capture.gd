@@ -11,6 +11,7 @@ func _ready() -> void:
 	SaveData.start_new_run()
 	SaveData.seen_zones.assign([0, 1, 2, 3])
 	var game: Node2D = load("res://scenes/world/game.tscn").instantiate()
+	game.show_intro = false
 	add_child(game)
 	await _frames(10)
 	var tower: Tower = game.tower
@@ -62,6 +63,15 @@ func _ready() -> void:
 	_save("ball_rack.png")
 	SaveData.collected.clear()
 	title.queue_free()
+	await _frames(2)
+	# Classic goal pop-up on a fresh climb.
+	SaveData.start_new_run()
+	var cl: Node2D = load("res://scenes/world/game.tscn").instantiate()
+	add_child(cl)
+	await _frames(40)
+	_save("classic_intro.png")
+	cl.intro.dismiss()
+	cl.queue_free()
 	await _frames(2)
 	# Hardcore: the floating white ball, then the edge arrow when it's off screen.
 	SaveData.set_mode(SaveData.HARDCORE)

@@ -101,3 +101,5 @@ The gameplay suite is now 43 / 43. The up arrow is bound to look, not spin. Hold
 **Not proven:** whether Hardcore can be completed. The route solver covers only the single-ball Classic climb. A two-ball search (where you must stand to reach the floating ball, and every knock) is a much larger problem. Re-rack is there as the escape hatch, and Hardcore needs human playtesting for difficulty.
 
 **Update, 4 November 2026:** the Hardcore suite is now 40 / 40. New checks: the white ball starts just above your ball; the goal pop-up opens on a fresh climb, closes on release without starting a charge, and is skipped when continuing; a soft straight-up shot knocks the white ball upward.
+
+**Update:** each mode now has its own short goal pop-up (`GoalIntro`). The Hardcore suite is 44 / 44, checking that Classic opens its own pop-up (your ball, "reach the gold pocket at the top", no white ball) and that the Hardcore one is short and shows the white ball. Gameplay 43, menus 14, props 27. Captures: `classic_intro.png` and `hardcore_intro.png`.

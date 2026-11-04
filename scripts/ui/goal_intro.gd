@@ -1,7 +1,7 @@
-class_name HardcoreIntro
+class_name GoalIntro
 extends Control
-## Pop-up shown when a Hardcore climb starts: explains the goal and holds
-## the game paused until dismissed. It closes on *release* so the press that
+## Short pop-up shown when a new climb starts, stating the goal. Holds the
+## game paused until dismissed, and closes on *release* so the press that
 ## dismisses it can't also start a charge.
 
 signal dismissed
@@ -10,31 +10,34 @@ var _ready_for_input := false
 var _ball: BallVisual
 
 
+## title: heading; lines: one or two short lines; ball: skin number to show.
+func setup(title: String, lines: String, ball: int) -> GoalIntro:
+	set_meta("title", title)
+	set_meta("lines", lines)
+	set_meta("ball", ball)
+	return self
+
+
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	theme = UIKit.theme()
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	var dim := ColorRect.new()
-	dim.color = Color(0.02, 0.01, 0.02, 0.55)
+	dim.color = Color(0.02, 0.01, 0.02, 0.5)
 	dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(dim)
-	var box := UIKit.panel(self, Vector2(260, 0))
-	UIKit.heading(box, "Hardcore")
+	var box := UIKit.panel(self, Vector2(220, 0))
+	UIKit.heading(box, get_meta("title", "Goal"))
 	var holder := Control.new()
 	holder.custom_minimum_size = Vector2(0, 22)
 	box.add_child(holder)
 	_ball = BallVisual.new()
-	_ball.number = 16
+	_ball.number = get_meta("ball", 0)
 	_ball.diameter = 18
 	holder.add_child(_ball)
 	# Keep the ball centred however wide the panel ends up.
 	holder.resized.connect(func(): _ball.position = Vector2(roundf(holder.size.x / 2.0), 11))
-	UIKit.label(box, "A white ball floats above you.\nIt has no gravity: it stops wherever it slows down.")
-	UIKit.label(box, "Push it with your ball, all the way up the tower,\nand sink it in the gold pocket at the very top.", Color("f2d27a"))
-	UIKit.label(box, "If it drops into a pocket, the ball return sends it down.\nLost it? Pause and re-rack it.", Color("a89e8a"))
-	var gap := Control.new()
-	gap.custom_minimum_size = Vector2(0, 2)
-	box.add_child(gap)
+	UIKit.label(box, get_meta("lines", ""), Color("f2d27a"))
 	var hint := UIKit.label(box, "Press to begin", Color("8a8070"))
 	modulate.a = 0.0
 	var tw := create_tween()
