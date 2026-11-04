@@ -9,6 +9,7 @@ var _ball: BallVisual
 var _ball_x := 120.0
 var _ball_v := 38.0
 var _first: Button
+var _logo: Array[Control] = []
 
 
 func _ready() -> void:
@@ -80,6 +81,7 @@ func _ready() -> void:
 	logo.position = Vector2(0, 70)
 	logo.size = Vector2(512, 36)
 	add_child(logo)
+	_logo.append(logo)
 	var sub := Label.new()
 	sub.text = "One ball. One tower. No checkpoints."
 	sub.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -87,6 +89,7 @@ func _ready() -> void:
 	sub.size = Vector2(512, 10)
 	sub.add_theme_color_override("font_color", Color("b0a088"))
 	add_child(sub)
+	_logo.append(sub)
 
 	_menu = VBoxContainer.new()
 	_menu.position = Vector2(196, 120)
@@ -123,8 +126,12 @@ func _open_levels(mode: String) -> void:
 	m.mode = mode
 	add_child(m)
 	_menu.visible = false
+	for c in _logo:
+		c.visible = false
 	m.closed.connect(func():
 		_menu.visible = true
+		for c in _logo:
+			c.visible = true
 		_build_menu())
 
 

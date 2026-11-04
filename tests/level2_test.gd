@@ -214,7 +214,7 @@ func _level_tests() -> void:
 	check("level 2 has one gold pocket", w.pockets.filter(func(p): return p.goal).size() == 1)
 	var lost_numbers: Array = w.lost_balls.map(func(b): return b.number)
 	lost_numbers.sort()
-	check("level 2 hides ten new lost balls", lost_numbers == range(17, 27), str(lost_numbers))
+	check("level 2 hides its six lost balls", lost_numbers == [7, 8, 9, 10, 17, 18], str(lost_numbers))
 	var clear_spot := true
 	for b in w.lost_balls:
 		if w.is_solid_point(b.pos):
@@ -334,7 +334,7 @@ func _menu_tests() -> void:
 	var shut: LevelSelect = title.find_children("*", "LevelSelect", true, false)[0]
 	var shut_buttons: Array = shut.find_children("*", "Button", true, false)
 	var lock_btn: Array = shut_buttons.filter(func(b): return b.text == "Locked")
-	check("the level select shows it locked and unpressable", lock_btn.size() == 1 and lock_btn[0].disabled and lock_btn[0].focus_mode == Control.FOCUS_NONE)
+	check("the level select shows it locked and unpressable", lock_btn.size() >= 1 and lock_btn[0].disabled and lock_btn[0].focus_mode == Control.FOCUS_NONE)
 	var shut_text: Array = shut.find_children("*", "Label", true, false).map(func(l): return l.text)
 	check("and says how to open it", shut_text.has("Finish The Tower to unlock"), str(shut_text))
 	shut.close()
@@ -357,7 +357,7 @@ func _menu_tests() -> void:
 	var rack := BallRack.new()
 	title.add_child(rack)
 	await _frames(2)
-	check("Ball Rack has a slot for all 28 balls", rack._buttons.size() == 28, str(rack._buttons.size()))
+	check("Ball Rack has a slot for every ball", rack._buttons.size() == BallRack.TOTAL + 1, str(rack._buttons.size()))
 	check("new balls have names", BallRack.display_name(17) == "Chalk" and BallRack.display_name(27) == "The rainbow ball" and BallRack.display_name(3) == "Ball #3")
 	rack.close()
 	await _frames(2)
@@ -381,7 +381,7 @@ func _menu_tests() -> void:
 		var pick: LevelSelect = title.find_children("*", "LevelSelect", true, false)[0]
 		var names: Array = pick.find_children("*", "Label", true, false).map(func(l): return l.text)
 		check("%s level select lists both levels" % mode, names.has("The Tower") and names.has("The Long Rack"), str(names))
-		check("%s level select shows a numbered ball per level" % mode, pick._balls.size() == 2 and pick._balls[1].number == 2)
+		check("%s level select shows a numbered ball per level" % mode, pick._balls.size() == LevelSelect.LEVELS.size() and pick._balls[1].number == 2)
 		pick.close()
 		await _frames(2)
 	# Starting a level from the menu.

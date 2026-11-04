@@ -38,6 +38,11 @@ func rumble(_from: Vector2, _strength: float) -> void:
 	pass
 
 
+## Override: the wind blowing on this screen right now.
+func feel_wind(_wind: Vector2) -> void:
+	pass
+
+
 ## Override instead of _process.
 func update(_delta: float) -> void:
 	pass

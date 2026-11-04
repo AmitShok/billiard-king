@@ -14,6 +14,7 @@ Run 'Gameplay' @('--headless', '--quit-after', '20000', 'res://tests/gameplay_te
 Run 'Menus and ending' @('--headless', '--quit-after', '20000', 'res://tests/menu_test.tscn', '--', '--save-profile=menu')
 Run 'Reactive props and controls hint' @('--headless', '--quit-after', '20000', 'res://tests/props_test.tscn', '--', '--save-profile=props')
 Run 'Hardcore mode and music' @('--headless', '--quit-after', '20000', 'res://tests/hardcore_test.tscn', '--', '--save-profile=hardcore')
+Run 'Low gravity, wind, new levels, locks' @('--headless', '--quit-after', '30000', 'res://tests/conditions_test.tscn', '--', '--save-profile=conditions')
 Run 'Level 2, moving things, level select' @('--headless', '--quit-after', '30000', 'res://tests/level2_test.tscn', '--', '--save-profile=level2')
 if (-not $SkipSolver) { Run 'Route solver (about 3 minutes)' @('--headless', '--script', 'tests/route_solver.gd') }
 if ($failed -gt 0) { Write-Output "$failed suite(s) FAILED"; exit 1 }

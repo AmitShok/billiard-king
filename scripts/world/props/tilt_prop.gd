@@ -33,6 +33,10 @@ func rumble(_from: Vector2, strength: float) -> void:
 		rest = clampf(rest + randf_range(-0.05, 0.05), -0.22, 0.22)
 
 
+func feel_wind(wind: Vector2) -> void:
+	_vel += wind.x * 0.0008
+
+
 func update(delta: float) -> void:
 	var dt := minf(delta, 1.0 / 30.0)
 	_vel += (-STIFFNESS * (_ang - rest) - DAMPING * _vel) * dt

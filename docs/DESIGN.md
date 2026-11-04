@@ -108,7 +108,7 @@ The title's **Normal mode** and **Hardcore mode** buttons each open a small felt
 
 Levels are ASCII files baked by `tools/build_tower.gd`. Moving things are `@` lines under a screen header (syntax at the top of that script).
 
-**Unlocking.** The Long Rack shows as locked until The Tower has been finished in either mode, and finishing in one mode opens it in both. A run already under way stays playable, so nobody is locked out of their own save.
+**Unlocking.** Each level shows as locked until the one before it has been finished in either mode, and finishing in one mode opens it in both. A run already under way stays playable, so nobody is locked out of their own save.
 
 ## The Long Rack (level 2)
 
@@ -131,8 +131,28 @@ The clock only ticks with the physics, so pausing freezes everything, and it is 
 
 Moving things are deterministic, so the solver replays them exactly. A spot on a carriage counts as one spot wherever the carriage is. Near moving things, each spot's shot sweep is repeated at several moments (a player can wait for the right one), and a move's score is its working shots at the best moment. To keep this tractable it writes off shots that fall over 300 px and doesn't explore from spots more than 48 px below the current one; that can only hide routes, never invent one. `--from-screen` and `--to-screen` check a stretch while tuning.
 
-## Level 2 lost balls and the rainbow ball
+## Lost balls and the rainbow ball
 
-Ten more lost balls (Chalk, Neon, Checker, Tournament, Marble, Ember, Ocean, Night, Gold, Moon; skins 17–26) sit along The Long Rack, placed with `@ lost x y number` lines. Each is a pattern painted on the sphere in `tools/art_balls.lua`. They can be collected in either mode, and either ball can pick them up.
+Every level hides exactly six lost balls, spread through its whole height: 24 in all (`BallRack.LOST_IN`). Balls above 15 are placed with `@ lost x y number` lines, and most are patterns painted on the sphere in `tools/art_balls.lua`. They can be collected in either mode, and either ball can pick them up.
 
-Winning The Long Rack on Hardcore earns **the rainbow ball** (skin 27). Its skin is greyscale; `shaders/ball.gdshader` tints it with a hue that runs around the ball and drifts over time, so colours shimmer as it rolls. `BallVisual` adds a soft glow behind it that cycles through the colours and pulses. The Ball Rack now has 28 slots.
+Winning The Long Rack on Hardcore earns **the rainbow ball** (skin 27). Its skin is greyscale; `shaders/ball.gdshader` tints it with a hue that runs around the ball and drifts over time, so colours shimmer as it rolls. `BallVisual` adds a soft glow behind it that cycles through the colours and pulses. The Ball Rack has 32 slots.
+
+## Low gravity
+
+`@ gravity scale` makes a whole screen low-gravity: 0.45 on the moon (zone 4) and 0.35 in open space (zone 6). Gravity is looked up by the screen the ball is on, so it changes the moment you cross a screen edge. Top speed when falling scales with its square root. Those screens always use the moon or space backdrops, and specks of chalk dust hang in the air.
+
+## Wind
+
+`@ wind strength period phase [dirs]` gives a screen gusts that take turns through `dirs` (default right, up, left, down). Each gust swells and dies as a half-sine, so there is a true lull between them, as a pure function of the world clock like everything else that moves. It accelerates a ball only while it is in the air, as in Jump King. The white ball is pushed too, but felt drag (260 px/s²) holds it still against anything lighter. Strengths run 120 to 300 px/s² against gravity's 900.
+
+The wind is visible: pale streaks race along it, and `feel_wind` tells every prop on screen. Socks stream out, bunting ripples, vanes turn, hanging lamps sway, and a gust sound follows its strength.
+
+## New zones
+
+| Zone | Backdrop | Tile palette | Music |
+| --- | --- | --- | --- |
+| 4 Moon | `bg_moon`: stars, a green-felt world, cratered ground | Silver felt, titanium rails, pitted rock | Felt of Tranquility |
+| 5 Storm | `bg_storm`: cloud bands, rain, rooftops and water towers | Teal felt, weathered rails, slate shingles | Rooftop Gale |
+| 6 Space | `bg_space`: nebula, stars, a ringed nine-ball planet | Same as the moon | Felt of Tranquility |
+
+New responsive decor: **A** asteroid, **G** satellite, **N** moon flag (`SpaceProp`); **V** wind sock, **U** bunting, **Y** weather vane (`WindProp`).

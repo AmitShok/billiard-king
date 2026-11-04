@@ -11,7 +11,7 @@ const SHADER := preload("res://shaders/ball.gdshader")
 const RAINBOW := 27
 const GLOW := preload("res://assets/textures/glow.png")
 
-@export_range(0, 27) var number: int = 0:
+@export_range(0, 31) var number: int = 0:
 	set(v):
 		number = v
 		_apply()

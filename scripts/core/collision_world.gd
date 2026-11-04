@@ -24,6 +24,9 @@ var lost_balls: Array[Dictionary] = [] # {pos, number}
 var platforms: Array[Dictionary] = [] # {a, b, size, period, phase, zone, pos, vel}; pos = top-left
 var traps: Array[Dictionary] = []     # spinner {kind, center, arms, length, speed, angle0}, spike {kind, a, b, period, phase, radius, pos, vel}
 var time := 0.0
+## Per-screen conditions: screen -> gravity multiplier, screen -> {strength, period, phase, dirs}.
+var screen_gravity := {}
+var screen_wind := {}
 ## Set by set_active_window: only these movers tick and collide. Null means all of them.
 var _active_platforms: Variant = null
 var _active_traps: Variant = null
@@ -220,6 +223,28 @@ func _slope_contact(cell: Vector2i, shape: int, o: Vector2, p: Vector2, r: float
 		return {} if db.length() < 0.0001 else { "normal": db.normalized(), "depth": r - db.length() }
 	# Centre inside the triangle: push out along the hypotenuse.
 	return { "normal": hyp_normal, "depth": r - side }
+
+
+# --- Low gravity and wind -----------------------------------------------------------
+
+func gravity_scale_at(y: float) -> float:
+	if screen_gravity.is_empty():
+		return 1.0
+	return screen_gravity.get(floori(-y / 288.0), 1.0)
+
+
+## The wind acceleration at this height right now. Gusts blow in turn through
+## the screen's directions, swelling and dying so there's a lull between them.
+func wind_at(y: float) -> Vector2:
+	if screen_wind.is_empty():
+		return Vector2.ZERO
+	var w: Variant = screen_wind.get(floori(-y / 288.0))
+	if w == null:
+		return Vector2.ZERO
+	var dirs: PackedVector2Array = w.dirs
+	var t := fposmod(time / w.period + w.phase, 1.0) * dirs.size()
+	var i := int(t)
+	return dirs[i] * w.strength * sin(PI * (t - i))
 
 
 # --- Moving platforms and traps -----------------------------------------------------

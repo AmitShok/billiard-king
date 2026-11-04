@@ -10,7 +10,7 @@ render_mode unshaded;
 
 uniform sampler2D skin : source_color, filter_nearest, repeat_disable;
 uniform vec2 cell = vec2(0.0, 0.0);        // atlas cell of this ball's skin
-uniform vec2 grid = vec2(4.0, 7.0);        // atlas cells across / down
+uniform vec2 grid = vec2(4.0, 8.0);        // atlas cells across / down
 uniform mat3 orientation = mat3(1.0);      // ball-local -> world rotation
 uniform float view_pitch = 0.42;           // look slightly down on the ball so rolls read in 3D
 uniform float diameter_px = 16.0;

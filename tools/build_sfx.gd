@@ -51,6 +51,8 @@ func _initialize() -> void:
 	_save(_loop(_amb_backroom(10.0), 1.0), "amb_backroom")
 	_save(_loop(_amb_neonbar(10.0), 1.0), "amb_neonbar")
 	_save(_loop(_amb_royal(8.0), 0.5), "amb_royal")
+	_save(_loop(_amb_moon(10.0), 1.0), "amb_moon")
+	_save(_loop(_amb_storm(10.0), 1.0), "amb_storm")
 	print("sfx baked")
 	quit()
 
@@ -391,3 +393,30 @@ func _platform_clank() -> PackedFloat32Array:
 	var out := _modes([[520.0, 0.05, 1.0], [1310.0, 0.03, 0.6], [2470.0, 0.015, 0.35]], 0.2, 0.02)
 	_mix(out, _thump(140.0, 70.0, 0.04, 0.15), 0.0, 0.5)
 	return _normalize(out, 0.7)
+
+
+## Moon and space: near silence, a low suit-radio hum, the odd soft beep.
+func _amb_moon(seconds: float) -> PackedFloat32Array:
+	var out := _normalize(_brown(seconds, 0.004), 0.1)
+	for i in out.size():
+		var t := float(i) / RATE
+		out[i] += 0.03 * sin(TAU * 48.0 * t) * (0.7 + 0.3 * sin(TAU * 0.2 * t))
+	for b in [1.7, 5.2, 8.1]:
+		_mix(out, _modes([[1320.0, 0.09, 1.0], [2640.0, 0.04, 0.2]], 0.3, 0.0), b, 0.03)
+	return out
+
+
+## Storm: rain hiss, a low wind moan and thunder a long way off.
+func _amb_storm(seconds: float) -> PackedFloat32Array:
+	var out := _buffer(seconds)
+	var y := 0.0
+	var hp := 0.0
+	for i in out.size():
+		var t := float(i) / RATE
+		var n := rng.randf_range(-1.0, 1.0)
+		y += (n - y) * 0.03
+		var hiss := n - hp
+		hp += (n - hp) * 0.5
+		out[i] = y * (0.9 + 0.5 * sin(TAU * 0.13 * t)) * 0.8 + hiss * 0.02
+	_mix(out, _lowpass(_noise_burst(2.5, 0.8, 0.05), 0.08), 3.5, 2.2)
+	return out

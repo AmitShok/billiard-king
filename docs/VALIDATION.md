@@ -135,3 +135,27 @@ Route solver, run by stretches on level 2: all five pass, and all ten new lost b
 Regression: gameplay 43, menus 19, props 27, Hardcore and music 44. Rendered check: `ball_rack.png`, `level_select_locked.png`.
 
 Not verified: how the rainbow ball looks in motion over a full climb, and whether Hardcore on level 2 (the only way to earn it) can be finished, which needs playtesting.
+
+## Levels 3 and 4, low gravity, wind, lost-ball spread
+
+`tests/conditions_test.tscn`: 59 / 59 passed. It covers the following:
+
+- **Low gravity:** a full shot rises about 2.2 times as high at 0.45 gravity. Gravity is set per screen, and a ball falls slowly there. Low gravity is on exactly the moon and space screens.
+- **Wind:** gusts blow in all four directions in turn, peak at the set strength, and have a lull between them. Wind only exists on windy screens. It pushes a ball in the air, and a ball resting on the felt ignores it. Felt drag holds the white ball against a light wind, and a strong gust moves it. Windy shots replay identically.
+- **Lost balls:** each of the four levels hides exactly 6, spread over at least half its height and none buried. There are 24 different balls, matching the Ball Rack's list.
+- **Locks:** a fresh game opens only level 1, and each finish (in either mode) opens only the next level.
+- **In the game:** the pop-ups warn about low gravity and wind, and the moon and rooftops have their own music. Bumped asteroids drift and struck satellites spin up. The weather layer, wind socks and vanes follow the gust, and bunting reacts to a knock. Hardcore plays the new levels.
+
+**Route solver, whole level, real gravity and wind:**
+
+| Level | Spots explored | Route | Hardest stroke | Lost balls reachable |
+| --- | --- | --- | --- | --- |
+| 1 | 493 | 46 strokes | 5 of 238 | all 6 |
+| 3 | 574 | 40 strokes | 6 of 238 | all 6 |
+| 4 | 642 | 56 strokes | 6 of 238 | all 6 |
+
+Level 2's terrain and physics did not change, so its earlier proof stands and was not re-run. Its six balls now sit at positions from the earlier ten, all of which the solver reached.
+
+**Regression:** gameplay 43, menus 19, props 27, Hardcore and music 47, level 2 64.
+
+**Not verified:** the feel of low gravity and wind, the new music and ambience by ear, whether Hardcore can be completed on any level (the solver covers only your ball), and how the props look in motion beyond captures. All of these need playtesting.

@@ -29,10 +29,11 @@ Somewhere above the Back Room, past Lucky's Neon Bar and the Royal Club, there's
 - **Jump King's commitment.** You charge a shot and release it, with no air control. The camera is fixed to one screen at a time and cuts as you cross. There are no checkpoints, and the game saves you wherever the ball comes to rest. Time, strokes and falls are tracked.
 - **Billiard shot-making.** You aim in 5° notches and the cue pulls back as the shot charges. **English** shapes the landing: follow keeps you running forward and draw checks you up or rolls you back.
 - **Fallosophy's pinball.** Big numbered bumper balls kick you away in their brass collars. Rubber cushions stay lively, and pockets swallow you and drop you far below through the ball return.
-- **Ballgame's collection.** Twenty lost balls are hidden across the two levels and seven more are earned by finishing. Each one becomes a ball you can climb as, picked from the **Ball Rack**.
+- **Ballgame's collection.** Twenty-four lost balls are hidden across the levels, six in each, and seven more are earned by finishing. Each one becomes a ball you can climb as, picked from the **Ball Rack**.
 - **Balls that really roll.** Every ball is a pixel-art sphere drawn with spherical UV mapping, so numbers, stripes and the cue ball's red dots roll across the surface.
-- **Two levels, both modes.** The Tower (10 screens) and The Long Rack (20 screens), picked from a small level select. The Long Rack opens once you've finished The Tower in either mode. Normal and Hardcore share the levels and each keeps its own run for each level.
+- **Four levels, both modes.** The Tower, The Long Rack, The Moon Shot and The Gale, picked from a small level select. Each opens once you've finished the one before it, in either mode. Normal and Hardcore share the levels and each keeps its own run for each level.
 - **Things that move.** The Long Rack adds brass carriages that ride their rails sideways, up and down, or diagonally, and carry you with them, plus red-and-yellow spinning arms and spiked balls that fling you away.
+- **Low gravity and wind.** The Moon Shot floats you across the moon and open space. The Gale's wind turns through four directions and pushes you while you fly, with lulls to wait for, like Jump King. Props respond: socks, bunting and vanes follow the gust, lamps sway, asteroids drift when bumped.
 - **Hardcore mode.** You play your normal ball with the same rules, plus a second, plain white ball that floats with no gravity. It starts floating just above you. Knock it up through the whole tower and sink it in the gold pocket. Each mode opens with a short goal pop-up when a new climb starts. Felt drag stops it wherever it runs out of speed, even in mid-air, and if it drops into a pocket it goes down the ball return. An arrow at the screen edge points to it when it's on another screen.
 - **Pool-hall jazz.** Four synthesised loops, one per zone: slow Back Room blues, a Neon Bar shuffle, a Royal Club waltz and a moonlit summit theme. They crossfade as you climb.
 - **A room that reacts.** Lamps and chandeliers swing on their chains, windows shatter and stay broken, neon shorts out, portraits hang crooked, beads slide along the score wire and chalk gets knocked off ledges. All of it is cosmetic: the ball's path never changes.
@@ -53,6 +54,8 @@ Somewhere above the Back Room, past Lucky's Neon Bar and the Royal Club, there's
 | *A window gives way* | *Controls hint on the bottom rail* |
 | <img src="docs/screenshots/level_select.png" width="420"> | <img src="docs/screenshots/l2_screen_15.png" width="420"> |
 | *Level select* | *The Long Rack: spinning arms and a carriage* |
+| <img src="docs/screenshots/l3_screen_5.png" width="420"> | <img src="docs/screenshots/l4_screen_7.png" width="420"> |
+| *The Moon Shot: low gravity on the moon* | *The Gale: wind on the rooftops* |
 | <img src="docs/screenshots/hardcore.png" width="420"> | <img src="docs/screenshots/hardcore_arrow.png" width="420"> |
 | *Hardcore: your ball and the floating white ball* | *The edge arrow points to it off screen* |
 
@@ -80,7 +83,15 @@ Twice the length of The Tower, across The Cellar, The Jukebox Floor, The Grand S
 | **Spinning arm** | Touch an arm and you're flung away. | Red and yellow stripes, a pulsing red glow, and a dotted ring showing its reach |
 | **Spike rail** | A spiked ball slides along a rail. Touch it and you're flung away. | Red ball with yellow spikes on a dotted red rail |
 
-Only traps use red and yellow hazard colours, so they can't be mistaken for decoration. Ten new lost balls are hidden along the way.
+Only traps use red and yellow hazard colours, so they can't be mistaken for decoration.
+
+## Level 3: The Moon Shot
+
+15 screens from The Planetarium, across The Sea of Felt and The Launch Bar, into Open Space. On the moon gravity drops to 45%, in open space to 35%, so a full shot sails more than a screen. Asteroids drift when bumped and float home, satellites spin up when struck, flags ripple.
+
+## Level 4: The Gale
+
+15 screens from The Back Alley up The Rooftops, with a calm stretch through The Attic. Gusts turn through right, up, left and down, swelling and dying so there's a lull between each. They only push a ball in the air. Pale streaks and rain show where the wind is going, and wind socks, bunting and weather vanes follow it.
 
 ## The tower
 
@@ -96,14 +107,16 @@ Only traps use red and yellow hazard colours, so they can't be mistaken for deco
 | Ball | How to get it |
 | --- | --- |
 | Cue ball | Always yours |
-| 1–10 | Lost somewhere in The Tower; touch one to collect it |
+| 1–6 | Lost somewhere in The Tower; touch one to collect it |
+| 7–10, Chalk, Neon | Lost somewhere in The Long Rack |
+| Checker, Tournament, Marble, Ember, Ocean, Night | Lost somewhere in The Moon Shot |
+| Gold, Moon, Comet, Aurora, Thunder, Copper | Lost somewhere in The Gale |
 | 11 | Finish the climb |
 | 12 | Finish in under 400 strokes |
 | 13 | Finish in under 30 minutes |
 | 14 | Finish with 10 falls or fewer |
-| 15 | Finish holding lost balls 1–10 |
+| 15 | Finish The Tower holding its six lost balls |
 | White ball | Finish Hardcore mode |
-| Chalk, Neon, Checker, Tournament, Marble, Ember, Ocean, Night, Gold, Moon | Lost somewhere in The Long Rack |
 | The rainbow ball | Finish The Long Rack on Hardcore. It cycles through the colours as it rolls, and glows |
 
 ## Getting started
@@ -121,18 +134,18 @@ Saves live in `user://vertical_billiard.cfg` (on Windows, `%APPDATA%\Godot\app_u
 
 ```
 assets/        textures (exported PNGs), source/ (.aseprite), fonts/, audio/ (+ music/)
-levels/        tower.txt, tower2.txt: each climb as ASCII screens
+levels/        tower.txt, tower2-4.txt: each climb as ASCII screens
 resources/     tiles.tres (generated), ui_theme.tres
-scenes/        ui/title.tscn, world/game.tscn, world/tower.tscn + tower2.tscn (generated)
+scenes/        ui/title.tscn, world/game.tscn, world/tower*.tscn (generated)
 scripts/core   ball_sim.gd (physics), collision_world.gd (tiles, bumpers, pockets)
 scripts/world  player_ball, ball_visual, cue_stick, tower, game, bumper, pocket, lost_ball
-scripts/world (movers)  moving_platform, trap_spinner, trap_spike, rail_line
+scripts/world (movers)  moving_platform, trap_spinner, trap_spike, rail_line, weather_layer
 scripts/world/props  reactive decor (swing, window, neon, tilt, rattle, beads, knock)
 scripts/ui     title, pause, options, ball rack, ending, ui_kit
 scripts/autoload  save_data.gd, sfx.gd
 shaders/       ball.gdshader (rolling-ball sphere mapping), vignette.gdshader
 tools/         art_*.lua (Aseprite), build_tower.gd, build_sfx.gd, *.ps1 helpers
-tests/         gameplay_test, menu_test, props_test, hardcore_test, level2_test, route_solver, capture, capture_level2
+tests/         gameplay_test, menu_test, props_test, hardcore_test, level2_test, conditions_test, route_solver, capture*
 docs/          DESIGN.md, VALIDATION.md, screenshots/
 ```
 
@@ -145,7 +158,7 @@ docs/          DESIGN.md, VALIDATION.md, screenshots/
 | Re-synthesise the sound effects | `powershell -File tools/godot.ps1 --headless --script tools/build_sfx.gd` |
 | Recompose the music | `powershell -File tools/godot.ps1 --headless --script tools/build_music.gd` |
 | Run every test (with the Tower's climbability solver) | `powershell -File tools/run_tests.ps1` |
-| Prove level 2 climbable (about 20 minutes) | `powershell -File tools/godot.ps1 --headless --script tests/route_solver.gd -- --level=2` |
+| Prove another level climbable (level 2 takes about 20 minutes) | `powershell -File tools/godot.ps1 --headless --script tests/route_solver.gd -- --level=2` |
 | Retake screenshots | `powershell -File tools/godot.ps1 res://tests/capture.tscn -- --save-profile=capture` |
 
 The legend for the level map is at the top of `tools/build_tower.gd`. After any level edit, run the solver: it fails if the gold pocket can't be reached or if a required stroke has fewer than 5 working shots.

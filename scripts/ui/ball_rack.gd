@@ -1,7 +1,7 @@
 class_name BallRack
 extends Control
-## Choose which ball you climb as. Balls 1-10 are lost in The Tower and 17-26
-## in The Long Rack; the rest are awarded for finished climbs.
+## Choose which ball you climb as. Six balls are lost in each level (LOST_IN);
+## the rest are awarded for finished climbs.
 
 signal closed
 
@@ -10,15 +10,23 @@ const HINTS := {
 	12: "Finish in under 400 strokes",
 	13: "Finish in under 30 minutes",
 	14: "Finish with 10 falls or fewer",
-	15: "Finish holding lost balls 1-10",
+	15: "Finish The Tower holding its 6 lost balls",
 	16: "Finish Hardcore mode",
 	27: "Finish The Long Rack on Hardcore",
 }
 const NAMES := {
 	16: "The white ball", 17: "Chalk", 18: "Neon", 19: "Checker", 20: "Tournament", 21: "Marble",
 	22: "Ember", 23: "Ocean", 24: "Night", 25: "Gold", 26: "Moon", 27: "The rainbow ball",
+	28: "Comet", 29: "Aurora", 30: "Thunder", 31: "Copper",
 }
-const TOTAL := 27
+const TOTAL := 31
+## Which balls are lost in which level.
+const LOST_IN := {
+	"The Tower": [1, 2, 3, 4, 5, 6],
+	"The Long Rack": [7, 8, 9, 10, 17, 18],
+	"The Moon Shot": [19, 20, 21, 22, 23, 24],
+	"The Gale": [25, 26, 28, 29, 30, 31],
+}
 
 
 ## "Ball #3", "Chalk", ...
@@ -36,10 +44,10 @@ func _ready() -> void:
 	dim.color = Color(0, 0, 0, 0.6)
 	dim.set_anchors_preset(Control.PRESET_FULL_RECT)
 	add_child(dim)
-	var box := UIKit.panel(self, Vector2(300, 0))
+	var box := UIKit.panel(self, Vector2(350, 0))
 	UIKit.heading(box, "Ball Rack")
 	var grid := GridContainer.new()
-	grid.columns = 10
+	grid.columns = 11
 	grid.add_theme_constant_override("h_separation", 4)
 	grid.add_theme_constant_override("v_separation", 4)
 	box.add_child(grid)
@@ -65,8 +73,8 @@ func _ready() -> void:
 	UIKit.label(box, "Found %d of %d" % [SaveData.collected.size(), TOTAL], Color("8a8070"))
 	var back := UIKit.button(box, "Back", close)
 	for b in _buttons:
-		b.focus_neighbor_bottom = b.get_path_to(back) if _buttons.find(b) >= 20 else NodePath()
-	back.focus_neighbor_top = back.get_path_to(_buttons[20])
+		b.focus_neighbor_bottom = b.get_path_to(back) if _buttons.find(b) >= 22 else NodePath()
+	back.focus_neighbor_top = back.get_path_to(_buttons[22])
 	_buttons[SaveData.skin].grab_focus.call_deferred()
 
 
@@ -77,12 +85,14 @@ func _on_focus(n: int, ball: BallVisual) -> void:
 		_info.text = "The cue ball\nThe original climber"
 	elif unlocked:
 		_info.text = "%s%s" % [display_name(n), "\nIn play" if SaveData.skin == n else "\nPress to climb with it"]
-	elif n <= 10:
-		_info.text = "Ball #%d is lost\nsomewhere in The Tower" % n
-	elif n >= 17 and n <= 26:
-		_info.text = "%s is lost\nsomewhere in The Long Rack" % display_name(n)
-	else:
+	elif HINTS.has(n):
 		_info.text = "%s\n%s" % [display_name(n), HINTS[n]]
+	else:
+		var where := ""
+		for level_name in LOST_IN:
+			if LOST_IN[level_name].has(n):
+				where = level_name
+		_info.text = "%s is lost\nsomewhere in %s" % [display_name(n), where]
 	var tw := create_tween()
 	tw.tween_property(ball, "scale", Vector2(1.2, 1.2), 0.06)
 	tw.tween_property(ball, "scale", Vector2.ONE, 0.12)

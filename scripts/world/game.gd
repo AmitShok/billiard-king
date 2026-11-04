@@ -3,7 +3,12 @@ extends Node2D
 ## edges (Jump King), area title cards, stats, saving where the ball rests,
 ## and the ending at the gold pocket.
 
-const TOWERS := { 1: "res://scenes/world/tower.tscn", 2: "res://scenes/world/tower2.tscn" }
+const TOWERS := { 1: "res://scenes/world/tower.tscn", 2: "res://scenes/world/tower2.tscn", 3: "res://scenes/world/tower3.tscn", 4: "res://scenes/world/tower4.tscn" }
+const LEVEL_WARNINGS := {
+	2: "\nRed traps fling you. Brass carriages carry you.",
+	3: "\nOut on the moon, gravity is low. Shots float far.",
+	4: "\nOn the rooftops, wind pushes you while you fly.\nIt turns in four directions. Wait for the lulls.",
+}
 const PAUSE_MENU := preload("res://scripts/ui/pause_menu.gd")
 const ENDING := preload("res://scripts/ui/ending.gd")
 const FONT_SIZE_TITLE := 16
@@ -27,6 +32,7 @@ var finished := false
 var white: WhiteBall          # Hardcore only
 var white_start := Vector2.ZERO
 var _arrow: WhiteBallArrow
+var weather: WeatherLayer
 var intro: GoalIntro          # goal pop-up, while it is open
 var show_intro := true        # tests that aren't about the pop-up switch it off
 
@@ -86,7 +92,7 @@ func _ready() -> void:
 		_setup_white()
 	# A fresh climb (nothing struck yet) states the goal first.
 	if show_intro and SaveData.strokes == 0 and SaveData.run_time < 1.0:
-		var warning := "\nRed traps fling you. Brass carriages carry you." if SaveData.level > 1 else ""
+		var warning: String = LEVEL_WARNINGS.get(SaveData.level, "")
 		if hardcore():
 			intro = GoalIntro.new().setup("Hardcore", "Push the white ball up the tower\ninto the gold pocket at the top." + warning, 16)
 		else:
@@ -106,6 +112,8 @@ func _build_hud() -> void:
 	vm.shader = preload("res://shaders/vignette.gdshader")
 	vignette.material = vm
 	mood.add_child(vignette)
+	weather = WeatherLayer.new()
+	mood.add_child(weather)
 	hud = CanvasLayer.new()
 	hud.layer = 5
 	add_child(hud)
@@ -277,7 +285,7 @@ func _on_won() -> void:
 			SaveData.collected.append(BallVisual.RAINBOW)
 			unlocked.append(BallVisual.RAINBOW)
 	var all_found := true
-	for n in range(1, 11):
+	for n in tower.lost_numbers():
 		if not SaveData.collected.has(n):
 			all_found = false
 	var checks := [true, SaveData.strokes < 400, SaveData.run_time < 1800.0, SaveData.falls <= 10, all_found]
@@ -289,6 +297,7 @@ func _on_won() -> void:
 	var stats := { "time": SaveData.run_time, "strokes": SaveData.strokes, "falls": SaveData.falls, "unlocked": unlocked }
 	SaveData.finish_run()
 	Sfx.set_music_zone(-1)
+	Sfx.set_gust(0.0)
 	Sfx.play("win", 0.0, 1.0, 0.0)
 	var ending: Control = ENDING.new()
 	ending.stats = stats
@@ -298,6 +307,7 @@ func _on_won() -> void:
 func quit_to_title() -> void:
 	save_progress()
 	Sfx.stop_roll()
+	Sfx.set_gust(0.0)
 	Sfx.set_ambience(-1)
 	get_tree().paused = false
 	get_tree().change_scene_to_file("res://scenes/ui/title.tscn")
@@ -357,6 +367,14 @@ func _props_near_screen() -> Array:
 func _physics_process(_delta: float) -> void:
 	if player == null or finished:
 		return
+	# Weather for the screen in view: streaks, swaying decor, the sound of the gust.
+	var view_y := Tower.screen_center(screen).y
+	var wind := tower.world.wind_at(view_y)
+	weather.wind = wind
+	weather.low_gravity = tower.world.gravity_scale_at(view_y) < 1.0
+	for prop in _props_by_screen.get(screen, []):
+		prop.feel_wind(wind)
+	Sfx.set_gust(wind.length())
 	var p := player.sim.pos
 	for prop in _props_near_screen():
 		if prop.visible and prop.touches(p, BallSim.RADIUS):

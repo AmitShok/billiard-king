@@ -17,6 +17,8 @@ extends SceneTree
 ##   neonbar  - "Neon Shuffle": 108 BPM, 12-bar blues in F, vibes riff, shuffle kit
 ##   royal    - "Royal Waltz": 3/4 at 132 BPM, C major, strings + music-box vibes
 ##   summit   - "Moon Over the Table": 60 BPM, floating pads and a sparse Rhodes motif
+##   moon     - "Felt of Tranquility": 54 BPM, weightless strings and far-apart vibes
+##   storm    - "Rooftop Gale": 92 BPM, E minor, restless walking bass and brushes
 
 const RATE := 22050
 const OUT := "res://assets/audio/music/"
@@ -34,6 +36,8 @@ func _initialize() -> void:
 	_neonbar()
 	_royal()
 	_summit()
+	_moon()
+	_storm()
 	print("music baked in %.1fs" % ((Time.get_ticks_msec() - t0) / 1000.0))
 	quit()
 
@@ -144,6 +148,50 @@ func _summit() -> void:
 			for n in motif:
 				_rhodes(t + n[0] * beat, n[2] - (2 if bar >= 4 else 0), n[1] * beat, 0.3)
 	_finish("music_summit")
+
+
+func _moon() -> void:
+	rng.seed = 55
+	_start(54.0, 8 * 4)
+	var chords := [
+		[[60, 64, 67, 74], 36], [[56, 60, 63, 70], 32], [[58, 62, 65, 72], 34], [[53, 57, 60, 67], 29],
+		[[60, 64, 67, 74], 36], [[61, 65, 68, 75], 37], [[58, 62, 65, 72], 34], [[55, 59, 62, 69], 31],
+	]
+	var phrases := [
+		[[0, 2, 79], [2.5, 1.5, 84]], [], [[1, 3, 82]], [],
+		[[0, 1.5, 86], [2, 2, 79]], [], [[0.5, 3, 77]], [[2, 2, 74]],
+	]
+	for bar in 8:
+		var t := bar * 4 * beat
+		var ch: Array = chords[bar]
+		_strings(t, ch[0], 4 * beat, 0.2)
+		_bass(t, ch[1] + 12, 3.0 * beat, 0.32)
+		for n in phrases[bar]:
+			_vibes(t + n[0] * beat, n[2], n[1] * beat, 0.3)
+	_finish("music_moon")
+
+
+func _storm() -> void:
+	rng.seed = 66
+	_start(92.0, 16 * 4)
+	var chords := [
+		[[55, 59, 62, 66], 40], [[55, 59, 62, 66], 40], [[52, 55, 60, 64], 36], [[54, 57, 60, 66], 35],
+		[[55, 59, 62, 66], 40], [[57, 60, 64, 67], 33], [[54, 58, 61, 64], 42], [[54, 57, 60, 63], 35],
+	]
+	var cry := [[0, 1.5, 76], [1.5, 0.5, 79], [2, 2, 83]]
+	for bar in 16:
+		var t := bar * 4 * beat
+		var ch: Array = chords[bar % 8]
+		var next_root: int = chords[(bar + 1) % 8][1]
+		_comp(t, ch[0], [0.667, 2.667], 0.26)
+		_walk(t, ch[1], next_root, 4, 0.9)
+		_brushes(t, 4, 0.6)
+		_kick(t + 2.0 * beat, 0.25)
+		_strings(t, [ch[0][0] - 12, ch[0][2] - 12], 4 * beat, 0.08)
+		if bar % 4 == 3:
+			for n in cry:
+				_vibes(t + n[0] * beat, n[2] - (5 if bar % 8 == 7 else 0), n[1] * beat, 0.3)
+	_finish("music_storm")
 
 
 # --- Arrangement helpers ----------------------------------------------------------------

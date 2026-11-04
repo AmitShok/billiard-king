@@ -41,7 +41,7 @@ func _physics_process(_delta: float) -> void:
 
 
 func _draw() -> void:
-	var row := clampi(zone, 0, 2) * 16
+	var row := clampi(zone, 0, 4) * 16
 	for i in tiles:
 		var part := 1
 		if i == 0:

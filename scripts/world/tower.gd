@@ -11,6 +11,9 @@ const ZONE_NAMES := ["The Back Room", "Lucky's Neon Bar", "The Royal Club", "The
 @export var screen_zones: PackedInt32Array
 @export var spawn := Vector2.ZERO
 @export var zone_names: PackedStringArray = ZONE_NAMES
+## Low gravity and wind sections: screen -> multiplier, screen -> {strength, period, phase, dirs}.
+@export var screen_gravity: Dictionary = {}
+@export var screen_winds: Dictionary = {}
 
 var world: CollisionWorld
 var trap_nodes: Array[Node2D] = []   # same order as world.traps
@@ -53,6 +56,14 @@ func build_world(collected: Array = []) -> CollisionWorld:
 		child.set_meta("world_id", id)
 		id += 1
 	_build_movers()
+	world.screen_gravity = screen_gravity
+	var wind_dirs := { "R": Vector2.RIGHT, "U": Vector2.UP, "L": Vector2.LEFT, "D": Vector2.DOWN }
+	for k in screen_winds:
+		var w: Dictionary = screen_winds[k]
+		var dirs := PackedVector2Array()
+		for ch in String(w.dirs):
+			dirs.append(wind_dirs[ch])
+		world.screen_wind[k] = { "strength": w.strength, "period": w.period, "phase": w.phase, "dirs": dirs }
 	return world
 
 
@@ -87,6 +98,15 @@ func resume_movers(t: float) -> void:
 		if child is MovingPlatform or child is TrapSpike:
 			child.position = child.data.pos
 			child.reset_physics_interpolation()
+
+
+## Every lost ball placed in this level, whether already found or not.
+func lost_numbers() -> Array[int]:
+	var out: Array[int] = []
+	for child in $Objects.get_children():
+		if child is LostBall:
+			out.append(child.number)
+	return out
 
 
 func object_by_id(id: int) -> Node:

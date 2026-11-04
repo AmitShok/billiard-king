@@ -1,6 +1,6 @@
 -- Vertical Billiard: per-zone backdrops, 512x288 (one screen), tiling vertically
 -- so the tower reads as one continuous building.
---   bg_backroom.png  bg_neonbar.png  bg_royal.png  bg_summit.png
+--   bg_backroom.png  bg_neonbar.png  bg_royal.png  bg_summit.png  bg_moon.png  bg_space.png  bg_storm.png
 --   aseprite -b --script-param root=<project> --script tools/art_backgrounds.lua
 local A = dofile(app.params["root"] .. "/tools/art_lib.lua")
 local W, H = 512, 288
@@ -129,6 +129,144 @@ do
     end
   end
   c:save("bg_summit")
+end
+
+-- Shared: a star field that leaves out anything already drawn.
+local function stars(c, count, seed, max_y)
+  for i = 0, count do
+    local x = math.floor(A.hash(i, 1, seed) * W)
+    local y = math.floor(A.hash(i, 2, seed) * max_y)
+    local b = A.hash(i, 3, seed)
+    c:px(x, y, b > 0.85 and "fff6d8" or (b > 0.5 and "a8a8d0" or "5a5a88"))
+    if b > 0.96 then
+      c:px(x - 1, y, "5a5a88"); c:px(x + 1, y, "5a5a88"); c:px(x, y - 1, "5a5a88"); c:px(x, y + 1, "5a5a88")
+    end
+  end
+end
+
+-- A pool ball hanging in the sky, lit from the left.
+local function sky_ball(c, cx, cy, r, base, stripe)
+  for y = cy - r, cy + r do for x = cx - r, cx + r do
+    local dx, dy = (x + 0.5 - cx) / r, (y + 0.5 - cy) / r
+    if dx * dx + dy * dy <= 1 then
+      local lit = 0.55 - dx * 0.5 - dy * 0.35
+      local col = A.ramp(base, lit, x, y)
+      if stripe and math.abs(dy) > 0.45 then col = A.ramp({ "4a4a58", "8a8a96", "c8c4b8", "ece6d6" }, lit, x, y) end
+      c:px(x, y, col)
+    end
+  end end
+end
+
+-- Moon: black sky, stars, a blue-felt world on the horizon, cratered ground.
+do
+  local c = A.canvas(W, H)
+  local sky = { "05060e", "080a16", "0c0e1e", "11142a" }
+  for y = 0, H - 1 do for x = 0, W - 1 do
+    c:px(x, y, A.ramp(sky, y / H, x, y))
+  end end
+  stars(c, 170, 51, 225)
+  -- The home world: a green-felt marble with cloud bands, fitting the table colours.
+  sky_ball(c, 96, 56, 26, { "0c2a2a", "14504a", "1f7a58", "3fa878", "8cd8a8" }, false)
+  for y = 30, 82 do for x = 70, 122 do
+    local dx, dy = (x + 0.5 - 96) / 26, (y + 0.5 - 56) / 26
+    if dx * dx + dy * dy <= 1 and math.sin(y * 0.55 + math.sin(x * 0.18) * 1.6) > 0.72 then c:px(x, y, "d8ecd8") end
+    if dx * dx + dy * dy <= 1 and dx * dx + dy * dy > 0.86 then c:px(x, y, "4ab8a0") end
+  end end
+  -- Rolling regolith with craters along the bottom of the screen.
+  local ground = { "23252e", "32343f", "44475a", "5c6072" }
+  for x = 0, W - 1 do
+    local top = 236 + math.floor(math.sin(x * 0.021) * 7 + math.sin(x * 0.067) * 3)
+    for y = top, H - 1 do
+      local t = 0.72 - (y - top) / 60 + A.hash(x, y, 53) * 0.1
+      c:px(x, y, A.ramp(ground, t, x, y))
+    end
+    c:px(x, top, "7c8094")
+  end
+  for i = 0, 9 do
+    local cx = math.floor(A.hash(i, 5, 55) * W)
+    local cy = 252 + math.floor(A.hash(i, 6, 55) * 28)
+    local r = 5 + math.floor(A.hash(i, 7, 55) * 11)
+    c:ellipse(cx, cy, r, r * 0.38, "1c1e26")
+    c:ellipse(cx + 1, cy + 1, r - 1, (r - 1) * 0.34, "2a2c38")
+    for a = 0, r * 3 do
+      local ang = math.pi + a / (r * 3) * math.pi
+      c:px(cx + math.cos(ang) * r, cy + math.sin(ang) * r * 0.42, "6c7084")
+    end
+  end
+  c:save("bg_moon")
+end
+
+-- Open space: a dithered nebula, stars, a striped ringed planet.
+do
+  local c = A.canvas(W, H)
+  local deep = { "06060f", "0a0a1c", "12102c", "1c1440", "2a1a52" }
+  for y = 0, H - 1 do for x = 0, W - 1 do
+    local n = math.sin(x * 0.013 + math.sin(y * 0.021) * 2.1) + math.sin(y * 0.017 + math.sin(x * 0.009) * 2.7) + math.sin((x + y) * 0.007)
+    c:px(x, y, A.ramp(deep, (n + 3) / 6.2, x, y))
+  end end
+  for y = 0, H - 1 do for x = 0, W - 1 do
+    local n = math.sin(x * 0.015 + math.sin(y * 0.031) * 2.8) * math.sin(y * 0.021 + math.sin(x * 0.027) * 2.4)
+    if n > 0.62 and A.bayer(x, y) < (n - 0.62) * 2.2 then c:px(x, y, "1e3a5a") end
+  end end
+  stars(c, 240, 57, H)
+  -- Ringed striped planet, a giant nine ball.
+  local cx, cy = 396, 88
+  for a = 0, 720 do
+    local ang = a / 720 * 2 * math.pi
+    for rr = 44, 54, 2 do
+      local x, y = cx + math.cos(ang) * rr, cy + math.sin(ang) * rr * 0.28
+      if math.sin(ang) < 0 then c:px(x, y, rr > 50 and "7a5c1e" or "a8842e") end
+    end
+  end
+  sky_ball(c, cx, cy, 30, { "5a3e08", "8c6410", "c49018", "f0b92c", "ffdc70" }, true)
+  c:disc(cx, cy, 8, "ece6d6"); c:rect(cx - 1, cy - 4, 3, 8, "1c1a1f"); c:rect(cx, cy - 3, 1, 2, "ece6d6")
+  for a = 0, 720 do
+    local ang = a / 720 * 2 * math.pi
+    for rr = 44, 54, 2 do
+      local x, y = cx + math.cos(ang) * rr, cy + math.sin(ang) * rr * 0.28
+      if math.sin(ang) >= 0 then c:px(x, y, rr > 50 and "a8842e" or "e0bc5a") end
+    end
+  end
+  c:save("bg_space")
+end
+
+-- Storm: bruised cloud bands, rooftops and water towers, thin rain.
+do
+  local c = A.canvas(W, H)
+  local sky = { "0c1218", "121a22", "18242e", "20303a", "2a3e48" }
+  for y = 0, H - 1 do for x = 0, W - 1 do
+    local band = math.sin(y * 0.05 + math.sin(x * 0.012) * 2.0) * 0.5 + 0.5
+    local cloud = math.sin(x * 0.009 + y * 0.03) * 0.5 + 0.5
+    c:px(x, y, A.ramp(sky, band * 0.55 + cloud * 0.35, x, y))
+  end end
+  -- Rooftops and water towers, in the same depth layers as the summit skyline.
+  for layer = 1, 2 do
+    local col = layer == 1 and "111a22" or "0a1016"
+    local x = 0
+    local seed = layer * 31
+    while x < W do
+      local w = 34 + math.floor(A.hash(x, seed, 7) * 46)
+      local h = (layer == 1 and 36 or 14) + math.floor(A.hash(x, seed, 9) * 34)
+      c:rect(x, H - h, w - 2, h, col)
+      for wy = H - h + 5, H - 4, 7 do for wx = x + 4, x + w - 8, 7 do
+        if A.hash(wx, wy, seed) > 0.8 then c:rect(wx, wy, 3, 3, layer == 1 and "4a4632" or "8a7a3e") end
+      end end
+      if A.hash(x, seed, 13) > 0.55 and layer == 1 then
+        local tx, ty = x + w // 2, H - h - 16
+        c:rect(tx - 7, ty, 15, 11, col); c:hline(tx - 8, tx + 8, ty - 1, col)
+        for d = 0, 3 do c:hline(tx - 7 + d, tx + 7 - d, ty - 2 - d, col) end
+        c:vline(tx - 6, ty + 11, H - h, col); c:vline(tx + 6, ty + 11, H - h, col)
+      end
+      x = x + w
+    end
+  end
+  -- Thin slanting rain baked into the sky.
+  for i = 0, 170 do
+    local x = math.floor(A.hash(i, 1, 61) * W)
+    local y = math.floor(A.hash(i, 2, 61) * H)
+    for d = 0, 3 do c:px(x + d, y + d * 3, "3a4c58") end
+  end
+  c:save("bg_storm")
 end
 
 print("Backgrounds exported.")

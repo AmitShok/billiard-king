@@ -2,14 +2,14 @@
 -- Each ball is painted as an equirectangular "skin" (64x32: longitude across,
 -- latitude down) that the ball shader wraps around a sphere and rotates, so
 -- the numbers, stripes and the cue ball's dots visibly roll.
--- Atlas: 4x7 cells -> 256x224. Cell 0 = player cue ball, cells 1..15 = numbers,
--- cell 16 = the plain white ball pushed around in Hardcore mode, cells 17..26 =
--- level 2's lost balls, cell 27 = the rainbow ball (greyscale here: the shader colours it).
+-- Atlas: 4x8 cells -> 256x256. Cell 0 = player cue ball, cells 1..15 = numbers,
+-- cell 16 = the plain white ball pushed around in Hardcore mode, cells 17..26 and 28..31 =
+-- patterned lost balls, cell 27 = the rainbow ball (greyscale here: the shader colours it).
 --   aseprite -b --script-param root=<project> --script tools/art_balls.lua
 local A = dofile(app.params["root"] .. "/tools/art_lib.lua")
 
 local CW, CH = 64, 32
-local c = A.canvas(CW * 4, CH * 7)
+local c = A.canvas(CW * 4, CH * 8)
 
 local IVORY = "f4eedc"
 local INK = "1c1a1f"
@@ -96,6 +96,23 @@ local function special_skin(num, dx, dy, dz, x, y)
       if d > r then return d > r + (1 - r) * 0.35 and "7c786e" or "e4e0d4" end
     end
     return "b4b0a4"
+  elseif num == 28 then -- Comet: icy blue with a bright streak
+    local t = math.sin(lon * 2.0 + dy * 5.0)
+    if t > 0.93 then return "ffffff" end
+    if t > 0.7 then return "a8e0f4" end
+    return "1c3a64"
+  elseif num == 29 then -- Aurora: green and violet curtains on black
+    local t = math.sin(lon * 5.0 + math.sin(dy * 6.0) * 1.6)
+    if t > 0.65 then return "6ae8a8" end
+    if t < -0.72 then return "9a6ae8" end
+    return "0e1420"
+  elseif num == 30 then -- Thunder: slate with a yellow zigzag band
+    local z = math.abs(((lon * 4.0 / math.pi) % 2) - 1) * 0.5 - 0.25
+    if math.abs(dy - z) < 0.11 then return "ffe24a" end
+    return dy > z and "3a4652" or "242c34"
+  elseif num == 31 then -- Copper: burnished, with verdigris
+    if A.hash(math.floor(x / 3), math.floor(y / 3), 311) > 0.84 then return "4ab8a0" end
+    return math.abs(math.sin(dy * 7.0)) < 0.18 and "f0b080" or "b8683a"
   else -- Rainbow: pale, with soft bands and star marks the shader tints
     for _, a in ipairs({ { 1, 0, 0 }, { -1, 0, 0 }, { 0, 1, 0 }, { 0, -1, 0 }, { 0, 0, 1 }, { 0, 0, -1 } }) do
       if dx * a[1] + dy * a[2] + dz * a[3] > 0.96 then return "ffffff" end
@@ -145,6 +162,6 @@ local function paint_ball(cell, num)
   end
 end
 
-for n = 0, 27 do paint_ball(n, n) end
+for n = 0, 31 do paint_ball(n, n) end
 c:save("balls")
 print("Ball skins exported.")

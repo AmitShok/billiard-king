@@ -1,5 +1,5 @@
 -- Vertical Billiard: moving platforms and traps.
---   moving_platform.png  48x48: columns left/middle/right, rows = zone (0 Back Room, 1 Neon Bar, 2 Royal Club).
+--   moving_platform.png  48x80: columns left/middle/right, rows = zone (0 Back Room, 1 Neon Bar, 2 Royal Club, 3 Moon, 4 Storm).
 --                        Felt deck on a bright brass carriage with wheels, so it reads as machinery.
 --   spike_ball.png       2 frames of 28x28: a red spiked ball. Danger colours (hot red and warning
 --                        yellow) are reserved for traps; no decoration uses them.
@@ -10,14 +10,16 @@ local OUT = "11090c"
 
 -- Moving platform tiles.
 do
-  local c = A.canvas(48, 48)
+  local c = A.canvas(48, 80)
   local felts = {
     { "74c07a", "4a9c5e", "2f7c4c" },
     { "d4607a", "a83a52", "822840" },
     { "72aaf8", "3c80e0", "2660b8" },
+    { "d8deea", "9aa2b6", "737a90" },
+    { "7cc0b4", "45908c", "2c6a6e" },
   }
   local brass = { "5a4218", "8c6a28", "c49a40", "f0d080" }
-  for z = 0, 2 do
+  for z = 0, 4 do
     local f = felts[z + 1]
     for part = 0, 2 do
       local ox, oy = part * 16, z * 16

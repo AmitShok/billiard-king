@@ -1,12 +1,11 @@
 @tool
 class_name LostBall
 extends Node2D
-## One of the fifteen numbered balls lost in the tower (Ballgame's collection,
-## billiard-style). Finding it unlocks that ball as a skin in the Ball Rack.
+## A ball lost somewhere in a level (Ballgame's collection, billiard-style). Finding it unlocks that ball as a skin in the Ball Rack.
 
 const GLOW := preload("res://assets/textures/glow.png")
 
-@export_range(1, 26) var number: int = 1:
+@export_range(1, 31) var number: int = 1:
 	set(v):
 		number = v
 		if _ball:

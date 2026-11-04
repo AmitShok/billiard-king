@@ -1,5 +1,5 @@
--- Vertical Billiard: terrain tiles (16x16), three zones.
--- Atlas 256x144. For zone z (0 Back Room, 1 Neon Bar, 2 Royal Club):
+-- Vertical Billiard: terrain tiles (16x16), five zones.
+-- Atlas 256x240. For zone z (0 Back Room, 1 Neon Bar, 2 Royal Club, 3 Moon, 4 Storm):
 --   row 3z   : table block, 16 autotile variants (col = exposure mask)
 --   row 3z+1 : rubber cushion block, 16 autotile variants
 --   row 3z+2 : col 0 slope rising right, col 1 slope rising left,
@@ -9,7 +9,7 @@
 local A = dofile(app.params["root"] .. "/tools/art_lib.lua")
 
 local T = 16
-local c = A.canvas(T * 16, T * 9)
+local c = A.canvas(T * 16, T * 15)
 
 local ZONES = {
   { -- Back Room: green felt, walnut rails, plank cabinet
@@ -39,6 +39,24 @@ local ZONES = {
     stud = { "c9a040", "fff0b0" },
     pattern = "marble",
   },
+  { -- Moon: pale silver felt, brushed titanium rails, pitted moon rock
+    felt = { "3e4254", "565b70", "737a90", "9aa2b6", "d8deea" },
+    rail = { "23262e", "3c414e", "5e6474", "8e95a6" },
+    body = { "2b2d38", "3a3d4a", "4a4e5c", "5c6070" },
+    shadow = "12131a",
+    cush = { "1c2a40", "2a4060", "3a5a84", "5a80ac", "8cb0d4" },
+    stud = { "b8bcc8", "ffffff" },
+    pattern = "rock",
+  },
+  { -- Storm: rain-dark teal felt, weathered rails, slate shingles
+    felt = { "14343a", "1e4c52", "2c6a6e", "45908c", "7cc0b4" },
+    rail = { "1c1a18", "38302a", "54483c", "7a6a56" },
+    body = { "1a2026", "242c34", "2e3842", "3a4652" },
+    shadow = "0a0e12",
+    cush = { "2e2a12", "4a441c", "6c6428", "8e843a", "bab05a" },
+    stud = { "8a9098", "e0e4e8" },
+    pattern = "shingle",
+  },
 }
 
 local function body_color(z, x, y)
@@ -51,6 +69,21 @@ local function body_color(z, x, y)
     if g < 0.18 then return p[2] elseif g > 0.86 then return p[4] end
     if x % 8 == 0 then return p[4] end
     return p[3]
+  elseif pat == "rock" then
+    -- Moon rock: periodic pits so tiles join seamlessly.
+    local v = math.sin(2 * math.pi * x / 8) * math.sin(2 * math.pi * y / 8)
+    if v > 0.72 then return p[1] end
+    if v > 0.45 then return p[2] end
+    if v < -0.7 then return p[4] end
+    return A.hash(x, y, 33) > 0.85 and p[2] or p[3]
+  elseif pat == "shingle" then
+    -- Overlapping slate shingles in staggered courses.
+    local course = y // 5
+    local lx = (x + (course % 2) * 4) % 8
+    if y % 5 == 4 then return p[1] end
+    if lx == 7 then return p[1] end
+    if y % 5 == 0 then return p[4] end
+    return A.hash(lx, course, 37) > 0.5 and p[3] or p[2]
   elseif pat == "lacquer" then
     -- Deep lacquer with slim vertical inlay lines and a soft sheen band.
     if x % 8 == 3 then return p[3] end
@@ -157,7 +190,7 @@ local function draw_slope(z, ox, oy, rising_right, cushion)
   end
 end
 
-for z = 1, 3 do
+for z = 1, 5 do
   local row = (z - 1) * 3
   for mask = 0, 15 do
     draw_table(z, mask * T, row * T, mask)

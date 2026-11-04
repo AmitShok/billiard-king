@@ -5,8 +5,8 @@ extends Node
 ## music by tools/build_music.gd.
 
 const DIR := "res://assets/audio/"
-const AMBIENCE := ["amb_backroom", "amb_neonbar", "amb_royal", "amb_summit"]
-const MUSIC := ["music/music_backroom", "music/music_neonbar", "music/music_royal", "music/music_summit"]
+const AMBIENCE := ["amb_backroom", "amb_neonbar", "amb_royal", "amb_summit", "amb_moon", "amb_storm", "amb_moon"]
+const MUSIC := ["music/music_backroom", "music/music_neonbar", "music/music_royal", "music/music_summit", "music/music_moon", "music/music_storm", "music/music_moon"]
 const MUSIC_FADE := 2.0
 const VOICES := 14
 
@@ -20,6 +20,7 @@ var _amb_zone := -1
 var _mus_a: AudioStreamPlayer
 var _mus_b: AudioStreamPlayer
 var _music := ""
+var _gust: AudioStreamPlayer
 var _rng := RandomNumberGenerator.new()
 
 
@@ -51,6 +52,11 @@ func _ready() -> void:
 		p.bus = "Music"
 		p.volume_db = -80.0
 		add_child(p)
+	_gust = AudioStreamPlayer.new()
+	_gust.bus = "Ambience"
+	_gust.volume_db = -80.0
+	_gust.stream = _stream("amb_summit")
+	add_child(_gust)
 	var roll_stream := _stream("roll_loop")
 	if roll_stream:
 		_roll.stream = roll_stream
@@ -176,3 +182,15 @@ func play_music(track: String) -> void:
 
 func current_music() -> String:
 	return _music
+
+
+## The wind rises and falls with the gust on screen.
+func set_gust(strength: float) -> void:
+	if _gust.stream == null:
+		return
+	var target := -80.0 if strength < 4.0 else lerpf(-22.0, -2.0, clampf(strength / 280.0, 0.0, 1.0))
+	if target > -79.0 and not _gust.playing:
+		_gust.play()
+	_gust.volume_db = lerpf(_gust.volume_db, target, 0.02)
+	if _gust.volume_db < -70.0 and _gust.playing and target <= -79.0:
+		_gust.stop()

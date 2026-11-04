@@ -8,6 +8,8 @@ signal closed
 const LEVELS := [
 	{ "name": "The Tower", "about": "10 screens" },
 	{ "name": "The Long Rack", "about": "20 screens, traps, moving carriages" },
+	{ "name": "The Moon Shot", "about": "15 screens, low gravity in space" },
+	{ "name": "The Gale", "about": "15 screens, wind from four directions" },
 ]
 
 var mode := SaveData.CLASSIC
@@ -25,8 +27,6 @@ func _ready() -> void:
 	dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(dim)
 	var box := UIKit.panel(self, Vector2(340, 0))
-	# Sit below the logo rather than cutting across it.
-	box.get_parent().get_parent().offset_top = 68.0
 	UIKit.heading(box, "Hardcore mode" if mode == SaveData.HARDCORE else "Normal mode")
 	for i in LEVELS.size():
 		_add_row(box, i)

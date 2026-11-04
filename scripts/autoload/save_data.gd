@@ -38,7 +38,7 @@ var seen_zones: Array[int] = []
 var broken: Array[String] = []     # windows smashed this climb (they stay broken)
 
 # Persistent across runs (the Ball Rack)
-var collected: Array[int] = []      # balls in the rack: 1-10 and 17-26 are lost balls, the rest awards
+var collected: Array[int] = []      # balls in the rack, see BallRack.LOST_IN for which are lost where
 var skin := 0
 var wins := 0
 var best_time := 0.0
@@ -130,10 +130,12 @@ func has_run_for(for_mode: String, for_level: int = 1) -> bool:
 	return _read().get_value(run_section(for_mode, for_level), "active", false)
 
 
-## Level 2 opens once level 1 is finished in either mode. A level 2 run
+## Each level opens once the one before it is finished in either mode. A run
 ## already under way stays playable.
 func level_unlocked(for_level: int) -> bool:
-	if for_level <= 1 or wins > 0 or hc_wins > 0:
+	if for_level <= 1:
+		return true
+	if record(CLASSIC, for_level - 1).wins > 0 or record(HARDCORE, for_level - 1).wins > 0:
 		return true
 	return has_run_for(CLASSIC, for_level) or has_run_for(HARDCORE, for_level)
 

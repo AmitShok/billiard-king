@@ -22,25 +22,36 @@ extends SceneTree
 ##   @ spinner x y arms length speed angle     spinning arm trap centred on tile (x, y)
 ##   @ spike x0 y0 x1 y1 period phase          spiked ball between two tile centres
 ##   @ lost x y number                         a lost ball numbered above 15 (no map char for those)
+##   @ gravity scale                           low gravity for this whole screen
+##   @ wind strength period phase [dirs]       gusts in turn from dirs (default RULD), in px/s^2
+## Zones: 0 Back Room, 1 Neon Bar, 2 Royal Club, 3 summit, 4 Moon, 5 Storm, 6 Space.
+## More decor: A asteroid  G satellite  N moon flag  V wind sock  U bunting  Y weather vane
 
 const TILE := 16
 const W := 32
 const H := 18
 const SCREEN_H := H * TILE
-const ZONE_BG := ["bg_backroom", "bg_neonbar", "bg_royal", "bg_summit"]
+const ZONE_BG := ["bg_backroom", "bg_neonbar", "bg_royal", "bg_summit", "bg_moon", "bg_storm", "bg_space"]
+const TILE_ZONE := [0, 1, 2, 2, 3, 4, 3]   # tile palette for each zone
 
 var tex := {}
 var _bad := false
+var _gravity := {}
+var _winds := {}
 
 
 func _initialize() -> void:
-	var ok := _bake("res://levels/tower.txt", "res://scenes/world/tower.tscn", ["The Back Room", "Lucky's Neon Bar", "The Royal Club", "The King's Table"])
-	ok = _bake("res://levels/tower2.txt", "res://scenes/world/tower2.tscn", ["The Cellar", "The Jukebox Floor", "The Grand Salon", "The Rooftop Final"]) and ok
+	var ok := _bake("res://levels/tower.txt", "res://scenes/world/tower.tscn", ["The Back Room", "Lucky's Neon Bar", "The Royal Club", "The King's Table", "", "", ""])
+	ok = _bake("res://levels/tower2.txt", "res://scenes/world/tower2.tscn", ["The Cellar", "The Jukebox Floor", "The Grand Salon", "The Rooftop Final", "", "", ""]) and ok
+	ok = _bake("res://levels/tower3.txt", "res://scenes/world/tower3.tscn", ["", "The Launch Bar", "The Planetarium", "", "The Sea of Felt", "", "Open Space"]) and ok
+	ok = _bake("res://levels/tower4.txt", "res://scenes/world/tower4.tscn", ["The Attic", "The Back Alley", "", "", "", "The Rooftops", ""]) and ok
 	quit(0 if ok else 1)
 
 
 func _bake(source: String, target: String, zone_names: PackedStringArray) -> bool:
 	_bad = false
+	_gravity = {}
+	_winds = {}
 	var screens := _parse(source)
 	if screens.is_empty() or _bad:
 		push_error("no screens parsed from %s" % source)
@@ -59,7 +70,7 @@ func _bake(source: String, target: String, zone_names: PackedStringArray) -> boo
 			for c in W:
 				var cell := Vector2i(c, -(s.index + 1) * H + r)
 				grid[cell] = row[c]
-				cell_zone[cell] = mini(s.zone, 2)
+				cell_zone[cell] = TILE_ZONE[s.zone]
 
 	var tileset := _make_tileset()
 	ResourceSaver.save(tileset, "res://resources/tiles.tres")
@@ -107,6 +118,8 @@ func _bake(source: String, target: String, zone_names: PackedStringArray) -> boo
 	_add(root, movers)
 	for s in screens:
 		_add_movers(movers, objects, s)
+	root.set("screen_gravity", _gravity)
+	root.set("screen_winds", _winds)
 
 	var exits: Array[Vector2] = []
 	for cell in grid:
@@ -198,6 +211,16 @@ func _bake(source: String, target: String, zone_names: PackedStringArray) -> boo
 				var ng := _glow(neon, Vector2.ZERO, Color(1.0, 0.4, 0.75, 0.7) if ch == "P" else Color(0.4, 0.95, 1.0, 0.7), 1.6)
 				ng.name = "Glow"
 				ng.z_index = 1
+			"V", "U", "Y":
+				var wp := _prop(decor, "wind", ch, cell, _center(cell))
+				wp.set("style", {"V": 0, "U": 1, "Y": 2}[ch])
+				if ch == "V":
+					wp.position = _center(cell) + Vector2(0, -20)
+			"A", "G", "N":
+				var sp := _prop(decor, "space", ch, cell, _center(cell))
+				sp.set("style", {"A": 0, "G": 1, "N": 2}[ch])
+				if ch == "N":
+					sp.position = _center(cell) + Vector2(0, -7)
 			"F", "T":
 				# Hung on a nail at the top edge, so it swings about the nail.
 				var h := 34.0 if ch == "F" else 20.0
@@ -364,7 +387,7 @@ func _make_tileset() -> TileSet:
 	var src := TileSetAtlasSource.new()
 	src.texture = _tex("tiles")
 	src.texture_region_size = Vector2i(TILE, TILE)
-	for y in 9:
+	for y in 15:
 		for x in 16:
 			if y % 3 == 2 and x >= 4:
 				continue
@@ -381,6 +404,8 @@ const PROP_SCRIPTS := {
 	"tilt": "res://scripts/world/props/tilt_prop.gd",
 	"window": "res://scripts/world/props/window_prop.gd",
 	"knock": "res://scripts/world/props/knock_prop.gd",
+	"wind": "res://scripts/world/props/wind_props.gd",
+	"space": "res://scripts/world/props/space_props.gd",
 }
 
 
@@ -400,6 +425,12 @@ func _add_movers(parent: Node, objects: Node, s: Dictionary) -> void:
 	var i := 0
 	for m in s.movers:
 		var kind: String = m[1]
+		if kind == "gravity":
+			_gravity[s.index] = float(m[2])
+			continue
+		if kind == "wind":
+			_winds[s.index] = { "strength": float(m[2]), "period": float(m[3]), "phase": float(m[4]), "dirs": m[5] if m.size() > 5 else "RULD" }
+			continue
 		if kind == "lost":
 			var lb := Node2D.new()
 			lb.set_script(load("res://scripts/world/lost_ball.gd"))
@@ -421,7 +452,7 @@ func _add_movers(parent: Node, objects: Node, s: Dictionary) -> void:
 				node.set("tiles", int(m[4]))
 				node.set("period", float(m[7]))
 				node.set("phase", float(m[8]))
-				node.set("zone", mini(s.zone, 2))
+				node.set("zone", TILE_ZONE[s.zone])
 			"spinner":
 				node.set_script(load("res://scripts/world/trap_spinner.gd"))
 				node.position = Vector2(float(m[2]) * TILE + TILE / 2.0, float(m[3]) * TILE + TILE / 2.0 + top)

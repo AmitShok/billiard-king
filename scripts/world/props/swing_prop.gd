@@ -13,6 +13,7 @@ const MAX_SPIN := 3.2
 
 var angle := 0.0
 var spin := 0.0
+var _wind_x := 0.0
 
 
 func touches(ball_pos: Vector2, radius: float) -> bool:
@@ -43,9 +44,13 @@ func rumble(_from: Vector2, strength: float) -> void:
 		Sfx.play("tinkle", -20.0 + strength * 6.0)
 
 
+func feel_wind(wind: Vector2) -> void:
+	_wind_x = wind.x
+
+
 func update(delta: float) -> void:
 	var dt := minf(delta, 1.0 / 30.0)
-	var accel := -(GRAVITY / length) * sin(angle) - DAMPING * spin
+	var accel := -(GRAVITY / length) * sin(angle) - DAMPING * spin + _wind_x / length * cos(angle)
 	spin += accel * dt
 	angle += spin * dt
 	if absf(angle) < 0.0005 and absf(spin) < 0.0005:

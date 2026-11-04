@@ -45,9 +45,9 @@ func open() -> void:
 	if visible:
 		return
 	game.save_progress()
-	_stats.text = ("Level %d\n" % SaveData.level) + "Time  %s\nStrokes  %d\nFalls  %d\nLost balls  %d / 10" % [
+	_stats.text = ("Level %d\n" % SaveData.level) + "Time  %s\nStrokes  %d\nFalls  %d\nLost balls  %d / %d" % [
 		SaveData.format_time(SaveData.run_time), SaveData.strokes, SaveData.falls,
-		SaveData.collected.filter(func(n): return (n <= 10) if SaveData.level == 1 else (n >= 17 and n <= 26)).size()]
+		game.tower.lost_numbers().filter(func(n): return SaveData.collected.has(n)).size(), game.tower.lost_numbers().size()]
 	visible = true
 	get_tree().paused = true
 	Sfx.stop_roll()

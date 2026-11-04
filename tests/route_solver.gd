@@ -237,6 +237,10 @@ func _moments(node: Dictionary) -> Array:
 		for i in RIDING_MOMENTS:
 			out.append(p.period * i / RIDING_MOMENTS)
 		return out
+	# In wind, wait for the right part of the gust cycle.
+	var wind: Variant = world.screen_wind.get(Tower.screen_of(node.pos.y))
+	if wind != null:
+		return [wind.period * 0.1, wind.period * 0.35, wind.period * 0.6, wind.period * 0.85]
 	if mover_screens.has(Tower.screen_of(node.pos.y)):
 		return [0.0, 1.37, 2.81, 4.19].slice(0, STATIC_MOMENTS)
 	return [0.0]
