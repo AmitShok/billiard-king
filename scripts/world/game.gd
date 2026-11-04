@@ -27,6 +27,7 @@ var finished := false
 var white: WhiteBall          # Hardcore only
 var white_start := Vector2.ZERO
 var _arrow: WhiteBallArrow
+var intro: HardcoreIntro      # Hardcore goal pop-up, while it is open
 
 var _title_label: Label
 var _toast: Label
@@ -163,7 +164,7 @@ func _update_look(delta: float) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("pause") and not finished:
+	if event.is_action_pressed("pause") and not finished and not is_instance_valid(intro):
 		pause_menu.open()
 		get_viewport().set_input_as_handled()
 
@@ -378,7 +379,8 @@ func hardcore() -> bool:
 
 
 func _setup_white() -> void:
-	white_start = tower.spawn + Vector2(64, 0)
+	# Floating just above your ball at the start: a soft straight-up shot knocks it.
+	white_start = tower.spawn + Vector2(0, -28)
 	white = WhiteBall.new()
 	white.z_index = 4
 	add_child(white)
@@ -393,7 +395,10 @@ func _setup_white() -> void:
 	_arrow = WhiteBallArrow.new()
 	hud.add_child(_arrow)
 	hud.move_child(_arrow, 0)
-	toast("Hardcore: knock the white ball into the gold pocket")
+	# A fresh climb (nothing struck yet) explains the goal first.
+	if SaveData.strokes == 0 and SaveData.run_time < 1.0:
+		intro = HardcoreIntro.new()
+		hud.add_child(intro)
 
 
 func _update_arrow() -> void:

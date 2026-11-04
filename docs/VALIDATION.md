@@ -99,3 +99,5 @@ The gameplay suite is now 43 / 43. The up arrow is bound to look, not spin. Hold
 - Options has a Music volume, and it persists.
 
 **Not proven:** whether Hardcore can be completed. The route solver covers only the single-ball Classic climb. A two-ball search (where you must stand to reach the floating ball, and every knock) is a much larger problem. Re-rack is there as the escape hatch, and Hardcore needs human playtesting for difficulty.
+
+**Update, 4 November 2026:** the Hardcore suite is now 40 / 40. New checks: the white ball starts just above your ball; the goal pop-up opens on a fresh climb, closes on release without starting a charge, and is skipped when continuing; a soft straight-up shot knocks the white ball upward.

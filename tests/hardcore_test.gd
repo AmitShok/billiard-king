@@ -120,17 +120,27 @@ func _game_tests() -> void:
 
 	var game: Node2D = load("res://scenes/world/game.tscn").instantiate()
 	add_child(game)
+	await _frames(3)
+	check("a fresh Hardcore climb opens the goal pop-up", is_instance_valid(game.intro) and get_tree().paused)
+	var words := " ".join(game.intro.find_children("*", "Label", true, false).map(func(l): return l.text)).to_lower()
+	check("pop-up explains pushing the white ball into the top pocket", words.contains("white ball") and words.contains("gold pocket") and words.contains("top"), words)
+	await get_tree().create_timer(0.8, true, false, true).timeout
+	var release := InputEventAction.new()
+	release.action = "charge"
+	release.pressed = false
+	Input.parse_input_event(release)
+	await _frames(3)
+	check("releasing the button closes it and resumes play", not is_instance_valid(game.intro) and not get_tree().paused)
 	await _physics(60)
-	check("white ball placed beside the spawn", game.white != null and game.white.sim.pos.distance_to(game.white_start) < 0.5)
+	check("closing the pop-up didn't start a charge", not game.player.charging)
+	check("white ball starts just above your ball", game.white != null and game.white.sim.pos.distance_to(game.white_start) < 0.5 and absf(game.white_start.x - game.tower.spawn.x) < 0.5 and game.white_start.y < game.player.sim.pos.y - BallSim.RADIUS * 2.0 and game.player.sim.pos.y - game.white_start.y < 40.0, "%s vs %s" % [game.white_start, game.player.sim.pos])
 	check("your ball is the normal ball, partnered to the white one", game.player.partner == game.white.sim and not game.player.sim.floating and game.player.sim.ignore_goal)
 	check("white ball stays put without gravity", game.white.sim.resting and absf(game.white.sim.pos.y - game.white_start.y) < 0.01)
 
-	# Strike your ball along the felt into the white ball.
+	# A soft straight-up shot from the spawn knocks it on its way.
 	var p: PlayerBall = game.player
-	p.place(game.white_start + Vector2(-60, 0))
-	await _physics(40)
-	p.aim_deg = 80.0
-	p.charge_ticks = 40
+	p.aim_deg = 0.0
+	p.charge_ticks = 12
 	p.strike()
 	var moved := false
 	var hits: Array[float] = []
@@ -139,8 +149,15 @@ func _game_tests() -> void:
 		await get_tree().physics_frame
 		if game.white.sim.vel.length() > 50.0:
 			moved = true
-	check("your ball knocks the white ball", not hits.is_empty() and moved, str(hits))
-	check("knocked white ball travels then stops in place", game.white.sim.resting and game.white.sim.pos.x > game.white_start.x + 20.0, str(game.white.sim.pos))
+	check("a soft shot straight up knocks the white ball", not hits.is_empty() and moved, str(hits))
+	check("knocked white ball travels up then stops in place", game.white.sim.resting and game.white.sim.pos.y < game.white_start.y - 20.0, str(game.white.sim.pos))
+	game.save_progress()
+	game.queue_free()
+	await _frames(2)
+	game = load("res://scenes/world/game.tscn").instantiate()
+	add_child(game)
+	await _frames(3)
+	check("continuing a started climb skips the pop-up", not is_instance_valid(game.intro) and not get_tree().paused)
 
 	# The edge arrow points to the white ball on another screen.
 	game.white.place(Vector2(256, -2 * 288 - 140))
