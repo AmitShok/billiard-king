@@ -128,6 +128,8 @@ The game renders at 512×288 and scales by whole numbers (1536×864 window by de
 
 ## Saves & settings
 
+**Options** has a **Reset all progress** button (press it twice) that wipes every run, the Ball Rack and all records, but keeps your settings. When running from the Godot editor or a debug export, Options also shows **Test: unlock everything**, which opens every level and fills the Ball Rack; release exports hide it.
+
 Saves live in `user://vertical_billiard.cfg` (on Windows, `%APPDATA%\Godot\app_userdata\Vertical Billiard\`). A save from when the game was called Billiard King is copied across on first launch. The file holds settings, the run in progress (ball position, aim, spin, time, strokes, falls, zones seen) and the Ball Rack. Tests use separate `test_*.cfg` profiles and never touch your save.
 
 ## Project structure

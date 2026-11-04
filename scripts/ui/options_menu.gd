@@ -4,6 +4,8 @@ extends Control
 
 signal closed
 
+const CONFIRM_RESET := "Press again to erase everything"
+
 var _first: Control
 
 
@@ -15,7 +17,7 @@ func _ready() -> void:
 	dim.color = Color(0, 0, 0, 0.55)
 	dim.set_anchors_preset(Control.PRESET_FULL_RECT)
 	add_child(dim)
-	var box := UIKit.panel(self, Vector2(200, 0))
+	var box := UIKit.panel(self, Vector2(220, 0))
 	UIKit.heading(box, "Options")
 	var controls: Array = []
 	controls.append(UIKit.slider(box, "Master", SaveData.master_volume, func(v): SaveData.master_volume = v; SaveData.apply_settings()))
@@ -35,10 +37,34 @@ func _ready() -> void:
 		shake.text = _onoff("Screen shake", SaveData.screen_shake))
 	shake.text = _onoff("Screen shake", SaveData.screen_shake)
 	controls.append(shake)
+	var reset := UIKit.button(box, "Reset all progress", func(): pass)
+	reset.pressed.connect(func():
+		if reset.text == CONFIRM_RESET:
+			_reset_progress()
+		else:
+			reset.text = CONFIRM_RESET)
+	reset.focus_exited.connect(func(): reset.text = "Reset all progress")
+	controls.append(reset)
+	# Test tool: only in debug builds (running from the editor), never in a release export.
+	if OS.is_debug_build():
+		var unlock := UIKit.button(box, "Test: unlock everything", func(): pass)
+		unlock.pressed.connect(func():
+			SaveData.unlock_everything()
+			unlock.text = "Everything unlocked")
+		controls.append(unlock)
 	controls.append(UIKit.button(box, "Back", close))
 	UIKit.chain_focus(controls)
 	_first = controls[0]
 	_first.grab_focus.call_deferred()
+
+
+## Everything on screen may belong to a run that no longer exists, so start clean.
+func _reset_progress() -> void:
+	SaveData.reset_progress()
+	Sfx.stop_roll()
+	Sfx.set_gust(0.0)
+	get_tree().paused = false
+	get_tree().change_scene_to_file("res://scenes/ui/title.tscn")
 
 
 func _onoff(text: String, on: bool) -> String:

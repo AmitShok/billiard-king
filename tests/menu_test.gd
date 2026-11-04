@@ -82,6 +82,8 @@ func _ready() -> void:
 	title.queue_free()
 	await _frames(2)
 
+	await _progress_tests()
+
 	print("Winning")
 	SaveData.start_new_run()
 	for n in range(1, 11):
@@ -140,3 +142,82 @@ func _frames(n: int) -> void:
 func _physics(n: int) -> void:
 	for i in n:
 		await get_tree().physics_frame
+
+
+func _progress_tests() -> void:
+	print("Unlock and reset")
+	# Build up real progress in several places.
+	SaveData.master_volume = 0.35
+	SaveData.set_run(SaveData.HARDCORE, 3)
+	SaveData.start_new_run()
+	SaveData.strokes = 9
+	SaveData.save()
+	SaveData.set_run(SaveData.CLASSIC, 1)
+	SaveData.start_new_run()
+	SaveData.strokes = 5
+	SaveData.collect_ball(2)
+	SaveData.skin = 2
+	SaveData.wins = 3
+	SaveData.records["classic_2"] = { "wins": 1, "best_time": 1.0, "best_strokes": 1 }
+	SaveData.save()
+	var keep_records: Dictionary = SaveData.records.duplicate()
+
+	var opts := OptionsMenu.new()
+	add_child(opts)
+	await _frames(2)
+	var labels := _button_texts(opts)
+	check("Options has Reset all progress", labels.has("Reset all progress"), str(labels))
+	check("debug builds show the unlock button", OS.is_debug_build() and labels.has("Test: unlock everything"), str(labels))
+	check("the Options panel still fits the screen", _panel_fits(opts))
+	for b in _buttons(opts):
+		if b.text == "Test: unlock everything":
+			b.pressed.emit()
+	check("unlock opens every level", range(1, 5).all(func(n): return SaveData.level_unlocked(n)))
+	check("unlock fills the Ball Rack, rainbow included", SaveData.collected.size() == BallRack.TOTAL and SaveData.collected.has(BallVisual.RAINBOW) and SaveData.collected.has(31), str(SaveData.collected.size()))
+	check("unlock keeps your run and records", SaveData.strokes == 5 and SaveData.wins == 3 and SaveData.records == keep_records)
+	SaveData.load_data()
+	check("unlock survives a restart", SaveData.all_unlocked and SaveData.collected.size() == BallRack.TOTAL)
+	opts.close()
+	await _frames(2)
+
+	# The real button: one press only asks. Run it under a throwaway scene so
+	# the change back to the title doesn't free this test.
+	var host := Node.new()
+	get_tree().root.add_child(host)
+	get_tree().current_scene = host
+	var menu := OptionsMenu.new()
+	host.add_child(menu)
+	await _frames(2)
+	var reset: Button = _buttons(menu).filter(func(b): return b.text == "Reset all progress")[0]
+	reset.pressed.emit()
+	check("one press only asks for confirmation", reset.text == OptionsMenu.CONFIRM_RESET and SaveData.wins == 3)
+	reset.focus_exited.emit()
+	check("moving away cancels it", reset.text == "Reset all progress")
+	reset.pressed.emit()
+	get_tree().paused = true
+	reset.pressed.emit()
+	await get_tree().create_timer(0.2, true, false, true).timeout
+	await _frames(3)
+	check("the second press wipes the Ball Rack and skin", SaveData.collected.is_empty() and SaveData.skin == 0)
+	check("and every record", SaveData.wins == 0 and SaveData.hc_wins == 0 and SaveData.records.is_empty() and SaveData.best_time == 0.0)
+	check("levels lock again", SaveData.level_unlocked(1) and not SaveData.level_unlocked(2) and not SaveData.level_unlocked(4))
+	check("no run is left in any mode or level", not SaveData.has_run_for(SaveData.CLASSIC, 1) and not SaveData.has_run_for(SaveData.HARDCORE, 3) and not SaveData.has_run_for(SaveData.CLASSIC, 2))
+	check("settings are kept", is_equal_approx(SaveData.master_volume, 0.35))
+	check("it unpauses and returns to the title", not get_tree().paused and get_tree().current_scene != null and get_tree().current_scene.name == "Title", str(get_tree().current_scene))
+	SaveData.load_data()
+	check("the wipe survives a restart", SaveData.collected.is_empty() and SaveData.wins == 0 and not SaveData.all_unlocked and is_equal_approx(SaveData.master_volume, 0.35))
+	var back_home := get_tree().current_scene
+	get_tree().current_scene = self
+	back_home.queue_free()
+	await _frames(2)
+	SaveData.master_volume = 0.8
+	SaveData.save()
+
+
+## Every control of the menu's panel sits inside the 512x288 view.
+func _panel_fits(root: Control) -> bool:
+	var view := Rect2(Vector2.ZERO, Vector2(512, 288))
+	for c in root.find_children("*", "PanelContainer", true, false):
+		if not view.encloses(c.get_global_rect()):
+			return false
+	return true

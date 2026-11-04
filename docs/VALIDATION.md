@@ -159,3 +159,13 @@ Level 2's terrain and physics did not change, so its earlier proof stands and wa
 **Regression:** gameplay 43, menus 19, props 27, Hardcore and music 47, level 2 64.
 
 **Not verified:** the feel of low gravity and wind, the new music and ambience by ear, whether Hardcore can be completed on any level (the solver covers only your ball), and how the props look in motion beyond captures. All of these need playtesting.
+
+## Unlock and reset
+
+The menus suite is now 35 / 35. New checks:
+
+- **Test: unlock everything:** shows in debug builds, opens every level and fills the Ball Rack including the rainbow ball. It keeps your run and records, and survives a restart.
+- **Reset all progress:** the real button's first press only asks, and moving away cancels. The second press wipes the rack, skin, records and every mode + level run, and locks the levels again. Settings are kept, the game unpauses and returns to the title, and the wipe survives a restart.
+- **Options panel:** it still fits on screen with the new buttons.
+
+**Not verified:** that a release export hides the unlock button. It relies on `OS.is_debug_build()`, and this project has no release export to test against.

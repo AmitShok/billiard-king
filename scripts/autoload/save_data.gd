@@ -46,6 +46,7 @@ var best_strokes := 0
 var hc_wins := 0
 var hc_best_time := 0.0
 var hc_best_strokes := 0
+var all_unlocked := false       # set by the debug-build test button
 var records := {}               # level 2+: "mode_level" -> {wins, best_time, best_strokes}
 
 
@@ -133,7 +134,7 @@ func has_run_for(for_mode: String, for_level: int = 1) -> bool:
 ## Each level opens once the one before it is finished in either mode. A run
 ## already under way stays playable.
 func level_unlocked(for_level: int) -> bool:
-	if for_level <= 1:
+	if for_level <= 1 or all_unlocked:
 		return true
 	if record(CLASSIC, for_level - 1).wins > 0 or record(HARDCORE, for_level - 1).wins > 0:
 		return true
@@ -175,6 +176,7 @@ func load_data() -> void:
 	hc_best_time = cfg.get_value("rack", "hc_best_time", 0.0)
 	hc_best_strokes = cfg.get_value("rack", "hc_best_strokes", 0)
 	records = cfg.get_value("rack", "records", {})
+	all_unlocked = cfg.get_value("rack", "all_unlocked", false)
 	if skin != 0 and not collected.has(skin):
 		skin = 0
 
@@ -228,6 +230,7 @@ func save() -> void:
 	cfg.set_value("rack", "hc_best_time", hc_best_time)
 	cfg.set_value("rack", "hc_best_strokes", hc_best_strokes)
 	cfg.set_value("rack", "records", records)
+	cfg.set_value("rack", "all_unlocked", all_unlocked)
 	cfg.save(path)
 
 
@@ -269,6 +272,36 @@ func finish_run() -> void:
 		if best_strokes == 0 or strokes < best_strokes:
 			best_strokes = strokes
 	has_run = false
+	save()
+
+
+## For testing: every level open and every ball in the rack.
+func unlock_everything() -> void:
+	all_unlocked = true
+	collected.assign(range(1, BallRack.TOTAL + 1))
+	save()
+
+
+## Wipes every run, the Ball Rack and all records. Settings are kept.
+func reset_progress() -> void:
+	var cfg := _read()
+	for section in cfg.get_sections():
+		if section.begins_with("run") or section == "rack":
+			cfg.erase_section(section)
+	cfg.save(path)
+	mode = CLASSIC
+	level = 1
+	_load_run(cfg)
+	collected.clear()
+	skin = 0
+	wins = 0
+	best_time = 0.0
+	best_strokes = 0
+	hc_wins = 0
+	hc_best_time = 0.0
+	hc_best_strokes = 0
+	records = {}
+	all_unlocked = false
 	save()
 
 
