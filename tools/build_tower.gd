@@ -21,6 +21,7 @@ extends SceneTree
 ##                                             travelling (dx, dy) tiles and back
 ##   @ spinner x y arms length speed angle     spinning arm trap centred on tile (x, y)
 ##   @ spike x0 y0 x1 y1 period phase          spiked ball between two tile centres
+##   @ lost x y number                         a lost ball numbered above 15 (no map char for those)
 
 const TILE := 16
 const W := 32
@@ -105,7 +106,7 @@ func _bake(source: String, target: String, zone_names: PackedStringArray) -> boo
 	movers.name = "Movers"
 	_add(root, movers)
 	for s in screens:
-		_add_movers(movers, s)
+		_add_movers(movers, objects, s)
 
 	var exits: Array[Vector2] = []
 	for cell in grid:
@@ -394,11 +395,19 @@ func _prop(parent: Node, kind: String, ch: String, cell: Vector2i, pos: Vector2)
 
 
 ## Moving platforms and traps listed under this screen's header.
-func _add_movers(parent: Node, s: Dictionary) -> void:
+func _add_movers(parent: Node, objects: Node, s: Dictionary) -> void:
 	var top: int = -(s.index + 1) * SCREEN_H
 	var i := 0
 	for m in s.movers:
 		var kind: String = m[1]
+		if kind == "lost":
+			var lb := Node2D.new()
+			lb.set_script(load("res://scripts/world/lost_ball.gd"))
+			lb.name = "LostBall%s" % m[4]
+			lb.position = Vector2(float(m[2]) * TILE + TILE / 2.0, float(m[3]) * TILE + TILE / 2.0 + top)
+			lb.set("number", int(m[4]))
+			_add(objects, lb)
+			continue
 		var node := Node2D.new()
 		node.name = "%s_s%d_%d" % [kind.capitalize(), s.index, i]
 		i += 1

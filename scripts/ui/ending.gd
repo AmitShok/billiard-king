@@ -32,7 +32,7 @@ func _ready() -> void:
 	UIKit.label(box, "Strokes  %d     Falls  %d" % [stats.get("strokes", 0), stats.get("falls", 0)])
 	var unlocked: Array = stats.get("unlocked", [])
 	if not unlocked.is_empty():
-		UIKit.label(box, "New balls in the rack: %s" % ", ".join(unlocked.map(func(n): return "#%d" % n)), Color("9fe0a8"))
+		UIKit.label(box, "New balls in the rack: %s" % ", ".join(unlocked.map(func(n): return BallRack.display_name(n))), Color("9fe0a8"))
 	UIKit.label(box, "")
 	var hint := UIKit.label(box, "Press to return", Color("8a8070"))
 	var tw := create_tween()

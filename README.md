@@ -29,9 +29,9 @@ Somewhere above the Back Room, past Lucky's Neon Bar and the Royal Club, there's
 - **Jump King's commitment.** You charge a shot and release it, with no air control. The camera is fixed to one screen at a time and cuts as you cross. There are no checkpoints, and the game saves you wherever the ball comes to rest. Time, strokes and falls are tracked.
 - **Billiard shot-making.** You aim in 5° notches and the cue pulls back as the shot charges. **English** shapes the landing: follow keeps you running forward and draw checks you up or rolls you back.
 - **Fallosophy's pinball.** Big numbered bumper balls kick you away in their brass collars. Rubber cushions stay lively, and pockets swallow you and drop you far below through the ball return.
-- **Ballgame's collection.** Ten lost balls are hidden in the tower and five more are earned by finishing. Each one becomes a ball you can climb as, picked from the **Ball Rack**.
+- **Ballgame's collection.** Twenty lost balls are hidden across the two levels and seven more are earned by finishing. Each one becomes a ball you can climb as, picked from the **Ball Rack**.
 - **Balls that really roll.** Every ball is a pixel-art sphere drawn with spherical UV mapping, so numbers, stripes and the cue ball's red dots roll across the surface.
-- **Two levels, both modes.** The Tower (10 screens) and The Long Rack (20 screens), picked from a small level select. Normal and Hardcore share the levels and each keeps its own run for each level.
+- **Two levels, both modes.** The Tower (10 screens) and The Long Rack (20 screens), picked from a small level select. The Long Rack opens once you've finished The Tower in either mode. Normal and Hardcore share the levels and each keeps its own run for each level.
 - **Things that move.** The Long Rack adds brass carriages that ride their rails sideways, up and down, or diagonally, and carry you with them, plus red-and-yellow spinning arms and spiked balls that fling you away.
 - **Hardcore mode.** You play your normal ball with the same rules, plus a second, plain white ball that floats with no gravity. It starts floating just above you. Knock it up through the whole tower and sink it in the gold pocket. Each mode opens with a short goal pop-up when a new climb starts. Felt drag stops it wherever it runs out of speed, even in mid-air, and if it drops into a pocket it goes down the ball return. An arrow at the screen edge points to it when it's on another screen.
 - **Pool-hall jazz.** Four synthesised loops, one per zone: slow Back Room blues, a Neon Bar shuffle, a Royal Club waltz and a moonlit summit theme. They crossfade as you climb.
@@ -80,7 +80,7 @@ Twice the length of The Tower, across The Cellar, The Jukebox Floor, The Grand S
 | **Spinning arm** | Touch an arm and you're flung away. | Red and yellow stripes, a pulsing red glow, and a dotted ring showing its reach |
 | **Spike rail** | A spiked ball slides along a rail. Touch it and you're flung away. | Red ball with yellow spikes on a dotted red rail |
 
-Only traps use red and yellow hazard colours, so they can't be mistaken for decoration. Lost balls and the finish awards belong to The Tower.
+Only traps use red and yellow hazard colours, so they can't be mistaken for decoration. Ten new lost balls are hidden along the way.
 
 ## The tower
 
@@ -96,13 +96,15 @@ Only traps use red and yellow hazard colours, so they can't be mistaken for deco
 | Ball | How to get it |
 | --- | --- |
 | Cue ball | Always yours |
-| 1–10 | Lost somewhere in the tower; touch one to collect it |
+| 1–10 | Lost somewhere in The Tower; touch one to collect it |
 | 11 | Finish the climb |
 | 12 | Finish in under 400 strokes |
 | 13 | Finish in under 30 minutes |
 | 14 | Finish with 10 falls or fewer |
 | 15 | Finish holding lost balls 1–10 |
 | White ball | Finish Hardcore mode |
+| Chalk, Neon, Checker, Tournament, Marble, Ember, Ocean, Night, Gold, Moon | Lost somewhere in The Long Rack |
+| The rainbow ball | Finish The Long Rack on Hardcore. It cycles through the colours as it rolls, and glows |
 
 ## Getting started
 

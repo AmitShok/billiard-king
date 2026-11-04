@@ -212,6 +212,14 @@ func _level_tests() -> void:
 	check("level 2 has spinning traps", w.traps.filter(func(t): return t.kind == CollisionWorld.Trap.SPINNER).size() >= 4)
 	check("level 2 has spike rails", w.traps.filter(func(t): return t.kind == CollisionWorld.Trap.SPIKE).size() >= 3)
 	check("level 2 has one gold pocket", w.pockets.filter(func(p): return p.goal).size() == 1)
+	var lost_numbers: Array = w.lost_balls.map(func(b): return b.number)
+	lost_numbers.sort()
+	check("level 2 hides ten new lost balls", lost_numbers == range(17, 27), str(lost_numbers))
+	var clear_spot := true
+	for b in w.lost_balls:
+		if w.is_solid_point(b.pos):
+			clear_spot = false
+	check("no lost ball is buried in terrain", clear_spot)
 	check("level 1 is unchanged: nothing moves", load("res://scenes/world/tower.tscn").instantiate().get_node("Movers").get_child_count() == 0)
 	one.free()
 	two.queue_free()
@@ -285,6 +293,7 @@ func _level_tests() -> void:
 	check("gold pocket wins level 2", game.finished)
 	check("recorded for level 2 only", SaveData.record(SaveData.CLASSIC, 2).wins == 1 and SaveData.wins == wins_l1)
 	check("level 1 awards aren't handed out here", not SaveData.collected.has(11))
+	check("normal mode doesn't earn the rainbow ball", not SaveData.collected.has(BallVisual.RAINBOW))
 	game.queue_free()
 	await _frames(2)
 
@@ -300,15 +309,70 @@ func _level_tests() -> void:
 	game.white.sim.resting = false
 	await _physics(120)
 	check("white ball in level 2's gold pocket wins", game.finished and SaveData.record(SaveData.HARDCORE, 2).wins == 1)
+	check("winning level 2 on Hardcore earns the rainbow ball", SaveData.collected.has(BallVisual.RAINBOW))
 	game.queue_free()
 	await _frames(2)
 	SaveData.set_run(SaveData.CLASSIC, 1)
 
 
 func _menu_tests() -> void:
+	# Level 2 stays locked until level 1 is finished.
+	var saved_wins := [SaveData.wins, SaveData.hc_wins]
+	for section_mode in [SaveData.CLASSIC, SaveData.HARDCORE]:
+		SaveData.set_run(section_mode, 2)
+		SaveData.has_run = false
+		SaveData.save()
+	SaveData.set_run(SaveData.CLASSIC, 1)
+	SaveData.wins = 0
+	SaveData.hc_wins = 0
+	check("level 2 is locked on a fresh game", not SaveData.level_unlocked(2) and SaveData.level_unlocked(1))
 	var title: Control = load("res://scenes/ui/title.tscn").instantiate()
 	add_child(title)
 	await _frames(3)
+	title._open_levels(SaveData.HARDCORE)
+	await _frames(3)
+	var shut: LevelSelect = title.find_children("*", "LevelSelect", true, false)[0]
+	var shut_buttons: Array = shut.find_children("*", "Button", true, false)
+	var lock_btn: Array = shut_buttons.filter(func(b): return b.text == "Locked")
+	check("the level select shows it locked and unpressable", lock_btn.size() == 1 and lock_btn[0].disabled and lock_btn[0].focus_mode == Control.FOCUS_NONE)
+	var shut_text: Array = shut.find_children("*", "Label", true, false).map(func(l): return l.text)
+	check("and says how to open it", shut_text.has("Finish The Tower to unlock"), str(shut_text))
+	shut.close()
+	await _frames(2)
+	SaveData.hc_wins = 1
+	check("finishing level 1 in Hardcore opens it", SaveData.level_unlocked(2))
+	SaveData.hc_wins = 0
+	SaveData.wins = 1
+	check("finishing level 1 in Normal opens it", SaveData.level_unlocked(2))
+	SaveData.wins = 0
+	SaveData.set_run(SaveData.CLASSIC, 2)
+	SaveData.has_run = true
+	SaveData.save()
+	SaveData.set_run(SaveData.CLASSIC, 1)
+	check("a run already under way stays playable", SaveData.level_unlocked(2))
+	SaveData.wins = saved_wins[0]
+	SaveData.hc_wins = saved_wins[1]
+	SaveData.wins = maxi(SaveData.wins, 1)
+	# The rack holds every ball, and the rainbow one really changes colour.
+	var rack := BallRack.new()
+	title.add_child(rack)
+	await _frames(2)
+	check("Ball Rack has a slot for all 28 balls", rack._buttons.size() == 28, str(rack._buttons.size()))
+	check("new balls have names", BallRack.display_name(17) == "Chalk" and BallRack.display_name(27) == "The rainbow ball" and BallRack.display_name(3) == "Ball #3")
+	rack.close()
+	await _frames(2)
+	var rb := BallVisual.new()
+	rb.number = BallVisual.RAINBOW
+	add_child(rb)
+	await _frames(3)
+	check("rainbow ball turns on its shader and glow", rb.material.get_shader_parameter("rainbow") == 1.0 and rb._rainbow_glow != null and rb._rainbow_glow.visible)
+	var hue_a: Color = rb._rainbow_glow.modulate
+	await get_tree().create_timer(0.4).timeout
+	check("its glow cycles through colours", rb._rainbow_glow.modulate.h != hue_a.h)
+	rb.number = 3
+	check("other balls don't glow", not rb._rainbow_glow.visible and rb.material.get_shader_parameter("rainbow") == 0.0)
+	rb.queue_free()
+	await _frames(2)
 	var labels: Array = title.find_children("*", "Button", true, false).map(func(b): return b.text)
 	check("title offers both modes", labels.has("Normal mode") and labels.has("Hardcore mode"), str(labels))
 	for mode in [SaveData.CLASSIC, SaveData.HARDCORE]:

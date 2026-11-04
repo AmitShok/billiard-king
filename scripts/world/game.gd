@@ -259,7 +259,7 @@ func _on_lost_ball(number: int) -> void:
 	if node:
 		node.collect()
 	SaveData.collect_ball(number)
-	toast("Lost ball #%d found - see the Ball Rack" % number)
+	toast("%s found - see the Ball Rack" % BallRack.display_name(number))
 
 
 func _on_won() -> void:
@@ -272,6 +272,10 @@ func _on_won() -> void:
 		if not SaveData.collected.has(16):
 			SaveData.collected.append(16)
 			unlocked.append(16)
+		# And level 2 on Hardcore earns the rainbow ball.
+		if SaveData.level == 2 and not SaveData.collected.has(BallVisual.RAINBOW):
+			SaveData.collected.append(BallVisual.RAINBOW)
+			unlocked.append(BallVisual.RAINBOW)
 	var all_found := true
 	for n in range(1, 11):
 		if not SaveData.collected.has(n):

@@ -120,3 +120,18 @@ The gameplay suite is now 43 / 43. The up arrow is bound to look, not spin. Hold
 **Regression:** gameplay 43, menus 14, props 27, Hardcore and music 44.
 
 **Not verified:** how the timing feels, whether Hardcore can be completed on either level (the solver covers only your ball), and new sounds by ear. All of these need playtesting.
+
+## Level 2 lock, lost balls and the rainbow ball
+
+The level 2 suite is now 64 / 64. New checks:
+
+- **Lock:** level 2 is locked on a fresh game, and the level select shows it unpressable with how to open it. Finishing level 1 in either mode opens it. A run already under way stays playable.
+- **Lost balls:** ten new ones (17–26), none buried in terrain.
+- **Rainbow ball:** Normal mode doesn't earn it, and winning level 2 on Hardcore does. It turns on its shader and glow, the glow cycles through colours, and other balls don't glow.
+- **Ball Rack:** 28 slots, with the new balls named.
+
+Route solver, run by stretches on level 2: all five pass, and all ten new lost balls are reachable by the real physics (17, then 18–19, 20–22, 22–24, 24–26). Physics and terrain did not change, so the earlier full-level proofs still stand and were not re-run.
+
+Regression: gameplay 43, menus 19, props 27, Hardcore and music 44. Rendered check: `ball_rack.png`, `level_select_locked.png`.
+
+Not verified: how the rainbow ball looks in motion over a full climb, and whether Hardcore on level 2 (the only way to earn it) can be finished, which needs playtesting.

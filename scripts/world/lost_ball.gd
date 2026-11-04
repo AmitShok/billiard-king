@@ -6,7 +6,7 @@ extends Node2D
 
 const GLOW := preload("res://assets/textures/glow.png")
 
-@export_range(1, 15) var number: int = 1:
+@export_range(1, 26) var number: int = 1:
 	set(v):
 		number = v
 		if _ball:

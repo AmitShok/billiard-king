@@ -1,44 +1,39 @@
 [gd_scene format=4]
 
-[ext_resource type="Script" path="res://scripts/world/tower.gd" id="1_kx2yu"]
-[ext_resource type="Texture2D" path="res://assets/textures/bg_backroom.png" id="2_t5jab"]
-[ext_resource type="Texture2D" path="res://assets/textures/bg_neonbar.png" id="3_nsfhg"]
-[ext_resource type="Texture2D" path="res://assets/textures/bg_royal.png" id="4_miiu5"]
-[ext_resource type="Texture2D" path="res://assets/textures/bg_summit.png" id="5_47fjo"]
-[ext_resource type="Texture2D" path="res://assets/textures/crown.png" id="6_uyy1g"]
-[ext_resource type="Script" path="res://scripts/world/props/swing_prop.gd" id="7_kwe0u"]
-[ext_resource type="Texture2D" path="res://assets/textures/chain.png" id="8_j0c5b"]
-[ext_resource type="Texture2D" path="res://assets/textures/chandelier.png" id="9_do34x"]
-[ext_resource type="Texture2D" path="res://assets/textures/glow.png" id="10_i77ux"]
-[ext_resource type="Script" path="res://scripts/world/props/tilt_prop.gd" id="11_ywqqg"]
-[ext_resource type="Texture2D" path="res://assets/textures/portrait.png" id="12_qtn2u"]
-[ext_resource type="Texture2D" path="res://assets/textures/clock.png" id="13_anewm"]
-[ext_resource type="Script" path="res://scripts/world/props/neon_prop.gd" id="14_l6xhy"]
-[ext_resource type="Texture2D" path="res://assets/textures/neon_pool.png" id="15_wfcl1"]
-[ext_resource type="Texture2D" path="res://assets/textures/neon_eight.png" id="16_qrpk5"]
-[ext_resource type="Script" path="res://scripts/world/props/beads_prop.gd" id="17_pettw"]
-[ext_resource type="Texture2D" path="res://assets/textures/score_wire.png" id="18_fbuxf"]
-[ext_resource type="Script" path="res://scripts/world/props/window_prop.gd" id="19_mklip"]
-[ext_resource type="Texture2D" path="res://assets/textures/window.png" id="20_fip6l"]
-[ext_resource type="Texture2D" path="res://assets/textures/lamp.png" id="21_2kp0x"]
-[ext_resource type="Texture2D" path="res://assets/textures/light_cone.png" id="22_q7amw"]
-[ext_resource type="Script" path="res://scripts/world/props/knock_prop.gd" id="23_7deij"]
-[ext_resource type="Texture2D" path="res://assets/textures/rack.png" id="24_8vm4l"]
-[ext_resource type="Script" path="res://scripts/world/props/rattle_prop.gd" id="25_esg0d"]
-[ext_resource type="Texture2D" path="res://assets/textures/cue_rack.png" id="26_xlf7i"]
-[ext_resource type="Texture2D" path="res://assets/textures/chalk.png" id="27_gvqjq"]
-[ext_resource type="TileSet" path="res://resources/tiles.tres" id="28_00j1d"]
-[ext_resource type="Script" path="res://scripts/world/pocket.gd" id="29_fegaj"]
-[ext_resource type="Script" path="res://scripts/world/bumper.gd" id="30_fve7n"]
-[ext_resource type="Script" path="res://scripts/world/moving_platform.gd" id="31_xjurg"]
-[ext_resource type="Script" path="res://scripts/world/trap_spinner.gd" id="32_irf5k"]
-[ext_resource type="Script" path="res://scripts/world/trap_spike.gd" id="33_vvu6f"]
-
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_m47kx"]
-blend_mode = 1
-
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_du2r8"]
-blend_mode = 1
+[ext_resource type="Script" path="res://scripts/world/tower.gd" id="1_t5jab"]
+[ext_resource type="Texture2D" path="res://assets/textures/bg_backroom.png" id="2_nsfhg"]
+[ext_resource type="Texture2D" path="res://assets/textures/bg_neonbar.png" id="3_miiu5"]
+[ext_resource type="Texture2D" path="res://assets/textures/bg_royal.png" id="4_47fjo"]
+[ext_resource type="Texture2D" path="res://assets/textures/bg_summit.png" id="5_uyy1g"]
+[ext_resource type="Texture2D" path="res://assets/textures/crown.png" id="6_kwe0u"]
+[ext_resource type="Script" path="res://scripts/world/props/swing_prop.gd" id="7_j0c5b"]
+[ext_resource type="Texture2D" path="res://assets/textures/chain.png" id="8_do34x"]
+[ext_resource type="Texture2D" path="res://assets/textures/chandelier.png" id="9_i77ux"]
+[ext_resource type="Texture2D" path="res://assets/textures/glow.png" id="10_ywqqg"]
+[ext_resource type="Script" path="res://scripts/world/props/tilt_prop.gd" id="11_qtn2u"]
+[ext_resource type="Texture2D" path="res://assets/textures/portrait.png" id="12_anewm"]
+[ext_resource type="Texture2D" path="res://assets/textures/clock.png" id="13_l6xhy"]
+[ext_resource type="Script" path="res://scripts/world/props/neon_prop.gd" id="14_wfcl1"]
+[ext_resource type="Texture2D" path="res://assets/textures/neon_pool.png" id="15_qrpk5"]
+[ext_resource type="Texture2D" path="res://assets/textures/neon_eight.png" id="16_pettw"]
+[ext_resource type="Script" path="res://scripts/world/props/beads_prop.gd" id="17_fbuxf"]
+[ext_resource type="Texture2D" path="res://assets/textures/score_wire.png" id="18_mklip"]
+[ext_resource type="Script" path="res://scripts/world/props/window_prop.gd" id="19_fip6l"]
+[ext_resource type="Texture2D" path="res://assets/textures/window.png" id="20_2kp0x"]
+[ext_resource type="Texture2D" path="res://assets/textures/lamp.png" id="21_q7amw"]
+[ext_resource type="Texture2D" path="res://assets/textures/light_cone.png" id="22_7deij"]
+[ext_resource type="Script" path="res://scripts/world/props/knock_prop.gd" id="23_8vm4l"]
+[ext_resource type="Texture2D" path="res://assets/textures/rack.png" id="24_esg0d"]
+[ext_resource type="Script" path="res://scripts/world/props/rattle_prop.gd" id="25_xlf7i"]
+[ext_resource type="Texture2D" path="res://assets/textures/cue_rack.png" id="26_gvqjq"]
+[ext_resource type="Texture2D" path="res://assets/textures/chalk.png" id="27_00j1d"]
+[ext_resource type="TileSet" path="res://resources/tiles.tres" id="28_fegaj"]
+[ext_resource type="Script" path="res://scripts/world/lost_ball.gd" id="29_fve7n"]
+[ext_resource type="Script" path="res://scripts/world/pocket.gd" id="30_xjurg"]
+[ext_resource type="Script" path="res://scripts/world/bumper.gd" id="31_irf5k"]
+[ext_resource type="Script" path="res://scripts/world/moving_platform.gd" id="32_vvu6f"]
+[ext_resource type="Script" path="res://scripts/world/trap_spinner.gd" id="33_m47kx"]
+[ext_resource type="Script" path="res://scripts/world/trap_spike.gd" id="34_du2r8"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_h80uu"]
 blend_mode = 1
@@ -100,9 +95,8 @@ blend_mode = 1
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_36p00"]
 blend_mode = 1
 
-[sub_resource type="Gradient" id="Gradient_g335s"]
-offsets = PackedFloat32Array(0, 0.3, 1)
-colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0)
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_g335s"]
+blend_mode = 1
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_d4w8p"]
 blend_mode = 1
@@ -153,746 +147,737 @@ blend_mode = 1
 offsets = PackedFloat32Array(0, 0.3, 1)
 colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0)
 
-[node name="Tower" type="Node2D" unique_id=1841625071]
-script = ExtResource("1_kx2yu")
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_6b60r"]
+blend_mode = 1
+
+[sub_resource type="Gradient" id="Gradient_jeoco"]
+offsets = PackedFloat32Array(0, 0.3, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[node name="Tower" type="Node2D" unique_id=1786556395]
+script = ExtResource("1_t5jab")
 screen_zones = PackedInt32Array(0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3)
 spawn = Vector2(72, -23)
 zone_names = PackedStringArray("The Cellar", "The Jukebox Floor", "The Grand Salon", "The Rooftop Final")
 
-[node name="Backdrop" type="Node2D" parent="." unique_id=815956233]
+[node name="Backdrop" type="Node2D" parent="." unique_id=1497737731]
 z_index = -20
 
-[node name="Screen0" type="Sprite2D" parent="Backdrop" unique_id=198388283]
+[node name="Screen0" type="Sprite2D" parent="Backdrop" unique_id=1972519386]
 position = Vector2(0, -288)
-texture = ExtResource("2_t5jab")
+texture = ExtResource("2_nsfhg")
 centered = false
 
-[node name="Screen1" type="Sprite2D" parent="Backdrop" unique_id=449667201]
+[node name="Screen1" type="Sprite2D" parent="Backdrop" unique_id=1795310848]
 position = Vector2(0, -576)
-texture = ExtResource("2_t5jab")
+texture = ExtResource("2_nsfhg")
 centered = false
 
-[node name="Screen2" type="Sprite2D" parent="Backdrop" unique_id=329183625]
+[node name="Screen2" type="Sprite2D" parent="Backdrop" unique_id=1588781338]
 position = Vector2(0, -864)
-texture = ExtResource("2_t5jab")
+texture = ExtResource("2_nsfhg")
 centered = false
 
-[node name="Screen3" type="Sprite2D" parent="Backdrop" unique_id=658527017]
+[node name="Screen3" type="Sprite2D" parent="Backdrop" unique_id=1998029561]
 position = Vector2(0, -1152)
-texture = ExtResource("2_t5jab")
+texture = ExtResource("2_nsfhg")
 centered = false
 
-[node name="Screen4" type="Sprite2D" parent="Backdrop" unique_id=593419084]
+[node name="Screen4" type="Sprite2D" parent="Backdrop" unique_id=839062256]
 position = Vector2(0, -1440)
-texture = ExtResource("2_t5jab")
+texture = ExtResource("2_nsfhg")
 centered = false
 
-[node name="Screen5" type="Sprite2D" parent="Backdrop" unique_id=2142646136]
+[node name="Screen5" type="Sprite2D" parent="Backdrop" unique_id=982400589]
 position = Vector2(0, -1728)
-texture = ExtResource("2_t5jab")
+texture = ExtResource("2_nsfhg")
 centered = false
 
-[node name="Screen6" type="Sprite2D" parent="Backdrop" unique_id=1129192333]
+[node name="Screen6" type="Sprite2D" parent="Backdrop" unique_id=300842098]
 position = Vector2(0, -2016)
-texture = ExtResource("2_t5jab")
+texture = ExtResource("2_nsfhg")
 centered = false
 
-[node name="Screen7" type="Sprite2D" parent="Backdrop" unique_id=1801983258]
+[node name="Screen7" type="Sprite2D" parent="Backdrop" unique_id=1674024672]
 position = Vector2(0, -2304)
-texture = ExtResource("3_nsfhg")
+texture = ExtResource("3_miiu5")
 centered = false
 
-[node name="Screen8" type="Sprite2D" parent="Backdrop" unique_id=595583016]
+[node name="Screen8" type="Sprite2D" parent="Backdrop" unique_id=24337326]
 position = Vector2(0, -2592)
-texture = ExtResource("3_nsfhg")
+texture = ExtResource("3_miiu5")
 centered = false
 
-[node name="Screen9" type="Sprite2D" parent="Backdrop" unique_id=2019250704]
+[node name="Screen9" type="Sprite2D" parent="Backdrop" unique_id=868685216]
 position = Vector2(0, -2880)
-texture = ExtResource("3_nsfhg")
+texture = ExtResource("3_miiu5")
 centered = false
 
-[node name="Screen10" type="Sprite2D" parent="Backdrop" unique_id=1284655650]
+[node name="Screen10" type="Sprite2D" parent="Backdrop" unique_id=2020670645]
 position = Vector2(0, -3168)
-texture = ExtResource("3_nsfhg")
+texture = ExtResource("3_miiu5")
 centered = false
 
-[node name="Screen11" type="Sprite2D" parent="Backdrop" unique_id=872620131]
+[node name="Screen11" type="Sprite2D" parent="Backdrop" unique_id=57704883]
 position = Vector2(0, -3456)
-texture = ExtResource("3_nsfhg")
+texture = ExtResource("3_miiu5")
 centered = false
 
-[node name="Screen12" type="Sprite2D" parent="Backdrop" unique_id=442018471]
+[node name="Screen12" type="Sprite2D" parent="Backdrop" unique_id=814775878]
 position = Vector2(0, -3744)
-texture = ExtResource("3_nsfhg")
+texture = ExtResource("3_miiu5")
 centered = false
 
-[node name="Screen13" type="Sprite2D" parent="Backdrop" unique_id=112504795]
+[node name="Screen13" type="Sprite2D" parent="Backdrop" unique_id=710662749]
 position = Vector2(0, -4032)
-texture = ExtResource("3_nsfhg")
+texture = ExtResource("3_miiu5")
 centered = false
 
-[node name="Screen14" type="Sprite2D" parent="Backdrop" unique_id=1544561497]
+[node name="Screen14" type="Sprite2D" parent="Backdrop" unique_id=1214677317]
 position = Vector2(0, -4320)
-texture = ExtResource("4_miiu5")
+texture = ExtResource("4_47fjo")
 centered = false
 
-[node name="Screen15" type="Sprite2D" parent="Backdrop" unique_id=1384942278]
+[node name="Screen15" type="Sprite2D" parent="Backdrop" unique_id=196487786]
 position = Vector2(0, -4608)
-texture = ExtResource("4_miiu5")
+texture = ExtResource("4_47fjo")
 centered = false
 
-[node name="Screen16" type="Sprite2D" parent="Backdrop" unique_id=1887698054]
+[node name="Screen16" type="Sprite2D" parent="Backdrop" unique_id=1812100501]
 position = Vector2(0, -4896)
-texture = ExtResource("4_miiu5")
+texture = ExtResource("4_47fjo")
 centered = false
 
-[node name="Screen17" type="Sprite2D" parent="Backdrop" unique_id=899263390]
+[node name="Screen17" type="Sprite2D" parent="Backdrop" unique_id=1305093120]
 position = Vector2(0, -5184)
-texture = ExtResource("4_miiu5")
+texture = ExtResource("4_47fjo")
 centered = false
 
-[node name="Screen18" type="Sprite2D" parent="Backdrop" unique_id=730849775]
+[node name="Screen18" type="Sprite2D" parent="Backdrop" unique_id=2003042249]
 position = Vector2(0, -5472)
-texture = ExtResource("4_miiu5")
+texture = ExtResource("4_47fjo")
 centered = false
 
-[node name="Screen19" type="Sprite2D" parent="Backdrop" unique_id=1657280254]
+[node name="Screen19" type="Sprite2D" parent="Backdrop" unique_id=1500058311]
 position = Vector2(0, -5760)
-texture = ExtResource("5_47fjo")
+texture = ExtResource("5_uyy1g")
 centered = false
 
-[node name="Decor" type="Node2D" parent="." unique_id=744520398]
+[node name="Decor" type="Node2D" parent="." unique_id=26844189]
 z_index = -5
 
-[node name="Crown" type="Sprite2D" parent="Decor" unique_id=1760528500]
+[node name="Crown" type="Sprite2D" parent="Decor" unique_id=332298063]
 position = Vector2(216, -5678)
-texture = ExtResource("6_uyy1g")
+texture = ExtResource("6_kwe0u")
 hframes = 4
 
-[node name="Swing_7_8_330" type="Node2D" parent="Decor" unique_id=2033553694]
+[node name="Swing_7_8_330" type="Node2D" parent="Decor" unique_id=418983343]
 position = Vector2(136, -5360)
-script = ExtResource("7_kwe0u")
+script = ExtResource("7_j0c5b")
 length = 88.0
 crystal = true
 
-[node name="Chain" type="Sprite2D" parent="Decor/Swing_7_8_330" unique_id=221256384]
+[node name="Chain" type="Sprite2D" parent="Decor/Swing_7_8_330" unique_id=727557680]
 texture_repeat = 2
 position = Vector2(-2, 0)
-texture = ExtResource("8_j0c5b")
+texture = ExtResource("8_do34x")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 4, 80)
 
-[node name="Body" type="Sprite2D" parent="Decor/Swing_7_8_330" unique_id=1265116740]
+[node name="Body" type="Sprite2D" parent="Decor/Swing_7_8_330" unique_id=1066303997]
 position = Vector2(0, 94)
-texture = ExtResource("9_do34x")
+texture = ExtResource("9_i77ux")
 
-[node name="Light" type="Sprite2D" parent="Decor/Swing_7_8_330" unique_id=1154069672]
-modulate = Color(1, 0.86, 0.6, 0.9)
-z_index = 1
-material = SubResource("CanvasItemMaterial_m47kx")
-position = Vector2(0, 100)
-scale = Vector2(2.2, 2.2)
-texture = ExtResource("10_i77ux")
-
-[node name="Tilt_5_28_329" type="Node2D" parent="Decor" unique_id=570727084]
-position = Vector2(456, -5273)
-script = ExtResource("11_ywqqg")
-hit_size = Vector2(28, 34)
-hit_offset = Vector2(0, 17)
-
-[node name="Body" type="Sprite2D" parent="Decor/Tilt_5_28_329" unique_id=2006354208]
-position = Vector2(0, 17)
-texture = ExtResource("12_qtn2u")
-
-[node name="Tilt_5_27_321" type="Node2D" parent="Decor" unique_id=1356670821]
-position = Vector2(440, -5145)
-script = ExtResource("11_ywqqg")
-hit_size = Vector2(28, 34)
-hit_offset = Vector2(0, 17)
-
-[node name="Body" type="Sprite2D" parent="Decor/Tilt_5_27_321" unique_id=16423119]
-position = Vector2(0, 17)
-texture = ExtResource("12_qtn2u")
-
-[node name="Swing_7_5_313" type="Node2D" parent="Decor" unique_id=1006017531]
-position = Vector2(88, -5104)
-script = ExtResource("7_kwe0u")
-length = 104.0
-crystal = true
-
-[node name="Chain" type="Sprite2D" parent="Decor/Swing_7_5_313" unique_id=1343818955]
-texture_repeat = 2
-position = Vector2(-2, 0)
-texture = ExtResource("8_j0c5b")
-centered = false
-region_enabled = true
-region_rect = Rect2(0, 0, 4, 96)
-
-[node name="Body" type="Sprite2D" parent="Decor/Swing_7_5_313" unique_id=89785607]
-position = Vector2(0, 110)
-texture = ExtResource("9_do34x")
-
-[node name="Light" type="Sprite2D" parent="Decor/Swing_7_5_313" unique_id=305528583]
-modulate = Color(1, 0.86, 0.6, 0.9)
-z_index = 1
-material = SubResource("CanvasItemMaterial_du2r8")
-position = Vector2(0, 116)
-scale = Vector2(2.2, 2.2)
-texture = ExtResource("10_i77ux")
-
-[node name="Tilt_5_26_302" type="Node2D" parent="Decor" unique_id=814244048]
-position = Vector2(424, -4841)
-script = ExtResource("11_ywqqg")
-hit_size = Vector2(28, 34)
-hit_offset = Vector2(0, 17)
-
-[node name="Body" type="Sprite2D" parent="Decor/Tilt_5_26_302" unique_id=1062199598]
-position = Vector2(0, 17)
-texture = ExtResource("12_qtn2u")
-
-[node name="Tilt_19_28_291" type="Node2D" parent="Decor" unique_id=1502905197]
-position = Vector2(456, -4658)
-script = ExtResource("11_ywqqg")
-crooked = false
-chime = true
-hit_size = Vector2(20, 20)
-hit_offset = Vector2(0, 10)
-
-[node name="Body" type="Sprite2D" parent="Decor/Tilt_19_28_291" unique_id=798183842]
-position = Vector2(0, 10)
-texture = ExtResource("13_anewm")
-
-[node name="Tilt_5_28_276" type="Node2D" parent="Decor" unique_id=1763950767]
-position = Vector2(456, -4425)
-script = ExtResource("11_ywqqg")
-hit_size = Vector2(28, 34)
-hit_offset = Vector2(0, 17)
-
-[node name="Body" type="Sprite2D" parent="Decor/Tilt_5_28_276" unique_id=1131809641]
-position = Vector2(0, 17)
-texture = ExtResource("12_qtn2u")
-
-[node name="Tilt_5_22_267" type="Node2D" parent="Decor" unique_id=1171415789]
-position = Vector2(360, -4281)
-script = ExtResource("11_ywqqg")
-hit_size = Vector2(28, 34)
-hit_offset = Vector2(0, 17)
-
-[node name="Body" type="Sprite2D" parent="Decor/Tilt_5_22_267" unique_id=334404561]
-position = Vector2(0, 17)
-texture = ExtResource("12_qtn2u")
-
-[node name="Swing_7_5_260" type="Node2D" parent="Decor" unique_id=1720738506]
-position = Vector2(88, -4240)
-script = ExtResource("7_kwe0u")
-length = 88.0
-crystal = true
-
-[node name="Chain" type="Sprite2D" parent="Decor/Swing_7_5_260" unique_id=1490020061]
-texture_repeat = 2
-position = Vector2(-2, 0)
-texture = ExtResource("8_j0c5b")
-centered = false
-region_enabled = true
-region_rect = Rect2(0, 0, 4, 80)
-
-[node name="Body" type="Sprite2D" parent="Decor/Swing_7_5_260" unique_id=1226252151]
-position = Vector2(0, 94)
-texture = ExtResource("9_do34x")
-
-[node name="Light" type="Sprite2D" parent="Decor/Swing_7_5_260" unique_id=355731347]
+[node name="Light" type="Sprite2D" parent="Decor/Swing_7_8_330" unique_id=657739650]
 modulate = Color(1, 0.86, 0.6, 0.9)
 z_index = 1
 material = SubResource("CanvasItemMaterial_h80uu")
 position = Vector2(0, 100)
 scale = Vector2(2.2, 2.2)
-texture = ExtResource("10_i77ux")
+texture = ExtResource("10_ywqqg")
 
-[node name="Neon_15_3_245" type="Node2D" parent="Decor" unique_id=718413610]
-position = Vector2(56, -3912)
-script = ExtResource("14_l6xhy")
-hit_size = Vector2(56, 20)
+[node name="Tilt_5_28_329" type="Node2D" parent="Decor" unique_id=146712040]
+position = Vector2(456, -5273)
+script = ExtResource("11_qtn2u")
+hit_size = Vector2(28, 34)
+hit_offset = Vector2(0, 17)
 
-[node name="Sign" type="Sprite2D" parent="Decor/Neon_15_3_245" unique_id=1931010769]
-texture = ExtResource("15_wfcl1")
-hframes = 2
+[node name="Body" type="Sprite2D" parent="Decor/Tilt_5_28_329" unique_id=1183675677]
+position = Vector2(0, 17)
+texture = ExtResource("12_anewm")
 
-[node name="Glow" type="Sprite2D" parent="Decor/Neon_15_3_245" unique_id=1192312534]
-modulate = Color(1, 0.4, 0.75, 0.7)
+[node name="Tilt_5_27_321" type="Node2D" parent="Decor" unique_id=838534155]
+position = Vector2(440, -5145)
+script = ExtResource("11_qtn2u")
+hit_size = Vector2(28, 34)
+hit_offset = Vector2(0, 17)
+
+[node name="Body" type="Sprite2D" parent="Decor/Tilt_5_27_321" unique_id=842836938]
+position = Vector2(0, 17)
+texture = ExtResource("12_anewm")
+
+[node name="Swing_7_5_313" type="Node2D" parent="Decor" unique_id=1071735379]
+position = Vector2(88, -5104)
+script = ExtResource("7_j0c5b")
+length = 104.0
+crystal = true
+
+[node name="Chain" type="Sprite2D" parent="Decor/Swing_7_5_313" unique_id=1363063062]
+texture_repeat = 2
+position = Vector2(-2, 0)
+texture = ExtResource("8_do34x")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 4, 96)
+
+[node name="Body" type="Sprite2D" parent="Decor/Swing_7_5_313" unique_id=1827650697]
+position = Vector2(0, 110)
+texture = ExtResource("9_i77ux")
+
+[node name="Light" type="Sprite2D" parent="Decor/Swing_7_5_313" unique_id=627790370]
+modulate = Color(1, 0.86, 0.6, 0.9)
 z_index = 1
 material = SubResource("CanvasItemMaterial_hnwxy")
-scale = Vector2(1.6, 1.6)
-texture = ExtResource("10_i77ux")
+position = Vector2(0, 116)
+scale = Vector2(2.2, 2.2)
+texture = ExtResource("10_ywqqg")
 
-[node name="Neon_4_28_239" type="Node2D" parent="Decor" unique_id=890569128]
-position = Vector2(456, -3816)
-script = ExtResource("14_l6xhy")
-hit_size = Vector2(28, 28)
+[node name="Tilt_5_26_302" type="Node2D" parent="Decor" unique_id=1357422390]
+position = Vector2(424, -4841)
+script = ExtResource("11_qtn2u")
+hit_size = Vector2(28, 34)
+hit_offset = Vector2(0, 17)
 
-[node name="Sign" type="Sprite2D" parent="Decor/Neon_4_28_239" unique_id=1715505679]
-texture = ExtResource("16_qrpk5")
-hframes = 2
+[node name="Body" type="Sprite2D" parent="Decor/Tilt_5_26_302" unique_id=481506310]
+position = Vector2(0, 17)
+texture = ExtResource("12_anewm")
 
-[node name="Glow" type="Sprite2D" parent="Decor/Neon_4_28_239" unique_id=1477125597]
-modulate = Color(0.4, 0.95, 1, 0.7)
+[node name="Tilt_19_28_291" type="Node2D" parent="Decor" unique_id=1125284045]
+position = Vector2(456, -4658)
+script = ExtResource("11_qtn2u")
+crooked = false
+chime = true
+hit_size = Vector2(20, 20)
+hit_offset = Vector2(0, 10)
+
+[node name="Body" type="Sprite2D" parent="Decor/Tilt_19_28_291" unique_id=2050646815]
+position = Vector2(0, 10)
+texture = ExtResource("13_l6xhy")
+
+[node name="Tilt_5_28_276" type="Node2D" parent="Decor" unique_id=715802921]
+position = Vector2(456, -4425)
+script = ExtResource("11_qtn2u")
+hit_size = Vector2(28, 34)
+hit_offset = Vector2(0, 17)
+
+[node name="Body" type="Sprite2D" parent="Decor/Tilt_5_28_276" unique_id=875588054]
+position = Vector2(0, 17)
+texture = ExtResource("12_anewm")
+
+[node name="Tilt_5_22_267" type="Node2D" parent="Decor" unique_id=1462871503]
+position = Vector2(360, -4281)
+script = ExtResource("11_qtn2u")
+hit_size = Vector2(28, 34)
+hit_offset = Vector2(0, 17)
+
+[node name="Body" type="Sprite2D" parent="Decor/Tilt_5_22_267" unique_id=733981759]
+position = Vector2(0, 17)
+texture = ExtResource("12_anewm")
+
+[node name="Swing_7_5_260" type="Node2D" parent="Decor" unique_id=1157938152]
+position = Vector2(88, -4240)
+script = ExtResource("7_j0c5b")
+length = 88.0
+crystal = true
+
+[node name="Chain" type="Sprite2D" parent="Decor/Swing_7_5_260" unique_id=735452210]
+texture_repeat = 2
+position = Vector2(-2, 0)
+texture = ExtResource("8_do34x")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 4, 80)
+
+[node name="Body" type="Sprite2D" parent="Decor/Swing_7_5_260" unique_id=887398720]
+position = Vector2(0, 94)
+texture = ExtResource("9_i77ux")
+
+[node name="Light" type="Sprite2D" parent="Decor/Swing_7_5_260" unique_id=165685295]
+modulate = Color(1, 0.86, 0.6, 0.9)
 z_index = 1
 material = SubResource("CanvasItemMaterial_36yo3")
-scale = Vector2(1.6, 1.6)
-texture = ExtResource("10_i77ux")
+position = Vector2(0, 100)
+scale = Vector2(2.2, 2.2)
+texture = ExtResource("10_ywqqg")
 
-[node name="Neon_15_6_230" type="Node2D" parent="Decor" unique_id=227680649]
-position = Vector2(104, -3672)
-script = ExtResource("14_l6xhy")
+[node name="Neon_15_3_245" type="Node2D" parent="Decor" unique_id=1638178727]
+position = Vector2(56, -3912)
+script = ExtResource("14_wfcl1")
 hit_size = Vector2(56, 20)
 
-[node name="Sign" type="Sprite2D" parent="Decor/Neon_15_6_230" unique_id=1747258057]
-texture = ExtResource("15_wfcl1")
+[node name="Sign" type="Sprite2D" parent="Decor/Neon_15_3_245" unique_id=1519857534]
+texture = ExtResource("15_qrpk5")
 hframes = 2
 
-[node name="Glow" type="Sprite2D" parent="Decor/Neon_15_6_230" unique_id=70650244]
+[node name="Glow" type="Sprite2D" parent="Decor/Neon_15_3_245" unique_id=1121045712]
 modulate = Color(1, 0.4, 0.75, 0.7)
 z_index = 1
 material = SubResource("CanvasItemMaterial_630b8")
 scale = Vector2(1.6, 1.6)
-texture = ExtResource("10_i77ux")
+texture = ExtResource("10_ywqqg")
 
-[node name="Neon_4_26_221" type="Node2D" parent="Decor" unique_id=1372375838]
-position = Vector2(424, -3528)
-script = ExtResource("14_l6xhy")
+[node name="Neon_4_28_239" type="Node2D" parent="Decor" unique_id=1811258863]
+position = Vector2(456, -3816)
+script = ExtResource("14_wfcl1")
 hit_size = Vector2(28, 28)
 
-[node name="Sign" type="Sprite2D" parent="Decor/Neon_4_26_221" unique_id=1775924424]
-texture = ExtResource("16_qrpk5")
+[node name="Sign" type="Sprite2D" parent="Decor/Neon_4_28_239" unique_id=641425101]
+texture = ExtResource("16_pettw")
 hframes = 2
 
-[node name="Glow" type="Sprite2D" parent="Decor/Neon_4_26_221" unique_id=2006275197]
+[node name="Glow" type="Sprite2D" parent="Decor/Neon_4_28_239" unique_id=745744034]
 modulate = Color(0.4, 0.95, 1, 0.7)
 z_index = 1
 material = SubResource("CanvasItemMaterial_kdn1x")
 scale = Vector2(1.6, 1.6)
-texture = ExtResource("10_i77ux")
+texture = ExtResource("10_ywqqg")
 
-[node name="Neon_4_3_207" type="Node2D" parent="Decor" unique_id=1559207169]
-position = Vector2(56, -3304)
-script = ExtResource("14_l6xhy")
-hit_size = Vector2(28, 28)
+[node name="Neon_15_6_230" type="Node2D" parent="Decor" unique_id=1245845115]
+position = Vector2(104, -3672)
+script = ExtResource("14_wfcl1")
+hit_size = Vector2(56, 20)
 
-[node name="Sign" type="Sprite2D" parent="Decor/Neon_4_3_207" unique_id=1285667995]
-texture = ExtResource("16_qrpk5")
+[node name="Sign" type="Sprite2D" parent="Decor/Neon_15_6_230" unique_id=1168153308]
+texture = ExtResource("15_qrpk5")
 hframes = 2
 
-[node name="Glow" type="Sprite2D" parent="Decor/Neon_4_3_207" unique_id=1840046839]
-modulate = Color(0.4, 0.95, 1, 0.7)
+[node name="Glow" type="Sprite2D" parent="Decor/Neon_15_6_230" unique_id=460022174]
+modulate = Color(1, 0.4, 0.75, 0.7)
 z_index = 1
 material = SubResource("CanvasItemMaterial_x78la")
 scale = Vector2(1.6, 1.6)
-texture = ExtResource("10_i77ux")
+texture = ExtResource("10_ywqqg")
 
-[node name="Beads_16_27_205" type="Node2D" parent="Decor" unique_id=793258484]
-position = Vector2(440, -3272)
-script = ExtResource("17_pettw")
+[node name="Neon_4_26_221" type="Node2D" parent="Decor" unique_id=1682760987]
+position = Vector2(424, -3528)
+script = ExtResource("14_wfcl1")
+hit_size = Vector2(28, 28)
 
-[node name="Wire" type="Sprite2D" parent="Decor/Beads_16_27_205" unique_id=1754639732]
-texture = ExtResource("18_fbuxf")
-
-[node name="Neon_15_27_192" type="Node2D" parent="Decor" unique_id=1022598151]
-position = Vector2(440, -3064)
-script = ExtResource("14_l6xhy")
-hit_size = Vector2(56, 20)
-
-[node name="Sign" type="Sprite2D" parent="Decor/Neon_15_27_192" unique_id=1838077789]
-texture = ExtResource("15_wfcl1")
+[node name="Sign" type="Sprite2D" parent="Decor/Neon_4_26_221" unique_id=705452447]
+texture = ExtResource("16_pettw")
 hframes = 2
 
-[node name="Glow" type="Sprite2D" parent="Decor/Neon_15_27_192" unique_id=305325821]
-modulate = Color(1, 0.4, 0.75, 0.7)
+[node name="Glow" type="Sprite2D" parent="Decor/Neon_4_26_221" unique_id=1571215046]
+modulate = Color(0.4, 0.95, 1, 0.7)
 z_index = 1
 material = SubResource("CanvasItemMaterial_n02ru")
 scale = Vector2(1.6, 1.6)
-texture = ExtResource("10_i77ux")
+texture = ExtResource("10_ywqqg")
 
-[node name="Neon_4_5_185" type="Node2D" parent="Decor" unique_id=1872936579]
-position = Vector2(88, -2952)
-script = ExtResource("14_l6xhy")
+[node name="Neon_4_3_207" type="Node2D" parent="Decor" unique_id=36322857]
+position = Vector2(56, -3304)
+script = ExtResource("14_wfcl1")
 hit_size = Vector2(28, 28)
 
-[node name="Sign" type="Sprite2D" parent="Decor/Neon_4_5_185" unique_id=18278799]
-texture = ExtResource("16_qrpk5")
+[node name="Sign" type="Sprite2D" parent="Decor/Neon_4_3_207" unique_id=2124777810]
+texture = ExtResource("16_pettw")
 hframes = 2
 
-[node name="Glow" type="Sprite2D" parent="Decor/Neon_4_5_185" unique_id=2004134790]
+[node name="Glow" type="Sprite2D" parent="Decor/Neon_4_3_207" unique_id=1741971748]
 modulate = Color(0.4, 0.95, 1, 0.7)
 z_index = 1
 material = SubResource("CanvasItemMaterial_xgtwx")
 scale = Vector2(1.6, 1.6)
-texture = ExtResource("10_i77ux")
+texture = ExtResource("10_ywqqg")
 
-[node name="Beads_16_25_177" type="Node2D" parent="Decor" unique_id=751659474]
-position = Vector2(408, -2824)
-script = ExtResource("17_pettw")
+[node name="Beads_16_27_205" type="Node2D" parent="Decor" unique_id=752349739]
+position = Vector2(440, -3272)
+script = ExtResource("17_fbuxf")
 
-[node name="Wire" type="Sprite2D" parent="Decor/Beads_16_25_177" unique_id=1548695639]
-texture = ExtResource("18_fbuxf")
+[node name="Wire" type="Sprite2D" parent="Decor/Beads_16_27_205" unique_id=1381940698]
+texture = ExtResource("18_mklip")
 
-[node name="Neon_4_5_169" type="Node2D" parent="Decor" unique_id=367374898]
-position = Vector2(88, -2696)
-script = ExtResource("14_l6xhy")
-hit_size = Vector2(28, 28)
+[node name="Neon_15_27_192" type="Node2D" parent="Decor" unique_id=145010855]
+position = Vector2(440, -3064)
+script = ExtResource("14_wfcl1")
+hit_size = Vector2(56, 20)
 
-[node name="Sign" type="Sprite2D" parent="Decor/Neon_4_5_169" unique_id=291589314]
-texture = ExtResource("16_qrpk5")
+[node name="Sign" type="Sprite2D" parent="Decor/Neon_15_27_192" unique_id=1873127972]
+texture = ExtResource("15_qrpk5")
 hframes = 2
 
-[node name="Glow" type="Sprite2D" parent="Decor/Neon_4_5_169" unique_id=332602626]
-modulate = Color(0.4, 0.95, 1, 0.7)
+[node name="Glow" type="Sprite2D" parent="Decor/Neon_15_27_192" unique_id=902217851]
+modulate = Color(1, 0.4, 0.75, 0.7)
 z_index = 1
 material = SubResource("CanvasItemMaterial_kobpb")
 scale = Vector2(1.6, 1.6)
-texture = ExtResource("10_i77ux")
+texture = ExtResource("10_ywqqg")
 
-[node name="Neon_15_5_153" type="Node2D" parent="Decor" unique_id=1087757245]
-position = Vector2(88, -2440)
-script = ExtResource("14_l6xhy")
-hit_size = Vector2(56, 20)
+[node name="Neon_4_5_185" type="Node2D" parent="Decor" unique_id=1647472409]
+position = Vector2(88, -2952)
+script = ExtResource("14_wfcl1")
+hit_size = Vector2(28, 28)
 
-[node name="Sign" type="Sprite2D" parent="Decor/Neon_15_5_153" unique_id=813948711]
-texture = ExtResource("15_wfcl1")
+[node name="Sign" type="Sprite2D" parent="Decor/Neon_4_5_185" unique_id=789553144]
+texture = ExtResource("16_pettw")
 hframes = 2
 
-[node name="Glow" type="Sprite2D" parent="Decor/Neon_15_5_153" unique_id=1568237806]
-modulate = Color(1, 0.4, 0.75, 0.7)
+[node name="Glow" type="Sprite2D" parent="Decor/Neon_4_5_185" unique_id=1703294391]
+modulate = Color(0.4, 0.95, 1, 0.7)
 z_index = 1
 material = SubResource("CanvasItemMaterial_aoi3b")
 scale = Vector2(1.6, 1.6)
-texture = ExtResource("10_i77ux")
+texture = ExtResource("10_ywqqg")
 
-[node name="Neon_4_26_148" type="Node2D" parent="Decor" unique_id=1745388182]
-position = Vector2(424, -2360)
-script = ExtResource("14_l6xhy")
+[node name="Beads_16_25_177" type="Node2D" parent="Decor" unique_id=754069715]
+position = Vector2(408, -2824)
+script = ExtResource("17_fbuxf")
+
+[node name="Wire" type="Sprite2D" parent="Decor/Beads_16_25_177" unique_id=302028970]
+texture = ExtResource("18_mklip")
+
+[node name="Neon_4_5_169" type="Node2D" parent="Decor" unique_id=603443995]
+position = Vector2(88, -2696)
+script = ExtResource("14_wfcl1")
 hit_size = Vector2(28, 28)
 
-[node name="Sign" type="Sprite2D" parent="Decor/Neon_4_26_148" unique_id=1208603796]
-texture = ExtResource("16_qrpk5")
+[node name="Sign" type="Sprite2D" parent="Decor/Neon_4_5_169" unique_id=720084049]
+texture = ExtResource("16_pettw")
 hframes = 2
 
-[node name="Glow" type="Sprite2D" parent="Decor/Neon_4_26_148" unique_id=216492628]
+[node name="Glow" type="Sprite2D" parent="Decor/Neon_4_5_169" unique_id=1203253638]
 modulate = Color(0.4, 0.95, 1, 0.7)
 z_index = 1
 material = SubResource("CanvasItemMaterial_0s5kt")
 scale = Vector2(1.6, 1.6)
-texture = ExtResource("10_i77ux")
+texture = ExtResource("10_ywqqg")
 
-[node name="Neon_15_22_141" type="Node2D" parent="Decor" unique_id=155143066]
-position = Vector2(360, -2248)
-script = ExtResource("14_l6xhy")
+[node name="Neon_15_5_153" type="Node2D" parent="Decor" unique_id=147325788]
+position = Vector2(88, -2440)
+script = ExtResource("14_wfcl1")
 hit_size = Vector2(56, 20)
 
-[node name="Sign" type="Sprite2D" parent="Decor/Neon_15_22_141" unique_id=1082158558]
-texture = ExtResource("15_wfcl1")
+[node name="Sign" type="Sprite2D" parent="Decor/Neon_15_5_153" unique_id=2007549222]
+texture = ExtResource("15_qrpk5")
 hframes = 2
 
-[node name="Glow" type="Sprite2D" parent="Decor/Neon_15_22_141" unique_id=1545247670]
+[node name="Glow" type="Sprite2D" parent="Decor/Neon_15_5_153" unique_id=2032363909]
 modulate = Color(1, 0.4, 0.75, 0.7)
 z_index = 1
 material = SubResource("CanvasItemMaterial_pwtpy")
 scale = Vector2(1.6, 1.6)
-texture = ExtResource("10_i77ux")
+texture = ExtResource("10_ywqqg")
 
-[node name="Neon_4_4_133" type="Node2D" parent="Decor" unique_id=553029237]
-position = Vector2(72, -2120)
-script = ExtResource("14_l6xhy")
+[node name="Neon_4_26_148" type="Node2D" parent="Decor" unique_id=1346367777]
+position = Vector2(424, -2360)
+script = ExtResource("14_wfcl1")
 hit_size = Vector2(28, 28)
 
-[node name="Sign" type="Sprite2D" parent="Decor/Neon_4_4_133" unique_id=2022232725]
-texture = ExtResource("16_qrpk5")
+[node name="Sign" type="Sprite2D" parent="Decor/Neon_4_26_148" unique_id=1864203691]
+texture = ExtResource("16_pettw")
 hframes = 2
 
-[node name="Glow" type="Sprite2D" parent="Decor/Neon_4_4_133" unique_id=547563745]
+[node name="Glow" type="Sprite2D" parent="Decor/Neon_4_26_148" unique_id=625438808]
 modulate = Color(0.4, 0.95, 1, 0.7)
 z_index = 1
 material = SubResource("CanvasItemMaterial_g0oxa")
 scale = Vector2(1.6, 1.6)
-texture = ExtResource("10_i77ux")
+texture = ExtResource("10_ywqqg")
 
-[node name="Window_22_4_117" type="Node2D" parent="Decor" unique_id=621217866]
-position = Vector2(72, -1864)
-script = ExtResource("19_mklip")
+[node name="Neon_15_22_141" type="Node2D" parent="Decor" unique_id=1504643972]
+position = Vector2(360, -2248)
+script = ExtResource("14_wfcl1")
+hit_size = Vector2(56, 20)
 
-[node name="Glass" type="Sprite2D" parent="Decor/Window_22_4_117" unique_id=273198236]
-texture = ExtResource("20_fip6l")
+[node name="Sign" type="Sprite2D" parent="Decor/Neon_15_22_141" unique_id=1566602672]
+texture = ExtResource("15_qrpk5")
 hframes = 2
 
-[node name="Swing_11_7_113" type="Node2D" parent="Decor" unique_id=1930621365]
+[node name="Glow" type="Sprite2D" parent="Decor/Neon_15_22_141" unique_id=875099604]
+modulate = Color(1, 0.4, 0.75, 0.7)
+z_index = 1
+material = SubResource("CanvasItemMaterial_161pk")
+scale = Vector2(1.6, 1.6)
+texture = ExtResource("10_ywqqg")
+
+[node name="Neon_4_4_133" type="Node2D" parent="Decor" unique_id=370827644]
+position = Vector2(72, -2120)
+script = ExtResource("14_wfcl1")
+hit_size = Vector2(28, 28)
+
+[node name="Sign" type="Sprite2D" parent="Decor/Neon_4_4_133" unique_id=1601122200]
+texture = ExtResource("16_pettw")
+hframes = 2
+
+[node name="Glow" type="Sprite2D" parent="Decor/Neon_4_4_133" unique_id=2088339727]
+modulate = Color(0.4, 0.95, 1, 0.7)
+z_index = 1
+material = SubResource("CanvasItemMaterial_ptelm")
+scale = Vector2(1.6, 1.6)
+texture = ExtResource("10_ywqqg")
+
+[node name="Window_22_4_117" type="Node2D" parent="Decor" unique_id=883989714]
+position = Vector2(72, -1864)
+script = ExtResource("19_fip6l")
+
+[node name="Glass" type="Sprite2D" parent="Decor/Window_22_4_117" unique_id=198403005]
+texture = ExtResource("20_2kp0x")
+hframes = 2
+
+[node name="Swing_11_7_113" type="Node2D" parent="Decor" unique_id=447658230]
 position = Vector2(120, -2016)
-script = ExtResource("7_kwe0u")
+script = ExtResource("7_j0c5b")
 length = 216.0
 
-[node name="Chain" type="Sprite2D" parent="Decor/Swing_11_7_113" unique_id=2006756437]
+[node name="Chain" type="Sprite2D" parent="Decor/Swing_11_7_113" unique_id=497563884]
 texture_repeat = 2
 position = Vector2(-2, 0)
-texture = ExtResource("8_j0c5b")
+texture = ExtResource("8_do34x")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 4, 208)
 
-[node name="Body" type="Sprite2D" parent="Decor/Swing_11_7_113" unique_id=1821575650]
+[node name="Body" type="Sprite2D" parent="Decor/Swing_11_7_113" unique_id=1204799668]
 position = Vector2(0, 216)
-texture = ExtResource("21_2kp0x")
+texture = ExtResource("21_q7amw")
 
-[node name="Light" type="Sprite2D" parent="Decor/Swing_11_7_113" unique_id=812182246]
+[node name="Light" type="Sprite2D" parent="Decor/Swing_11_7_113" unique_id=579624946]
 z_index = 1
-material = SubResource("CanvasItemMaterial_161pk")
+material = SubResource("CanvasItemMaterial_74j6r")
 position = Vector2(0, 298)
-texture = ExtResource("22_q7amw")
+texture = ExtResource("22_7deij")
 
-[node name="Tilt_5_9_100" type="Node2D" parent="Decor" unique_id=992533758]
+[node name="Tilt_5_9_100" type="Node2D" parent="Decor" unique_id=1712431391]
 position = Vector2(152, -1609)
-script = ExtResource("11_ywqqg")
+script = ExtResource("11_qtn2u")
 hit_size = Vector2(28, 34)
 hit_offset = Vector2(0, 17)
 
-[node name="Body" type="Sprite2D" parent="Decor/Tilt_5_9_100" unique_id=41835648]
+[node name="Body" type="Sprite2D" parent="Decor/Tilt_5_9_100" unique_id=160255901]
 position = Vector2(0, 17)
-texture = ExtResource("12_qtn2u")
+texture = ExtResource("12_anewm")
 
-[node name="Knock_17_6_96" type="Node2D" parent="Decor" unique_id=804915499]
+[node name="Knock_17_6_96" type="Node2D" parent="Decor" unique_id=705222879]
 position = Vector2(104, -1530)
-script = ExtResource("23_7deij")
+script = ExtResource("23_8vm4l")
 half_size = Vector2(11, 10)
 heavy = true
 hit_size = Vector2(22, 18)
 min_speed = 40.0
 
-[node name="Body" type="Sprite2D" parent="Decor/Knock_17_6_96" unique_id=1904508915]
-texture = ExtResource("24_8vm4l")
+[node name="Body" type="Sprite2D" parent="Decor/Knock_17_6_96" unique_id=382359414]
+texture = ExtResource("24_esg0d")
 
-[node name="Rattle_17_28_95" type="Node2D" parent="Decor" unique_id=1360789758]
+[node name="Rattle_17_28_95" type="Node2D" parent="Decor" unique_id=1660608213]
 position = Vector2(456, -1512)
-script = ExtResource("25_esg0d")
+script = ExtResource("25_xlf7i")
 hit_size = Vector2(28, 62)
 
-[node name="Body" type="Sprite2D" parent="Decor/Rattle_17_28_95" unique_id=1695331595]
-texture = ExtResource("26_xlf7i")
+[node name="Body" type="Sprite2D" parent="Decor/Rattle_17_28_95" unique_id=1671021657]
+texture = ExtResource("26_gvqjq")
 
-[node name="Window_22_3_78" type="Node2D" parent="Decor" unique_id=140529465]
+[node name="Window_22_3_78" type="Node2D" parent="Decor" unique_id=492472980]
 position = Vector2(56, -1240)
-script = ExtResource("19_mklip")
+script = ExtResource("19_fip6l")
 
-[node name="Glass" type="Sprite2D" parent="Decor/Window_22_3_78" unique_id=741923213]
-texture = ExtResource("20_fip6l")
+[node name="Glass" type="Sprite2D" parent="Decor/Window_22_3_78" unique_id=1729169128]
+texture = ExtResource("20_2kp0x")
 hframes = 2
 
-[node name="Swing_11_24_76" type="Node2D" parent="Decor" unique_id=2106622715]
+[node name="Swing_11_24_76" type="Node2D" parent="Decor" unique_id=1746119645]
 position = Vector2(392, -1440)
-script = ExtResource("7_kwe0u")
+script = ExtResource("7_j0c5b")
 length = 232.0
 
-[node name="Chain" type="Sprite2D" parent="Decor/Swing_11_24_76" unique_id=129969766]
+[node name="Chain" type="Sprite2D" parent="Decor/Swing_11_24_76" unique_id=1869823918]
 texture_repeat = 2
 position = Vector2(-2, 0)
-texture = ExtResource("8_j0c5b")
+texture = ExtResource("8_do34x")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 4, 224)
 
-[node name="Body" type="Sprite2D" parent="Decor/Swing_11_24_76" unique_id=1914540072]
+[node name="Body" type="Sprite2D" parent="Decor/Swing_11_24_76" unique_id=1640600721]
 position = Vector2(0, 232)
-texture = ExtResource("21_2kp0x")
+texture = ExtResource("21_q7amw")
 
-[node name="Light" type="Sprite2D" parent="Decor/Swing_11_24_76" unique_id=1039072842]
+[node name="Light" type="Sprite2D" parent="Decor/Swing_11_24_76" unique_id=1253332546]
 z_index = 1
-material = SubResource("CanvasItemMaterial_ptelm")
+material = SubResource("CanvasItemMaterial_ka6qc")
 position = Vector2(0, 314)
-texture = ExtResource("22_q7amw")
+texture = ExtResource("22_7deij")
 
-[node name="Beads_16_16_70" type="Node2D" parent="Decor" unique_id=1343043802]
+[node name="Beads_16_16_70" type="Node2D" parent="Decor" unique_id=99106494]
 position = Vector2(264, -1112)
-script = ExtResource("17_pettw")
+script = ExtResource("17_fbuxf")
 
-[node name="Wire" type="Sprite2D" parent="Decor/Beads_16_16_70" unique_id=1409096419]
-texture = ExtResource("18_fbuxf")
+[node name="Wire" type="Sprite2D" parent="Decor/Beads_16_16_70" unique_id=1187149746]
+texture = ExtResource("18_mklip")
 
-[node name="Knock_10_9_68" type="Node2D" parent="Decor" unique_id=133045228]
+[node name="Knock_10_9_68" type="Node2D" parent="Decor" unique_id=760488439]
 position = Vector2(152, -1075)
-script = ExtResource("23_7deij")
+script = ExtResource("23_8vm4l")
 hit_size = Vector2(8, 8)
 min_speed = 40.0
 
-[node name="Body" type="Sprite2D" parent="Decor/Knock_10_9_68" unique_id=1840742253]
-texture = ExtResource("27_gvqjq")
+[node name="Body" type="Sprite2D" parent="Decor/Knock_10_9_68" unique_id=231298375]
+texture = ExtResource("27_00j1d")
 
-[node name="Rattle_17_5_59" type="Node2D" parent="Decor" unique_id=1066615199]
+[node name="Rattle_17_5_59" type="Node2D" parent="Decor" unique_id=1495578856]
 position = Vector2(88, -936)
-script = ExtResource("25_esg0d")
+script = ExtResource("25_xlf7i")
 hit_size = Vector2(28, 62)
 
-[node name="Body" type="Sprite2D" parent="Decor/Rattle_17_5_59" unique_id=2080205779]
-texture = ExtResource("26_xlf7i")
+[node name="Body" type="Sprite2D" parent="Decor/Rattle_17_5_59" unique_id=799462245]
+texture = ExtResource("26_gvqjq")
 
-[node name="Tilt_19_27_52" type="Node2D" parent="Decor" unique_id=313561887]
+[node name="Tilt_19_27_52" type="Node2D" parent="Decor" unique_id=2054042653]
 position = Vector2(440, -834)
-script = ExtResource("11_ywqqg")
+script = ExtResource("11_qtn2u")
 crooked = false
 chime = true
 hit_size = Vector2(20, 20)
 hit_offset = Vector2(0, 10)
 
-[node name="Body" type="Sprite2D" parent="Decor/Tilt_19_27_52" unique_id=4815042]
+[node name="Body" type="Sprite2D" parent="Decor/Tilt_19_27_52" unique_id=110652467]
 position = Vector2(0, 10)
-texture = ExtResource("13_anewm")
+texture = ExtResource("13_l6xhy")
 
-[node name="Window_22_7_46" type="Node2D" parent="Decor" unique_id=1329720210]
+[node name="Window_22_7_46" type="Node2D" parent="Decor" unique_id=415446349]
 position = Vector2(120, -728)
-script = ExtResource("19_mklip")
+script = ExtResource("19_fip6l")
 
-[node name="Glass" type="Sprite2D" parent="Decor/Window_22_7_46" unique_id=1873720957]
-texture = ExtResource("20_fip6l")
+[node name="Glass" type="Sprite2D" parent="Decor/Window_22_7_46" unique_id=378385799]
+texture = ExtResource("20_2kp0x")
 hframes = 2
 
-[node name="Swing_11_28_43" type="Node2D" parent="Decor" unique_id=17142010]
+[node name="Swing_11_28_43" type="Node2D" parent="Decor" unique_id=1888370562]
 position = Vector2(456, -736)
-script = ExtResource("7_kwe0u")
+script = ExtResource("7_j0c5b")
 length = 56.0
 
-[node name="Chain" type="Sprite2D" parent="Decor/Swing_11_28_43" unique_id=1282140534]
+[node name="Chain" type="Sprite2D" parent="Decor/Swing_11_28_43" unique_id=586817150]
 texture_repeat = 2
 position = Vector2(-2, 0)
-texture = ExtResource("8_j0c5b")
+texture = ExtResource("8_do34x")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 4, 48)
 
-[node name="Body" type="Sprite2D" parent="Decor/Swing_11_28_43" unique_id=36108970]
+[node name="Body" type="Sprite2D" parent="Decor/Swing_11_28_43" unique_id=1935973288]
 position = Vector2(0, 56)
-texture = ExtResource("21_2kp0x")
+texture = ExtResource("21_q7amw")
 
-[node name="Light" type="Sprite2D" parent="Decor/Swing_11_28_43" unique_id=45125113]
+[node name="Light" type="Sprite2D" parent="Decor/Swing_11_28_43" unique_id=661925752]
 z_index = 1
-material = SubResource("CanvasItemMaterial_74j6r")
+material = SubResource("CanvasItemMaterial_e58ck")
 position = Vector2(0, 138)
-texture = ExtResource("22_q7amw")
+texture = ExtResource("22_7deij")
 
-[node name="Beads_16_28_33" type="Node2D" parent="Decor" unique_id=2028294446]
+[node name="Beads_16_28_33" type="Node2D" parent="Decor" unique_id=218948836]
 position = Vector2(456, -520)
-script = ExtResource("17_pettw")
+script = ExtResource("17_fbuxf")
 
-[node name="Wire" type="Sprite2D" parent="Decor/Beads_16_28_33" unique_id=1479551916]
-texture = ExtResource("18_fbuxf")
+[node name="Wire" type="Sprite2D" parent="Decor/Beads_16_28_33" unique_id=1302146704]
+texture = ExtResource("18_mklip")
 
-[node name="Swing_11_22_30" type="Node2D" parent="Decor" unique_id=1632553538]
+[node name="Swing_11_22_30" type="Node2D" parent="Decor" unique_id=1427973160]
 position = Vector2(360, -576)
-script = ExtResource("7_kwe0u")
+script = ExtResource("7_j0c5b")
 length = 104.0
 
-[node name="Chain" type="Sprite2D" parent="Decor/Swing_11_22_30" unique_id=307992335]
+[node name="Chain" type="Sprite2D" parent="Decor/Swing_11_22_30" unique_id=134264298]
 texture_repeat = 2
 position = Vector2(-2, 0)
-texture = ExtResource("8_j0c5b")
+texture = ExtResource("8_do34x")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 4, 96)
 
-[node name="Body" type="Sprite2D" parent="Decor/Swing_11_22_30" unique_id=89718337]
+[node name="Body" type="Sprite2D" parent="Decor/Swing_11_22_30" unique_id=1591399366]
 position = Vector2(0, 104)
-texture = ExtResource("21_2kp0x")
+texture = ExtResource("21_q7amw")
 
-[node name="Light" type="Sprite2D" parent="Decor/Swing_11_22_30" unique_id=1818724804]
+[node name="Light" type="Sprite2D" parent="Decor/Swing_11_22_30" unique_id=1670627897]
 z_index = 1
-material = SubResource("CanvasItemMaterial_ka6qc")
+material = SubResource("CanvasItemMaterial_0ocer")
 position = Vector2(0, 186)
-texture = ExtResource("22_q7amw")
+texture = ExtResource("22_7deij")
 
-[node name="Rattle_17_5_28" type="Node2D" parent="Decor" unique_id=354688940]
+[node name="Rattle_17_5_28" type="Node2D" parent="Decor" unique_id=181666430]
 position = Vector2(88, -440)
-script = ExtResource("25_esg0d")
+script = ExtResource("25_xlf7i")
 hit_size = Vector2(28, 62)
 
-[node name="Body" type="Sprite2D" parent="Decor/Rattle_17_5_28" unique_id=789135054]
-texture = ExtResource("26_xlf7i")
+[node name="Body" type="Sprite2D" parent="Decor/Rattle_17_5_28" unique_id=568639733]
+texture = ExtResource("26_gvqjq")
 
-[node name="Swing_11_16_16" type="Node2D" parent="Decor" unique_id=822320161]
+[node name="Swing_11_16_16" type="Node2D" parent="Decor" unique_id=1125595590]
 position = Vector2(264, -288)
-script = ExtResource("7_kwe0u")
+script = ExtResource("7_j0c5b")
 length = 40.0
 
-[node name="Chain" type="Sprite2D" parent="Decor/Swing_11_16_16" unique_id=1411123445]
+[node name="Chain" type="Sprite2D" parent="Decor/Swing_11_16_16" unique_id=1548183209]
 texture_repeat = 2
 position = Vector2(-2, 0)
-texture = ExtResource("8_j0c5b")
+texture = ExtResource("8_do34x")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 4, 32)
 
-[node name="Body" type="Sprite2D" parent="Decor/Swing_11_16_16" unique_id=1772738728]
+[node name="Body" type="Sprite2D" parent="Decor/Swing_11_16_16" unique_id=1285816631]
 position = Vector2(0, 40)
-texture = ExtResource("21_2kp0x")
+texture = ExtResource("21_q7amw")
 
-[node name="Light" type="Sprite2D" parent="Decor/Swing_11_16_16" unique_id=1821808230]
+[node name="Light" type="Sprite2D" parent="Decor/Swing_11_16_16" unique_id=1526300540]
 z_index = 1
-material = SubResource("CanvasItemMaterial_e58ck")
+material = SubResource("CanvasItemMaterial_36p00")
 position = Vector2(0, 122)
-texture = ExtResource("22_q7amw")
+texture = ExtResource("22_7deij")
 
-[node name="Tilt_19_25_16" type="Node2D" parent="Decor" unique_id=1220501321]
+[node name="Tilt_19_25_16" type="Node2D" parent="Decor" unique_id=1345848320]
 position = Vector2(408, -258)
-script = ExtResource("11_ywqqg")
+script = ExtResource("11_qtn2u")
 crooked = false
 chime = true
 hit_size = Vector2(20, 20)
 hit_offset = Vector2(0, 10)
 
-[node name="Body" type="Sprite2D" parent="Decor/Tilt_19_25_16" unique_id=556604110]
+[node name="Body" type="Sprite2D" parent="Decor/Tilt_19_25_16" unique_id=404466664]
 position = Vector2(0, 10)
-texture = ExtResource("13_anewm")
+texture = ExtResource("13_l6xhy")
 
-[node name="Window_22_8_10" type="Node2D" parent="Decor" unique_id=963735877]
+[node name="Window_22_8_10" type="Node2D" parent="Decor" unique_id=339579600]
 position = Vector2(136, -152)
-script = ExtResource("19_mklip")
+script = ExtResource("19_fip6l")
 
-[node name="Glass" type="Sprite2D" parent="Decor/Window_22_8_10" unique_id=1061915751]
-texture = ExtResource("20_fip6l")
+[node name="Glass" type="Sprite2D" parent="Decor/Window_22_8_10" unique_id=922506221]
+texture = ExtResource("20_2kp0x")
 hframes = 2
 
-[node name="Knock_10_12_6" type="Node2D" parent="Decor" unique_id=1383924874]
+[node name="Knock_10_12_6" type="Node2D" parent="Decor" unique_id=1550538877]
 position = Vector2(200, -83)
-script = ExtResource("23_7deij")
+script = ExtResource("23_8vm4l")
 hit_size = Vector2(8, 8)
 min_speed = 40.0
 
-[node name="Body" type="Sprite2D" parent="Decor/Knock_10_12_6" unique_id=1397467997]
-texture = ExtResource("27_gvqjq")
+[node name="Body" type="Sprite2D" parent="Decor/Knock_10_12_6" unique_id=600332857]
+texture = ExtResource("27_00j1d")
 
-[node name="Lights" type="Node2D" parent="." unique_id=2097901146]
+[node name="Lights" type="Node2D" parent="." unique_id=283040601]
 z_index = -4
 
-[node name="Glow1" type="Sprite2D" parent="Lights" unique_id=41157845]
+[node name="Glow1" type="Sprite2D" parent="Lights" unique_id=1175372501]
 modulate = Color(1, 0.85, 0.4, 0.8)
-material = SubResource("CanvasItemMaterial_0ocer")
+material = SubResource("CanvasItemMaterial_g335s")
 position = Vector2(216, -5674)
 scale = Vector2(1.4, 1.4)
-texture = ExtResource("10_i77ux")
+texture = ExtResource("10_ywqqg")
 
-[node name="CPUParticles2D" type="CPUParticles2D" parent="Lights" unique_id=918742585]
-material = SubResource("CanvasItemMaterial_36p00")
-position = Vector2(136, -5222)
-amount = 9
-lifetime = 7.0
-preprocess = 7.0
-emission_shape = 3
-emission_rect_extents = Vector2(26, 46)
-direction = Vector2(0, -1)
-spread = 180.0
-gravity = Vector2(0, 0.6)
-initial_velocity_min = 1.0
-initial_velocity_max = 3.5
-color = Color(1, 0.88, 0.6, 0.55)
-color_ramp = SubResource("Gradient_g335s")
-
-[node name="CPUParticles2D2" type="CPUParticles2D" parent="Lights" unique_id=611074328]
+[node name="CPUParticles2D" type="CPUParticles2D" parent="Lights" unique_id=828428904]
 material = SubResource("CanvasItemMaterial_d4w8p")
-position = Vector2(88, -4950)
+position = Vector2(136, -5222)
 amount = 9
 lifetime = 7.0
 preprocess = 7.0
@@ -906,9 +891,9 @@ initial_velocity_max = 3.5
 color = Color(1, 0.88, 0.6, 0.55)
 color_ramp = SubResource("Gradient_xuhnk")
 
-[node name="CPUParticles2D3" type="CPUParticles2D" parent="Lights" unique_id=1583609686]
+[node name="CPUParticles2D2" type="CPUParticles2D" parent="Lights" unique_id=685108543]
 material = SubResource("CanvasItemMaterial_j28qh")
-position = Vector2(88, -4102)
+position = Vector2(88, -4950)
 amount = 9
 lifetime = 7.0
 preprocess = 7.0
@@ -922,9 +907,9 @@ initial_velocity_max = 3.5
 color = Color(1, 0.88, 0.6, 0.55)
 color_ramp = SubResource("Gradient_jb1iw")
 
-[node name="CPUParticles2D4" type="CPUParticles2D" parent="Lights" unique_id=833630095]
+[node name="CPUParticles2D3" type="CPUParticles2D" parent="Lights" unique_id=1848721231]
 material = SubResource("CanvasItemMaterial_gdick")
-position = Vector2(120, -1750)
+position = Vector2(88, -4102)
 amount = 9
 lifetime = 7.0
 preprocess = 7.0
@@ -938,9 +923,9 @@ initial_velocity_max = 3.5
 color = Color(1, 0.88, 0.6, 0.55)
 color_ramp = SubResource("Gradient_80ge2")
 
-[node name="CPUParticles2D5" type="CPUParticles2D" parent="Lights" unique_id=1515415976]
+[node name="CPUParticles2D4" type="CPUParticles2D" parent="Lights" unique_id=1736207385]
 material = SubResource("CanvasItemMaterial_kvy23")
-position = Vector2(392, -1158)
+position = Vector2(120, -1750)
 amount = 9
 lifetime = 7.0
 preprocess = 7.0
@@ -954,9 +939,9 @@ initial_velocity_max = 3.5
 color = Color(1, 0.88, 0.6, 0.55)
 color_ramp = SubResource("Gradient_gq0u7")
 
-[node name="CPUParticles2D6" type="CPUParticles2D" parent="Lights" unique_id=1892508683]
+[node name="CPUParticles2D5" type="CPUParticles2D" parent="Lights" unique_id=212909978]
 material = SubResource("CanvasItemMaterial_jej42")
-position = Vector2(456, -630)
+position = Vector2(392, -1158)
 amount = 9
 lifetime = 7.0
 preprocess = 7.0
@@ -970,9 +955,9 @@ initial_velocity_max = 3.5
 color = Color(1, 0.88, 0.6, 0.55)
 color_ramp = SubResource("Gradient_edbfx")
 
-[node name="CPUParticles2D7" type="CPUParticles2D" parent="Lights" unique_id=467029700]
+[node name="CPUParticles2D6" type="CPUParticles2D" parent="Lights" unique_id=431806735]
 material = SubResource("CanvasItemMaterial_tbq8w")
-position = Vector2(360, -422)
+position = Vector2(456, -630)
 amount = 9
 lifetime = 7.0
 preprocess = 7.0
@@ -986,9 +971,9 @@ initial_velocity_max = 3.5
 color = Color(1, 0.88, 0.6, 0.55)
 color_ramp = SubResource("Gradient_nem1f")
 
-[node name="CPUParticles2D8" type="CPUParticles2D" parent="Lights" unique_id=82810148]
+[node name="CPUParticles2D7" type="CPUParticles2D" parent="Lights" unique_id=1750147289]
 material = SubResource("CanvasItemMaterial_h8o0k")
-position = Vector2(264, -198)
+position = Vector2(360, -422)
 amount = 9
 lifetime = 7.0
 preprocess = 7.0
@@ -1002,274 +987,340 @@ initial_velocity_max = 3.5
 color = Color(1, 0.88, 0.6, 0.55)
 color_ramp = SubResource("Gradient_5uebx")
 
-[node name="Terrain" type="TileMapLayer" parent="." unique_id=516727694]
-tile_map_data = PackedByteArray("AAAAAJj+AAALAAYAAAAfAJj+AAALAAYAAAAAAJn+AAAKAAYAAAAfAJn+AAAKAAYAAAAAAJr+AAAKAAYAAAAfAJr+AAAKAAYAAAAAAJv+AAAKAAYAAAAfAJv+AAAKAAYAAAAAAJz+AAAKAAYAAAAfAJz+AAAKAAYAAAAAAJ3+AAAKAAYAAAAfAJ3+AAAKAAYAAAAAAJ7+AAAKAAYAAAAIAJ7+AAALAAYAAAASAJ7+AAALAAYAAAAfAJ7+AAAKAAYAAAAAAJ/+AAAKAAYAAAAIAJ/+AAAMAAYAAAAJAJ/+AAAFAAYAAAAKAJ/+AAAFAAYAAAALAJ/+AAAFAAYAAAAMAJ/+AAAFAAYAAAANAJ/+AAAFAAYAAAAOAJ/+AAAFAAYAAAAPAJ/+AAAFAAYAAAAQAJ/+AAAFAAYAAAARAJ/+AAAFAAYAAAASAJ/+AAAGAAYAAAAfAJ/+AAAKAAYAAAAAAKD+AAAKAAYAAAAfAKD+AAAKAAYAAAAAAKH+AAAKAAYAAAAfAKH+AAAKAAYAAAAAAKL+AAAKAAYAAAAfAKL+AAAKAAYAAAAAAKP+AAAKAAYAAAAZAKP+AAAJAAYAAAAaAKP+AAABAAYAAAAbAKP+AAABAAYAAAAcAKP+AAABAAYAAAAdAKP+AAADAAYAAAAfAKP+AAAKAAYAAAAAAKT+AAAKAAYAAAAZAKT+AAAMAAYAAAAaAKT+AAAEAAYAAAAbAKT+AAAEAAYAAAAcAKT+AAAEAAYAAAAdAKT+AAAGAAYAAAAfAKT+AAAKAAYAAAAAAKX+AAAKAAYAAAAfAKX+AAAKAAYAAAAAAKb+AAAKAAYAAAAfAKb+AAAKAAYAAAAAAKf+AAAKAAYAAAAfAKf+AAAKAAYAAAAAAKj+AAAKAAYAAAAfAKj+AAAKAAYAAAAAAKn+AAAKAAYAAAAGAKn+AAANAAYAAAAHAKn+AAAFAAYAAAAIAKn+AAAFAAYAAAAJAKn+AAAFAAYAAAAKAKn+AAAFAAYAAAALAKn+AAAHAAYAAAAfAKn+AAAKAAYAAAAAAKr+AAAKAAYAAAAfAKr+AAAKAAYAAAAAAKv+AAAKAAYAAAAfAKv+AAAKAAYAAAAAAKz+AAAKAAYAAAADAKz+AAANAAYAAAAEAKz+AAAFAAYAAAAFAKz+AAAFAAYAAAAGAKz+AAAHAAYAAAAfAKz+AAAKAAYAAAAAAK3+AAAKAAYAAAAfAK3+AAAKAAYAAAAAAK7+AAAKAAYAAAAfAK7+AAAKAAYAAAAAAK/+AAAKAAYAAAAFAK/+AAAJAAYAAAAGAK/+AAABAAYAAAAHAK/+AAABAAYAAAAIAK/+AAABAAYAAAAJAK/+AAADAAYAAAAfAK/+AAAKAAYAAAAAALD+AAAKAAYAAAAFALD+AAAMAAYAAAAGALD+AAAEAAYAAAAHALD+AAAEAAYAAAAIALD+AAAEAAYAAAAJALD+AAAGAAYAAAAfALD+AAAKAAYAAAAAALH+AAAKAAYAAAAYALH+AAALAAYAAAAfALH+AAAKAAYAAAAAALL+AAAKAAYAAAAYALL+AAAIAAYAAAAZALL+AAABAAYAAAAaALL+AAABAAYAAAAbALL+AAABAAYAAAAcALL+AAABAAYAAAAdALL+AAABAAYAAAAeALL+AAABAAYAAAAfALL+AAACAAYAAAAAALP+AAAKAAYAAAAYALP+AAAMAAYAAAAZALP+AAAEAAYAAAAaALP+AAAEAAYAAAAbALP+AAAEAAYAAAAcALP+AAAEAAYAAAAdALP+AAAEAAYAAAAeALP+AAAEAAYAAAAfALP+AAACAAYAAAAAALT+AAAKAAYAAAAfALT+AAAKAAYAAAAAALX+AAAKAAYAAAAfALX+AAAKAAYAAAAAALb+AAAKAAYAAAAfALb+AAAKAAYAAAAAALf+AAAKAAYAAAAfALf+AAAKAAYAAAAAALj+AAAKAAYAAAAfALj+AAAKAAYAAAAAALn+AAAKAAYAAAAfALn+AAAKAAYAAAAAALr+AAAKAAYAAAAMALr+AAAJAAYAAAANALr+AAABAAYAAAAOALr+AAABAAYAAAAPALr+AAABAAYAAAAQALr+AAADAAYAAAAfALr+AAAKAAYAAAAAALv+AAAKAAYAAAAMALv+AAAMAAYAAAANALv+AAAEAAYAAAAOALv+AAAEAAYAAAAPALv+AAAEAAYAAAAQALv+AAAGAAYAAAAfALv+AAAKAAYAAAAAALz+AAAKAAYAAAAfALz+AAAKAAYAAAAAAL3+AAAKAAYAAAAfAL3+AAAKAAYAAAAAAL7+AAAKAAYAAAAEAL7+AAALAAYAAAAfAL7+AAAKAAYAAAAAAL/+AAAKAAYAAAAEAL/+AAAIAAYAAAAFAL/+AAABAAYAAAAGAL/+AAABAAYAAAAHAL/+AAABAAYAAAAIAL/+AAABAAYAAAAJAL/+AAADAAYAAAAfAL/+AAAKAAYAAAAAAMD+AAAKAAYAAAAEAMD+AAAMAAYAAAAFAMD+AAAEAAYAAAAGAMD+AAAEAAYAAAAHAMD+AAAEAAYAAAAIAMD+AAAEAAYAAAAJAMD+AAAGAAYAAAAfAMD+AAAKAAYAAAAAAMH+AAAKAAYAAAAfAMH+AAAKAAYAAAAAAML+AAAKAAYAAAAfAML+AAAKAAYAAAAAAMP+AAAKAAYAAAAfAMP+AAAKAAYAAAAAAMT+AAAKAAYAAAAfAMT+AAAKAAYAAAAAAMX+AAAKAAYAAAAfAMX+AAAKAAYAAAAAAMb+AAAKAAYAAAAfAMb+AAAKAAYAAAAAAMf+AAAKAAYAAAAfAMf+AAAKAAYAAAAAAMj+AAAKAAYAAAAfAMj+AAAKAAYAAAAAAMn+AAAKAAYAAAAUAMn+AAAJAAYAAAAVAMn+AAABAAYAAAAWAMn+AAABAAYAAAAXAMn+AAADAAYAAAAfAMn+AAAKAAYAAAAAAMr+AAAKAAYAAAAUAMr+AAAMAAYAAAAVAMr+AAAEAAYAAAAWAMr+AAAEAAYAAAAXAMr+AAAGAAYAAAAfAMr+AAAKAAYAAAAAAMv+AAAKAAYAAAALAMv+AAALAAYAAAAQAMv+AAALAAYAAAAfAMv+AAAKAAYAAAAAAMz+AAAKAAYAAAALAMz+AAAIAAYAAAAMAMz+AAABAAYAAAANAMz+AAABAAYAAAAOAMz+AAABAAYAAAAPAMz+AAABAAYAAAAQAMz+AAACAAYAAAAfAMz+AAAKAAYAAAAAAM3+AAAKAAYAAAALAM3+AAAMAAYAAAAMAM3+AAAEAAYAAAANAM3+AAAEAAYAAAAOAM3+AAAEAAYAAAAPAM3+AAAEAAYAAAAQAM3+AAAGAAYAAAAfAM3+AAAKAAYAAAAAAM7+AAAKAAYAAAAfAM7+AAAKAAYAAAAAAM/+AAAKAAYAAAAfAM/+AAAKAAYAAAAAAND+AAAKAAYAAAAfAND+AAAKAAYAAAAAANH+AAAKAAYAAAAIANH+AAALAAYAAAAfANH+AAAKAAYAAAAAANL+AAAKAAYAAAADANL+AAAJAAYAAAAEANL+AAABAAYAAAAFANL+AAABAAYAAAAGANL+AAABAAYAAAAHANL+AAABAAYAAAAIANL+AAACAAYAAAAfANL+AAAKAAYAAAAAANP+AAAKAAYAAAADANP+AAAMAAYAAAAEANP+AAAEAAYAAAAFANP+AAAEAAYAAAAGANP+AAAEAAYAAAAHANP+AAAEAAYAAAAIANP+AAAGAAYAAAAfANP+AAAKAAYAAAAAANT+AAAKAAYAAAAfANT+AAAKAAYAAAAAANX+AAAKAAYAAAAMANX+AAALAAYAAAAfANX+AAAKAAYAAAAAANb+AAAKAAYAAAAMANb+AAAIAAYAAAANANb+AAABAAYAAAAOANb+AAABAAYAAAAPANb+AAABAAYAAAAQANb+AAABAAYAAAARANb+AAADAAYAAAAfANb+AAAKAAYAAAAAANf+AAAKAAYAAAAMANf+AAAMAAYAAAANANf+AAAEAAYAAAAOANf+AAAEAAYAAAAPANf+AAAEAAYAAAAQANf+AAAEAAYAAAARANf+AAAGAAYAAAAfANf+AAAKAAYAAAAAANj+AAAKAAYAAAAXANj+AAALAAYAAAAbANj+AAALAAYAAAAfANj+AAAKAAYAAAAAANn+AAAKAAYAAAAXANn+AAAIAAYAAAAYANn+AAABAAYAAAAZANn+AAABAAYAAAAaANn+AAABAAYAAAAbANn+AAACAAYAAAAfANn+AAAKAAYAAAAAANr+AAAKAAYAAAAXANr+AAAMAAYAAAAYANr+AAAEAAYAAAAZANr+AAAEAAYAAAAaANr+AAAEAAYAAAAbANr+AAAGAAYAAAAfANr+AAAKAAYAAAAAANv+AAAKAAYAAAAfANv+AAAKAAYAAAAAANz+AAAKAAYAAAAfANz+AAAKAAYAAAAAAN3+AAAKAAYAAAADAN3+AAALAAYAAAAIAN3+AAALAAYAAAAfAN3+AAAKAAYAAAAAAN7+AAAKAAYAAAADAN7+AAAIAAYAAAAEAN7+AAABAAYAAAAFAN7+AAABAAYAAAAGAN7+AAABAAYAAAAHAN7+AAABAAYAAAAIAN7+AAACAAYAAAAfAN7+AAAKAAYAAAAAAN/+AAAKAAYAAAADAN/+AAAMAAYAAAAEAN/+AAAEAAYAAAAFAN/+AAAEAAYAAAAGAN/+AAAEAAYAAAAHAN/+AAAEAAYAAAAIAN/+AAAGAAYAAAAfAN/+AAAKAAYAAAAAAOD+AAAKAAYAAAAfAOD+AAAKAAYAAAAAAOH+AAAKAAYAAAAfAOH+AAAKAAYAAAAAAOL+AAAKAAYAAAAIAOL+AAALAAYAAAANAOL+AAALAAYAAAAfAOL+AAAKAAYAAAAAAOP+AAAKAAYAAAAIAOP+AAAIAAYAAAAJAOP+AAABAAYAAAAKAOP+AAABAAYAAAALAOP+AAABAAYAAAAMAOP+AAABAAYAAAANAOP+AAACAAYAAAAfAOP+AAAKAAYAAAAAAOT+AAAKAAYAAAAIAOT+AAAMAAYAAAAJAOT+AAAEAAYAAAAKAOT+AAAEAAYAAAALAOT+AAAEAAYAAAAMAOT+AAAEAAYAAAANAOT+AAAGAAYAAAAfAOT+AAAKAAYAAAAAAOX+AAAKAAYAAAAZAOX+AAALAAYAAAAfAOX+AAAKAAYAAAAAAOb+AAAKAAYAAAAZAOb+AAAIAAYAAAAaAOb+AAABAAYAAAAbAOb+AAABAAYAAAAcAOb+AAABAAYAAAAdAOb+AAABAAYAAAAeAOb+AAABAAYAAAAfAOb+AAACAAYAAAAAAOf+AAAKAAYAAAAZAOf+AAAMAAYAAAAaAOf+AAAEAAYAAAAbAOf+AAAEAAYAAAAcAOf+AAAEAAYAAAAdAOf+AAAEAAYAAAAeAOf+AAAEAAYAAAAfAOf+AAACAAYAAAAAAOj+AAAKAAYAAAAfAOj+AAAKAAYAAAAAAOn+AAAKAAYAAAAfAOn+AAAKAAYAAAAAAOr+AAAKAAYAAAAfAOr+AAAKAAYAAAAAAOv+AAAKAAYAAAAfAOv+AAAKAAYAAAAAAOz+AAAKAAYAAAAfAOz+AAAKAAYAAAAAAO3+AAAKAAYAAAAfAO3+AAAKAAYAAAAAAO7+AAAKAAYAAAAfAO7+AAAKAAYAAAAAAO/+AAAKAAYAAAAMAO/+AAALAAYAAAARAO/+AAALAAYAAAAfAO/+AAAKAAYAAAAAAPD+AAAKAAYAAAAMAPD+AAAIAAYAAAANAPD+AAABAAYAAAAOAPD+AAABAAYAAAAPAPD+AAABAAYAAAAQAPD+AAABAAYAAAARAPD+AAACAAYAAAAfAPD+AAAKAAYAAAAAAPH+AAAKAAYAAAAMAPH+AAAMAAYAAAANAPH+AAAEAAYAAAAOAPH+AAAEAAYAAAAPAPH+AAAEAAYAAAAQAPH+AAAEAAYAAAARAPH+AAAGAAYAAAAfAPH+AAAKAAYAAAAAAPL+AAAKAAYAAAAfAPL+AAAKAAYAAAAAAPP+AAAKAAYAAAAfAPP+AAAKAAYAAAAAAPT+AAAKAAYAAAAJAPT+AAALAAYAAAAfAPT+AAAKAAYAAAAAAPX+AAAKAAYAAAADAPX+AAAJAAYAAAAEAPX+AAABAAYAAAAFAPX+AAABAAYAAAAGAPX+AAABAAYAAAAHAPX+AAABAAYAAAAIAPX+AAABAAYAAAAJAPX+AAACAAYAAAAfAPX+AAAKAAYAAAAAAPb+AAAKAAYAAAADAPb+AAAMAAYAAAAEAPb+AAAEAAYAAAAFAPb+AAAEAAYAAAAGAPb+AAAEAAYAAAAHAPb+AAAEAAYAAAAIAPb+AAAEAAYAAAAJAPb+AAAGAAYAAAAfAPb+AAAKAAYAAAAAAPf+AAAKAAYAAAAfAPf+AAAKAAYAAAAAAPj+AAAKAAYAAAALAPj+AAALAAYAAAASAPj+AAALAAYAAAAfAPj+AAAKAAYAAAAAAPn+AAAKAAYAAAALAPn+AAAIAAYAAAAMAPn+AAABAAYAAAANAPn+AAABAAYAAAAOAPn+AAABAAYAAAAPAPn+AAABAAYAAAAQAPn+AAABAAYAAAARAPn+AAABAAYAAAASAPn+AAACAAYAAAAfAPn+AAAKAAYAAAAAAPr+AAAKAAYAAAALAPr+AAAMAAYAAAAMAPr+AAAEAAYAAAANAPr+AAAEAAYAAAAOAPr+AAAEAAYAAAAPAPr+AAAEAAYAAAAQAPr+AAAEAAYAAAARAPr+AAAEAAYAAAASAPr+AAAGAAYAAAAYAPr+AAALAAYAAAAfAPr+AAAKAAYAAAAAAPv+AAAKAAYAAAAYAPv+AAAIAAYAAAAZAPv+AAABAAYAAAAaAPv+AAABAAYAAAAbAPv+AAABAAYAAAAcAPv+AAABAAYAAAAdAPv+AAABAAYAAAAeAPv+AAABAAYAAAAfAPv+AAACAAYAAAAAAPz+AAAKAAYAAAAYAPz+AAAMAAYAAAAZAPz+AAAEAAYAAAAaAPz+AAAEAAYAAAAbAPz+AAAEAAYAAAAcAPz+AAAEAAYAAAAdAPz+AAAEAAYAAAAeAPz+AAAEAAYAAAAfAPz+AAACAAYAAAAAAP3+AAAKAAYAAAAfAP3+AAAKAAYAAAAAAP7+AAAKAAYAAAAfAP7+AAAKAAYAAAAAAP/+AAAKAAYAAAAfAP/+AAAKAAYAAAAAAAD/AAAKAAYAAAAfAAD/AAAKAAYAAAAAAAH/AAAKAAYAAAAGAAH/AAALAAYAAAAMAAH/AAALAAYAAAAfAAH/AAAKAAYAAAAAAAL/AAAKAAYAAAAGAAL/AAAIAAYAAAAHAAL/AAABAAYAAAAIAAL/AAABAAYAAAAJAAL/AAABAAYAAAAKAAL/AAABAAYAAAALAAL/AAABAAYAAAAMAAL/AAACAAYAAAAfAAL/AAAKAAYAAAAAAAP/AAAKAAYAAAAGAAP/AAAMAAYAAAAHAAP/AAAEAAYAAAAIAAP/AAAEAAYAAAAJAAP/AAAEAAYAAAAKAAP/AAAEAAYAAAALAAP/AAAEAAYAAAAMAAP/AAAGAAYAAAAfAAP/AAAKAAYAAAAAAAT/AAAKAAMAAAAfAAT/AAAKAAMAAAAAAAX/AAAKAAMAAAAfAAX/AAAKAAMAAAAAAAb/AAAKAAMAAAAfAAb/AAAKAAMAAAAAAAf/AAAKAAMAAAAOAAf/AAAJAAMAAAAPAAf/AAABAAMAAAAQAAf/AAABAAMAAAARAAf/AAABAAMAAAASAAf/AAABAAMAAAATAAf/AAABAAMAAAAUAAf/AAADAAMAAAAfAAf/AAAKAAMAAAAAAAj/AAAKAAMAAAAOAAj/AAAMAAMAAAAPAAj/AAAEAAMAAAAQAAj/AAAEAAMAAAARAAj/AAAEAAMAAAASAAj/AAAEAAMAAAATAAj/AAAEAAMAAAAUAAj/AAAGAAMAAAAfAAj/AAAKAAMAAAAAAAn/AAAKAAMAAAAfAAn/AAAKAAMAAAAAAAr/AAAKAAMAAAAfAAr/AAAKAAMAAAAAAAv/AAAKAAMAAAAaAAv/AAAJAAMAAAAbAAv/AAABAAMAAAAcAAv/AAABAAMAAAAdAAv/AAABAAMAAAAeAAv/AAABAAMAAAAfAAv/AAACAAMAAAAAAAz/AAAKAAMAAAAaAAz/AAAMAAMAAAAbAAz/AAAEAAMAAAAcAAz/AAAEAAMAAAAdAAz/AAAEAAMAAAAeAAz/AAAEAAMAAAAfAAz/AAACAAMAAAAAAA3/AAAKAAMAAAAfAA3/AAAKAAMAAAAAAA7/AAAKAAMAAAASAA7/AAAJAAMAAAATAA7/AAABAAMAAAAUAA7/AAABAAMAAAAVAA7/AAABAAMAAAAWAA7/AAADAAMAAAAfAA7/AAAKAAMAAAAAAA//AAAKAAMAAAASAA//AAAMAAMAAAATAA//AAAEAAMAAAAUAA//AAAEAAMAAAAVAA//AAAEAAMAAAAWAA//AAAGAAMAAAAfAA//AAAKAAMAAAAAABD/AAAKAAMAAAAfABD/AAAKAAMAAAAAABH/AAAKAAMAAAAGABH/AAAJAAMAAAAHABH/AAABAAMAAAAIABH/AAABAAMAAAAJABH/AAABAAMAAAAKABH/AAABAAMAAAALABH/AAADAAMAAAAfABH/AAAKAAMAAAAAABL/AAAKAAMAAAAGABL/AAAMAAMAAAAHABL/AAAEAAMAAAAIABL/AAAEAAMAAAAJABL/AAAEAAMAAAAKABL/AAAEAAMAAAALABL/AAAGAAMAAAAfABL/AAAKAAMAAAAAABP/AAAKAAMAAAAfABP/AAAKAAMAAAAAABT/AAAKAAMAAAAPABT/AAAJAAMAAAAQABT/AAABAAMAAAARABT/AAABAAMAAAASABT/AAABAAMAAAATABT/AAABAAMAAAAUABT/AAABAAMAAAAVABT/AAADAAMAAAAfABT/AAAKAAMAAAAAABX/AAAKAAMAAAAPABX/AAAMAAMAAAAQABX/AAAEAAMAAAARABX/AAAEAAMAAAASABX/AAAEAAMAAAATABX/AAAEAAMAAAAUABX/AAAEAAMAAAAVABX/AAAGAAMAAAAfABX/AAAKAAMAAAAAABb/AAAKAAMAAAAfABb/AAAKAAMAAAAAABf/AAAKAAMAAAAfABf/AAAKAAMAAAAAABj/AAAKAAMAAAAfABj/AAAKAAMAAAAAABn/AAAKAAMAAAAfABn/AAAKAAMAAAAAABr/AAAKAAMAAAAaABr/AAAJAAMAAAAbABr/AAABAAMAAAAcABr/AAABAAMAAAAdABr/AAABAAMAAAAeABr/AAABAAMAAAAfABr/AAACAAMAAAAAABv/AAAKAAMAAAAaABv/AAAMAAMAAAAbABv/AAAEAAMAAAAcABv/AAAEAAMAAAAdABv/AAAEAAMAAAAeABv/AAAEAAMAAAAfABv/AAACAAMAAAAAABz/AAAKAAMAAAAfABz/AAAKAAMAAAAAAB3/AAAKAAMAAAAfAB3/AAAKAAMAAAAAAB7/AAAKAAMAAAATAB7/AAAJAAMAAAAUAB7/AAABAAMAAAAVAB7/AAABAAMAAAAWAB7/AAABAAMAAAAXAB7/AAABAAMAAAAYAB7/AAABAAMAAAAZAB7/AAADAAMAAAAfAB7/AAAKAAMAAAAAAB//AAAKAAMAAAATAB//AAAMAAMAAAAUAB//AAAEAAMAAAAVAB//AAAEAAMAAAAWAB//AAAEAAMAAAAXAB//AAAEAAMAAAAYAB//AAAEAAMAAAAZAB//AAAGAAMAAAAfAB//AAAKAAMAAAAAACD/AAAKAAMAAAADACD/AAAJAAMAAAAEACD/AAABAAMAAAAFACD/AAABAAMAAAAGACD/AAABAAMAAAAHACD/AAABAAMAAAAIACD/AAADAAMAAAAfACD/AAAKAAMAAAAAACH/AAAKAAMAAAADACH/AAAMAAMAAAAEACH/AAAEAAMAAAAFACH/AAAEAAMAAAAGACH/AAAEAAMAAAAHACH/AAAEAAMAAAAIACH/AAAGAAMAAAAfACH/AAAKAAMAAAAAACL/AAAKAAMAAAAfACL/AAAKAAMAAAAAACP/AAAKAAMAAAAfACP/AAAKAAMAAAAAACT/AAAKAAMAAAAfACT/AAAKAAMAAAAAACX/AAAKAAMAAAAfACX/AAAKAAMAAAAAACb/AAAKAAMAAAAUACb/AAAJAAMAAAAVACb/AAABAAMAAAAWACb/AAABAAMAAAAXACb/AAABAAMAAAAYACb/AAABAAMAAAAZACb/AAABAAMAAAAaACb/AAADAAMAAAAfACb/AAAKAAMAAAAAACf/AAAKAAMAAAAUACf/AAAMAAMAAAAVACf/AAAEAAMAAAAWACf/AAAEAAMAAAAXACf/AAAEAAMAAAAYACf/AAAEAAMAAAAZACf/AAAEAAMAAAAaACf/AAAGAAMAAAAfACf/AAAKAAMAAAAAACj/AAAKAAMAAAAfACj/AAAKAAMAAAAAACn/AAAKAAMAAAAfACn/AAAKAAMAAAAAACr/AAAKAAMAAAAfACr/AAAKAAMAAAAAACv/AAAKAAMAAAANACv/AAAJAAMAAAAOACv/AAABAAMAAAAPACv/AAABAAMAAAAQACv/AAABAAMAAAARACv/AAABAAMAAAASACv/AAABAAMAAAATACv/AAADAAMAAAAfACv/AAAKAAMAAAAAACz/AAAKAAMAAAANACz/AAAMAAMAAAAOACz/AAAEAAMAAAAPACz/AAAEAAMAAAAQACz/AAAEAAMAAAARACz/AAAEAAMAAAASACz/AAAEAAMAAAATACz/AAAGAAMAAAAfACz/AAAKAAMAAAAAAC3/AAAKAAMAAAAYAC3/AAAJAAMAAAAZAC3/AAABAAMAAAAaAC3/AAABAAMAAAAbAC3/AAABAAMAAAAcAC3/AAABAAMAAAAdAC3/AAABAAMAAAAeAC3/AAABAAMAAAAfAC3/AAACAAMAAAAAAC7/AAAKAAMAAAAYAC7/AAAMAAMAAAAZAC7/AAAEAAMAAAAaAC7/AAAEAAMAAAAbAC7/AAAEAAMAAAAcAC7/AAAEAAMAAAAdAC7/AAAEAAMAAAAeAC7/AAAEAAMAAAAfAC7/AAACAAMAAAAAAC//AAAKAAMAAAAfAC//AAAKAAMAAAAAADD/AAAKAAMAAAAfADD/AAAKAAMAAAAAADH/AAAKAAMAAAAfADH/AAAKAAMAAAAAADL/AAAKAAMAAAAfADL/AAAKAAMAAAAAADP/AAAKAAMAAAAfADP/AAAKAAMAAAAAADT/AAAKAAMAAAAfADT/AAAKAAMAAAAAADX/AAAKAAMAAAAMADX/AAAJAAMAAAANADX/AAABAAMAAAAOADX/AAABAAMAAAAPADX/AAADAAMAAAAfADX/AAAKAAMAAAAAADb/AAAKAAMAAAAMADb/AAAMAAMAAAANADb/AAAEAAMAAAAOADb/AAAEAAMAAAAPADb/AAAGAAMAAAAfADb/AAAKAAMAAAAAADf/AAAKAAMAAAAfADf/AAAKAAMAAAAAADj/AAAKAAMAAAAGADj/AAAJAAMAAAAHADj/AAABAAMAAAAIADj/AAABAAMAAAAJADj/AAABAAMAAAAKADj/AAABAAMAAAALADj/AAADAAMAAAAfADj/AAAKAAMAAAAAADn/AAAKAAMAAAAGADn/AAAMAAMAAAAHADn/AAAEAAMAAAAIADn/AAAEAAMAAAAJADn/AAAEAAMAAAAKADn/AAAEAAMAAAALADn/AAAGAAMAAAAfADn/AAAKAAMAAAAAADr/AAAKAAMAAAAfADr/AAAKAAMAAAAAADv/AAAKAAMAAAAfADv/AAAKAAMAAAAAADz/AAAKAAMAAAAfADz/AAAKAAMAAAAAAD3/AAAKAAMAAAAMAD3/AAAJAAMAAAANAD3/AAABAAMAAAAOAD3/AAABAAMAAAAPAD3/AAABAAMAAAAQAD3/AAABAAMAAAARAD3/AAABAAMAAAASAD3/AAADAAMAAAAfAD3/AAAKAAMAAAAAAD7/AAAKAAMAAAAMAD7/AAAMAAMAAAANAD7/AAAEAAMAAAAOAD7/AAAEAAMAAAAPAD7/AAAEAAMAAAAQAD7/AAAEAAMAAAARAD7/AAAEAAMAAAASAD7/AAAGAAMAAAAfAD7/AAAKAAMAAAAAAD//AAAKAAMAAAAfAD//AAAKAAMAAAAAAED/AAAKAAMAAAADAED/AAAJAAMAAAAEAED/AAABAAMAAAAFAED/AAABAAMAAAAGAED/AAABAAMAAAAHAED/AAABAAMAAAAIAED/AAADAAMAAAAfAED/AAAKAAMAAAAAAEH/AAAKAAMAAAADAEH/AAAMAAMAAAAEAEH/AAAEAAMAAAAFAEH/AAAEAAMAAAAGAEH/AAAEAAMAAAAHAEH/AAAEAAMAAAAIAEH/AAAGAAMAAAAfAEH/AAAKAAMAAAAAAEL/AAAKAAMAAAAfAEL/AAAKAAMAAAAAAEP/AAAKAAMAAAAfAEP/AAAKAAMAAAAAAET/AAAKAAMAAAAfAET/AAAKAAMAAAAAAEX/AAAKAAMAAAAfAEX/AAAKAAMAAAAAAEb/AAAKAAMAAAAfAEb/AAAKAAMAAAAAAEf/AAAKAAMAAAAWAEf/AAAJAAMAAAAXAEf/AAABAAMAAAAYAEf/AAABAAMAAAAZAEf/AAABAAMAAAAaAEf/AAABAAMAAAAbAEf/AAABAAMAAAAcAEf/AAADAAMAAAAfAEf/AAAKAAMAAAAAAEj/AAAKAAMAAAAWAEj/AAAMAAMAAAAXAEj/AAAEAAMAAAAYAEj/AAAEAAMAAAAZAEj/AAAEAAMAAAAaAEj/AAAEAAMAAAAbAEj/AAAEAAMAAAAcAEj/AAAGAAMAAAAfAEj/AAAKAAMAAAAAAEn/AAAKAAMAAAAfAEn/AAAKAAMAAAAAAEr/AAAKAAMAAAANAEr/AAAJAAMAAAAOAEr/AAABAAMAAAAPAEr/AAABAAMAAAAQAEr/AAABAAMAAAARAEr/AAABAAMAAAASAEr/AAABAAMAAAATAEr/AAADAAMAAAAfAEr/AAAKAAMAAAAAAEv/AAAKAAMAAAANAEv/AAAMAAMAAAAOAEv/AAAEAAMAAAAPAEv/AAAEAAMAAAAQAEv/AAAEAAMAAAARAEv/AAAEAAMAAAASAEv/AAAEAAMAAAATAEv/AAAGAAMAAAAfAEv/AAAKAAMAAAAAAEz/AAAKAAMAAAAfAEz/AAAKAAMAAAAAAE3/AAAKAAMAAAAfAE3/AAAKAAMAAAAAAE7/AAAKAAMAAAAfAE7/AAAKAAMAAAAAAE//AAAKAAMAAAAHAE//AAAJAAMAAAAIAE//AAABAAMAAAAJAE//AAABAAMAAAAKAE//AAABAAMAAAALAE//AAABAAMAAAAMAE//AAADAAMAAAASAE//AAAJAAMAAAATAE//AAABAAMAAAAUAE//AAABAAMAAAAVAE//AAADAAMAAAAfAE//AAAKAAMAAAAAAFD/AAAKAAMAAAAHAFD/AAAMAAMAAAAIAFD/AAAEAAMAAAAJAFD/AAAEAAMAAAAKAFD/AAAEAAMAAAALAFD/AAAEAAMAAAAMAFD/AAAGAAMAAAASAFD/AAAMAAMAAAATAFD/AAAEAAMAAAAUAFD/AAAEAAMAAAAVAFD/AAAGAAMAAAAfAFD/AAAKAAMAAAAAAFH/AAAKAAMAAAAfAFH/AAAKAAMAAAAAAFL/AAAKAAMAAAAfAFL/AAAKAAMAAAAAAFP/AAAKAAMAAAAfAFP/AAAKAAMAAAAAAFT/AAAKAAMAAAAbAFT/AAAJAAMAAAAcAFT/AAABAAMAAAAdAFT/AAABAAMAAAAeAFT/AAABAAMAAAAfAFT/AAACAAMAAAAAAFX/AAAKAAMAAAAbAFX/AAAMAAMAAAAcAFX/AAAEAAMAAAAdAFX/AAAEAAMAAAAeAFX/AAAEAAMAAAAfAFX/AAACAAMAAAAAAFb/AAAKAAMAAAAfAFb/AAAKAAMAAAAAAFf/AAAKAAMAAAAfAFf/AAAKAAMAAAAAAFj/AAAKAAMAAAAfAFj/AAAKAAMAAAAAAFn/AAAKAAMAAAAfAFn/AAAKAAMAAAAAAFr/AAAKAAMAAAAfAFr/AAAKAAMAAAAAAFv/AAAKAAMAAAAfAFv/AAAKAAMAAAAAAFz/AAAKAAMAAAAKAFz/AAAJAAMAAAALAFz/AAABAAMAAAAMAFz/AAABAAMAAAANAFz/AAABAAMAAAAOAFz/AAABAAMAAAAPAFz/AAABAAMAAAAQAFz/AAADAAMAAAAfAFz/AAAKAAMAAAAAAF3/AAAKAAMAAAAKAF3/AAAMAAMAAAALAF3/AAAEAAMAAAAMAF3/AAAEAAMAAAANAF3/AAAEAAMAAAAOAF3/AAAEAAMAAAAPAF3/AAAEAAMAAAAQAF3/AAAGAAMAAAAfAF3/AAAKAAMAAAAAAF7/AAAKAAMAAAAfAF7/AAAKAAMAAAAAAF//AAAKAAMAAAAfAF//AAAKAAMAAAAAAGD/AAAKAAMAAAAfAGD/AAAKAAMAAAAAAGH/AAAKAAMAAAADAGH/AAAJAAMAAAAEAGH/AAABAAMAAAAFAGH/AAABAAMAAAAGAGH/AAABAAMAAAAHAGH/AAABAAMAAAAIAGH/AAADAAMAAAAfAGH/AAAKAAMAAAAAAGL/AAAKAAMAAAADAGL/AAAMAAMAAAAEAGL/AAAEAAMAAAAFAGL/AAAEAAMAAAAGAGL/AAAEAAMAAAAHAGL/AAAEAAMAAAAIAGL/AAAGAAMAAAAfAGL/AAAKAAMAAAAAAGP/AAAKAAMAAAAfAGP/AAAKAAMAAAAAAGT/AAAKAAMAAAAMAGT/AAAJAAMAAAANAGT/AAABAAMAAAAOAGT/AAABAAMAAAAPAGT/AAABAAMAAAAQAGT/AAABAAMAAAARAGT/AAABAAMAAAASAGT/AAADAAMAAAAfAGT/AAAKAAMAAAAAAGX/AAAKAAMAAAAMAGX/AAAMAAMAAAANAGX/AAAEAAMAAAAOAGX/AAAEAAMAAAAPAGX/AAAEAAMAAAAQAGX/AAAEAAMAAAARAGX/AAAEAAMAAAASAGX/AAAGAAMAAAAaAGX/AAAJAAMAAAAbAGX/AAABAAMAAAAcAGX/AAABAAMAAAAdAGX/AAABAAMAAAAeAGX/AAABAAMAAAAfAGX/AAACAAMAAAAAAGb/AAAKAAMAAAAaAGb/AAAMAAMAAAAbAGb/AAAEAAMAAAAcAGb/AAAEAAMAAAAdAGb/AAAEAAMAAAAeAGb/AAAEAAMAAAAfAGb/AAACAAMAAAAAAGf/AAAKAAMAAAAfAGf/AAAKAAMAAAAAAGj/AAAKAAMAAAAfAGj/AAAKAAMAAAAAAGn/AAAKAAMAAAAfAGn/AAAKAAMAAAAAAGr/AAAKAAMAAAAfAGr/AAAKAAMAAAAAAGv/AAAKAAMAAAAfAGv/AAAKAAMAAAAAAGz/AAAKAAMAAAAUAGz/AAAJAAMAAAAVAGz/AAABAAMAAAAWAGz/AAABAAMAAAAXAGz/AAABAAMAAAAYAGz/AAADAAMAAAAfAGz/AAAKAAMAAAAAAG3/AAAKAAMAAAAUAG3/AAAMAAMAAAAVAG3/AAAEAAMAAAAWAG3/AAAEAAMAAAAXAG3/AAAEAAMAAAAYAG3/AAAGAAMAAAAfAG3/AAAKAAMAAAAAAG7/AAAKAAMAAAAKAG7/AAAJAAMAAAALAG7/AAABAAMAAAAMAG7/AAABAAMAAAANAG7/AAABAAMAAAAOAG7/AAADAAMAAAAfAG7/AAAKAAMAAAAAAG//AAAKAAMAAAAKAG//AAAMAAMAAAALAG//AAAEAAMAAAAMAG//AAAEAAMAAAANAG//AAAEAAMAAAAOAG//AAAGAAMAAAAfAG//AAAKAAMAAAAAAHD/AAAKAAMAAAAfAHD/AAAKAAMAAAAAAHH/AAAKAAMAAAAfAHH/AAAKAAMAAAAAAHL/AAAKAAMAAAAfAHL/AAAKAAMAAAAAAHP/AAAKAAMAAAADAHP/AAAJAAMAAAAEAHP/AAABAAMAAAAFAHP/AAABAAMAAAAGAHP/AAABAAMAAAAHAHP/AAABAAMAAAAIAHP/AAADAAMAAAAfAHP/AAAKAAMAAAAAAHT/AAAKAAMAAAADAHT/AAAMAAMAAAAEAHT/AAAEAAMAAAAFAHT/AAAEAAMAAAAGAHT/AAAEAAMAAAAHAHT/AAAEAAMAAAAIAHT/AAAGAAMAAAAfAHT/AAAKAAMAAAAAAHX/AAAKAAMAAAAfAHX/AAAKAAMAAAAAAHb/AAAKAAMAAAAfAHb/AAAKAAMAAAAAAHf/AAAKAAMAAAANAHf/AAAJAAMAAAAOAHf/AAABAAMAAAAPAHf/AAABAAMAAAAQAHf/AAABAAMAAAARAHf/AAABAAMAAAASAHf/AAABAAMAAAATAHf/AAADAAMAAAAfAHf/AAAKAAMAAAAAAHj/AAAKAAMAAAANAHj/AAAMAAMAAAAOAHj/AAAEAAMAAAAPAHj/AAAEAAMAAAAQAHj/AAAEAAMAAAARAHj/AAAEAAMAAAASAHj/AAAEAAMAAAATAHj/AAAGAAMAAAAfAHj/AAAKAAMAAAAAAHn/AAAKAAMAAAAaAHn/AAAJAAMAAAAbAHn/AAABAAMAAAAcAHn/AAABAAMAAAAdAHn/AAABAAMAAAAeAHn/AAABAAMAAAAfAHn/AAACAAMAAAAAAHr/AAAKAAMAAAAaAHr/AAAMAAMAAAAbAHr/AAAEAAMAAAAcAHr/AAAEAAMAAAAdAHr/AAAEAAMAAAAeAHr/AAAEAAMAAAAfAHr/AAACAAMAAAAAAHv/AAAKAAMAAAAfAHv/AAAKAAMAAAAAAHz/AAAKAAMAAAAfAHz/AAAKAAMAAAAAAH3/AAAKAAMAAAAfAH3/AAAKAAMAAAAAAH7/AAAKAAMAAAAfAH7/AAAKAAMAAAAAAH//AAAKAAMAAAAfAH//AAAKAAMAAAAAAID/AAAKAAMAAAAHAID/AAAJAAMAAAAIAID/AAABAAMAAAAJAID/AAABAAMAAAAKAID/AAABAAMAAAALAID/AAABAAMAAAAMAID/AAABAAMAAAANAID/AAADAAMAAAAfAID/AAAKAAMAAAAAAIH/AAAKAAMAAAAHAIH/AAAMAAMAAAAIAIH/AAAEAAMAAAAJAIH/AAAEAAMAAAAKAIH/AAAEAAMAAAALAIH/AAAEAAMAAAAMAIH/AAAEAAMAAAANAIH/AAAGAAMAAAAfAIH/AAAKAAMAAAAAAIL/AAAKAAAAAAAfAIL/AAAKAAAAAAAAAIP/AAAKAAAAAAAfAIP/AAAKAAAAAAAAAIT/AAAKAAAAAAAfAIT/AAAKAAAAAAAAAIX/AAAKAAAAAAAMAIX/AAAJAAAAAAANAIX/AAABAAAAAAAOAIX/AAABAAAAAAAPAIX/AAABAAAAAAAQAIX/AAABAAAAAAARAIX/AAADAAAAAAAfAIX/AAAKAAAAAAAAAIb/AAAKAAAAAAAMAIb/AAAMAAAAAAANAIb/AAAEAAAAAAAOAIb/AAAEAAAAAAAPAIb/AAAEAAAAAAAQAIb/AAAEAAAAAAARAIb/AAAGAAAAAAAfAIb/AAAKAAAAAAAAAIf/AAAKAAAAAAAfAIf/AAAKAAAAAAAAAIj/AAAKAAAAAAAfAIj/AAAKAAAAAAAAAIn/AAAKAAAAAAAfAIn/AAAKAAAAAAAAAIr/AAAKAAAAAAAaAIr/AAAJAAAAAAAbAIr/AAABAAAAAAAcAIr/AAABAAAAAAAdAIr/AAABAAAAAAAeAIr/AAABAAAAAAAfAIr/AAACAAAAAAAAAIv/AAAKAAAAAAAaAIv/AAAMAAAAAAAbAIv/AAAEAAAAAAAcAIv/AAAEAAAAAAAdAIv/AAAEAAAAAAAeAIv/AAAEAAAAAAAfAIv/AAACAAAAAAAAAIz/AAAKAAAAAAAfAIz/AAAKAAAAAAAAAI3/AAAKAAAAAAAfAI3/AAAKAAAAAAAAAI7/AAAKAAAAAAAfAI7/AAAKAAAAAAAAAI//AAAKAAAAAAAfAI//AAAKAAAAAAAAAJD/AAAKAAAAAAAfAJD/AAAKAAAAAAAAAJH/AAAKAAAAAAAfAJH/AAAKAAAAAAAAAJL/AAAKAAAAAAAMAJL/AAAJAAAAAAANAJL/AAABAAAAAAAOAJL/AAABAAAAAAAPAJL/AAABAAAAAAAQAJL/AAADAAAAAAAfAJL/AAAKAAAAAAAAAJP/AAAKAAAAAAAMAJP/AAAMAAAAAAANAJP/AAAEAAAAAAAOAJP/AAAEAAAAAAAPAJP/AAAEAAAAAAAQAJP/AAAGAAAAAAAfAJP/AAAKAAAAAAAAAJT/AAAKAAAAAAAfAJT/AAAKAAAAAAAAAJX/AAAKAAAAAAAfAJX/AAAKAAAAAAAAAJb/AAAKAAAAAAARAJb/AAAJAAAAAAASAJb/AAABAAAAAAATAJb/AAABAAAAAAAUAJb/AAABAAAAAAAVAJb/AAADAAAAAAAfAJb/AAAKAAAAAAAAAJf/AAAKAAAAAAARAJf/AAAMAAAAAAASAJf/AAAEAAAAAAATAJf/AAAEAAAAAAAUAJf/AAAEAAAAAAAVAJf/AAAGAAAAAAAfAJf/AAAKAAAAAAAAAJj/AAAKAAAAAAAfAJj/AAAKAAAAAAAAAJn/AAAKAAAAAAAbAJn/AAAJAAAAAAAcAJn/AAABAAAAAAAdAJn/AAABAAAAAAAeAJn/AAABAAAAAAAfAJn/AAACAAAAAAAAAJr/AAAKAAAAAAAbAJr/AAAMAAAAAAAcAJr/AAAEAAAAAAAdAJr/AAAEAAAAAAAeAJr/AAAEAAAAAAAfAJr/AAACAAAAAAAAAJv/AAAKAAAAAAAfAJv/AAAKAAAAAAAAAJz/AAAKAAAAAAAfAJz/AAAKAAAAAAAAAJ3/AAAKAAAAAAATAJ3/AAAJAAAAAAAUAJ3/AAABAAAAAAAVAJ3/AAABAAAAAAAWAJ3/AAABAAAAAAAXAJ3/AAADAAAAAAAfAJ3/AAAKAAAAAAAAAJ7/AAAKAAAAAAATAJ7/AAAMAAAAAAAUAJ7/AAAEAAAAAAAVAJ7/AAAEAAAAAAAWAJ7/AAAEAAAAAAAXAJ7/AAAGAAAAAAAfAJ7/AAAKAAAAAAAAAJ//AAAKAAAAAAAfAJ//AAAKAAAAAAAAAKD/AAAKAAAAAAAfAKD/AAAKAAAAAAAAAKH/AAAKAAAAAAAEAKH/AAAJAAAAAAAFAKH/AAABAAAAAAAGAKH/AAABAAAAAAAHAKH/AAABAAAAAAAIAKH/AAABAAAAAAAJAKH/AAADAAAAAAAfAKH/AAAKAAAAAAAAAKL/AAAKAAAAAAAEAKL/AAAMAAAAAAAFAKL/AAAEAAAAAAAGAKL/AAAEAAAAAAAHAKL/AAAEAAAAAAAIAKL/AAAEAAAAAAAJAKL/AAAGAAAAAAAfAKL/AAAKAAAAAAAAAKP/AAAKAAAAAAAfAKP/AAAKAAAAAAAAAKT/AAAKAAAAAAAUAKT/AAAJAAAAAAAVAKT/AAABAAAAAAAWAKT/AAABAAAAAAAXAKT/AAABAAAAAAAYAKT/AAADAAAAAAAfAKT/AAAKAAAAAAAAAKX/AAAKAAAAAAAUAKX/AAAMAAAAAAAVAKX/AAAEAAAAAAAWAKX/AAAEAAAAAAAXAKX/AAAEAAAAAAAYAKX/AAAGAAAAAAAfAKX/AAAKAAAAAAAAAKb/AAAKAAAAAAAfAKb/AAAKAAAAAAAAAKf/AAAKAAAAAAANAKf/AAAJAAAAAAAOAKf/AAABAAAAAAAPAKf/AAABAAAAAAAQAKf/AAADAAAAAAAfAKf/AAAKAAAAAAAAAKj/AAAKAAAAAAANAKj/AAAMAAAAAAAOAKj/AAAEAAAAAAAPAKj/AAAEAAAAAAAQAKj/AAAGAAAAAAAfAKj/AAAKAAAAAAAAAKn/AAAKAAAAAAAfAKn/AAAKAAAAAAAAAKr/AAAKAAAAAAAfAKr/AAAKAAAAAAAAAKv/AAAKAAAAAAAfAKv/AAAKAAAAAAAAAKz/AAAKAAAAAAAIAKz/AAAJAAAAAAAJAKz/AAABAAAAAAAKAKz/AAABAAAAAAALAKz/AAABAAAAAAAMAKz/AAADAAAAAAAfAKz/AAAKAAAAAAAAAK3/AAAKAAAAAAAIAK3/AAAMAAAAAAAJAK3/AAAEAAAAAAAKAK3/AAAEAAAAAAALAK3/AAAEAAAAAAAMAK3/AAAGAAAAAAAfAK3/AAAKAAAAAAAAAK7/AAAKAAAAAAAbAK7/AAAJAAAAAAAcAK7/AAABAAAAAAAdAK7/AAABAAAAAAAeAK7/AAABAAAAAAAfAK7/AAACAAAAAAAAAK//AAAKAAAAAAAbAK//AAAMAAAAAAAcAK//AAAEAAAAAAAdAK//AAAEAAAAAAAeAK//AAAEAAAAAAAfAK//AAACAAAAAAAAALD/AAAKAAAAAAAfALD/AAAKAAAAAAAAALH/AAAKAAAAAAAfALH/AAAKAAAAAAAAALL/AAAKAAAAAAAfALL/AAAKAAAAAAAAALP/AAAKAAAAAAAfALP/AAAKAAAAAAAAALT/AAAKAAAAAAAfALT/AAAKAAAAAAAAALX/AAAKAAAAAAAfALX/AAAKAAAAAAAAALb/AAAKAAAAAAAGALb/AAAJAAAAAAAHALb/AAABAAAAAAAIALb/AAABAAAAAAAJALb/AAABAAAAAAAKALb/AAADAAAAAAAfALb/AAAKAAAAAAAAALf/AAAKAAAAAAAGALf/AAAMAAAAAAAHALf/AAAEAAAAAAAIALf/AAAEAAAAAAAJALf/AAAEAAAAAAAKALf/AAAGAAAAAAAfALf/AAAKAAAAAAAAALj/AAAKAAAAAAAfALj/AAAKAAAAAAAAALn/AAAIAAAAAAABALn/AAABAAAAAAACALn/AAABAAAAAAADALn/AAABAAAAAAAEALn/AAADAAAAAAAfALn/AAAKAAAAAAAAALr/AAAIAAAAAAABALr/AAAEAAAAAAACALr/AAAEAAAAAAADALr/AAAEAAAAAAAEALr/AAAGAAAAAAAfALr/AAAKAAAAAAAAALv/AAAKAAAAAAAfALv/AAAKAAAAAAAAALz/AAAKAAAAAAAfALz/AAAKAAAAAAAAAL3/AAAKAAAAAAAHAL3/AAAJAAAAAAAIAL3/AAABAAAAAAAJAL3/AAABAAAAAAAKAL3/AAABAAAAAAALAL3/AAADAAAAAAAfAL3/AAAKAAAAAAAAAL7/AAAKAAAAAAAHAL7/AAAMAAAAAAAIAL7/AAAEAAAAAAAJAL7/AAAEAAAAAAAKAL7/AAAEAAAAAAALAL7/AAAGAAAAAAAUAL7/AAAJAAAAAAAVAL7/AAABAAAAAAAWAL7/AAABAAAAAAAXAL7/AAABAAAAAAAYAL7/AAADAAAAAAAfAL7/AAAKAAAAAAAAAL//AAAKAAAAAAAUAL//AAAMAAAAAAAVAL//AAAEAAAAAAAWAL//AAAEAAAAAAAXAL//AAAEAAAAAAAYAL//AAAGAAAAAAAfAL//AAAKAAAAAAAAAMD/AAAKAAAAAAAfAMD/AAAKAAAAAAAAAMH/AAAKAAAAAAAfAMH/AAAKAAAAAAAAAML/AAAKAAAAAAAfAML/AAAKAAAAAAAAAMP/AAAKAAAAAAAbAMP/AAAJAAAAAAAcAMP/AAABAAAAAAAdAMP/AAABAAAAAAAeAMP/AAABAAAAAAAfAMP/AAACAAAAAAAAAMT/AAAKAAAAAAAbAMT/AAAMAAAAAAAcAMT/AAAEAAAAAAAdAMT/AAAEAAAAAAAeAMT/AAAEAAAAAAAfAMT/AAACAAAAAAAAAMX/AAAKAAAAAAAfAMX/AAAKAAAAAAAAAMb/AAAKAAAAAAAfAMb/AAAKAAAAAAAAAMf/AAAKAAAAAAAfAMf/AAAKAAAAAAAAAMj/AAAKAAAAAAAUAMj/AAAJAAAAAAAVAMj/AAABAAAAAAAWAMj/AAABAAAAAAAXAMj/AAABAAAAAAAYAMj/AAADAAAAAAAfAMj/AAAKAAAAAAAAAMn/AAAKAAAAAAAUAMn/AAAMAAAAAAAVAMn/AAAEAAAAAAAWAMn/AAAEAAAAAAAXAMn/AAAEAAAAAAAYAMn/AAAGAAAAAAAfAMn/AAAKAAAAAAAAAMr/AAAKAAAAAAAfAMr/AAAKAAAAAAAAAMv/AAAKAAAAAAAfAMv/AAAKAAAAAAAAAMz/AAAKAAAAAAAMAMz/AAAJAAAAAAANAMz/AAABAAAAAAAOAMz/AAABAAAAAAAPAMz/AAABAAAAAAAQAMz/AAABAAAAAAARAMz/AAADAAAAAAAfAMz/AAAKAAAAAAAAAM3/AAAKAAAAAAAMAM3/AAAMAAAAAAANAM3/AAAEAAAAAAAOAM3/AAAEAAAAAAAPAM3/AAAEAAAAAAAQAM3/AAAEAAAAAAARAM3/AAAGAAAAAAAfAM3/AAAKAAAAAAAAAM7/AAAKAAAAAAAfAM7/AAAKAAAAAAAAAM//AAAKAAAAAAAfAM//AAAKAAAAAAAAAND/AAAKAAAAAAAYAND/AAAJAAAAAAAZAND/AAABAAAAAAAaAND/AAABAAAAAAAbAND/AAABAAAAAAAcAND/AAABAAAAAAAdAND/AAABAAAAAAAeAND/AAABAAAAAAAfAND/AAACAAAAAAAAANH/AAAKAAAAAAAYANH/AAAMAAAAAAAZANH/AAAEAAAAAAAaANH/AAAEAAAAAAAbANH/AAAEAAAAAAAcANH/AAAEAAAAAAAdANH/AAAEAAAAAAAeANH/AAAEAAAAAAAfANH/AAACAAAAAAAAANL/AAAKAAAAAAAfANL/AAAKAAAAAAAAANP/AAAKAAAAAAAfANP/AAAKAAAAAAAAANT/AAAKAAAAAAAfANT/AAAKAAAAAAAAANX/AAAKAAAAAAAfANX/AAAKAAAAAAAAANb/AAAKAAAAAAAfANb/AAAKAAAAAAAAANf/AAAKAAAAAAAfANf/AAAKAAAAAAAAANj/AAAKAAAAAAAfANj/AAAKAAAAAAAAANn/AAAKAAAAAAAfANn/AAAKAAAAAAAAANr/AAAKAAAAAAAKANr/AAAJAAAAAAALANr/AAABAAAAAAAMANr/AAABAAAAAAANANr/AAABAAAAAAAOANr/AAADAAAAAAAfANr/AAAKAAAAAAAAANv/AAAKAAAAAAAKANv/AAAMAAAAAAALANv/AAAEAAAAAAAMANv/AAAEAAAAAAANANv/AAAEAAAAAAAOANv/AAAGAAAAAAAfANv/AAAKAAAAAAAAANz/AAAKAAAAAAAfANz/AAAKAAAAAAAAAN3/AAAKAAAAAAAfAN3/AAAKAAAAAAAAAN7/AAAKAAAAAAAfAN7/AAAKAAAAAAAAAN//AAAKAAAAAAACAN//AAAJAAAAAAADAN//AAABAAAAAAAEAN//AAABAAAAAAAFAN//AAABAAAAAAAGAN//AAADAAAAAAAfAN//AAAKAAAAAAAAAOD/AAAKAAAAAAACAOD/AAAMAAAAAAADAOD/AAAEAAAAAAAEAOD/AAAEAAAAAAAFAOD/AAAEAAAAAAAGAOD/AAAGAAAAAAAfAOD/AAAKAAAAAAAAAOH/AAAKAAAAAAAfAOH/AAAKAAAAAAAAAOL/AAAKAAAAAAAfAOL/AAAKAAAAAAAAAOP/AAAKAAAAAAAOAOP/AAAJAAAAAAAPAOP/AAABAAAAAAAQAOP/AAABAAAAAAARAOP/AAABAAAAAAASAOP/AAADAAAAAAAfAOP/AAAKAAAAAAAAAOT/AAAKAAAAAAAOAOT/AAAMAAAAAAAPAOT/AAAEAAAAAAAQAOT/AAAEAAAAAAARAOT/AAAEAAAAAAASAOT/AAAGAAAAAAAfAOT/AAAKAAAAAAAAAOX/AAAKAAAAAAAfAOX/AAAKAAAAAAAAAOb/AAAKAAAAAAAfAOb/AAAKAAAAAAAAAOf/AAAKAAAAAAAfAOf/AAAKAAAAAAAAAOj/AAAKAAAAAAAaAOj/AAAJAAAAAAAbAOj/AAABAAAAAAAcAOj/AAABAAAAAAAdAOj/AAABAAAAAAAeAOj/AAABAAAAAAAfAOj/AAACAAAAAAAAAOn/AAAKAAAAAAAaAOn/AAAMAAAAAAAbAOn/AAAEAAAAAAAcAOn/AAAEAAAAAAAdAOn/AAAEAAAAAAAeAOn/AAAEAAAAAAAfAOn/AAACAAAAAAAAAOr/AAAKAAAAAAAfAOr/AAAKAAAAAAAAAOv/AAAKAAAAAAAfAOv/AAAKAAAAAAAAAOz/AAAKAAAAAAAFAOz/AAAJAAAAAAAGAOz/AAABAAAAAAAHAOz/AAABAAAAAAAIAOz/AAABAAAAAAAJAOz/AAABAAAAAAAKAOz/AAADAAAAAAAfAOz/AAAKAAAAAAAAAO3/AAAKAAAAAAAFAO3/AAAMAAAAAAAGAO3/AAAEAAAAAAAHAO3/AAAEAAAAAAAIAO3/AAAEAAAAAAAJAO3/AAAEAAAAAAAKAO3/AAAGAAAAAAAfAO3/AAAKAAAAAAAAAO7/AAAKAAAAAAAfAO7/AAAKAAAAAAAAAO//AAAKAAAAAAAfAO//AAAKAAAAAAAAAPD/AAAKAAAAAAAfAPD/AAAKAAAAAAAAAPH/AAAKAAAAAAAfAPH/AAAKAAAAAAAAAPL/AAAKAAAAAAAOAPL/AAAJAAAAAAAPAPL/AAABAAAAAAAQAPL/AAABAAAAAAARAPL/AAABAAAAAAASAPL/AAADAAAAAAAfAPL/AAAKAAAAAAAAAPP/AAAKAAAAAAAOAPP/AAAMAAAAAAAPAPP/AAAEAAAAAAAQAPP/AAAEAAAAAAARAPP/AAAEAAAAAAASAPP/AAAGAAAAAAAfAPP/AAAKAAAAAAAAAPT/AAAKAAAAAAAbAPT/AAAJAAAAAAAcAPT/AAABAAAAAAAdAPT/AAABAAAAAAAeAPT/AAABAAAAAAAfAPT/AAACAAAAAAAAAPX/AAAKAAAAAAAbAPX/AAAMAAAAAAAcAPX/AAAEAAAAAAAdAPX/AAAEAAAAAAAeAPX/AAAEAAAAAAAfAPX/AAACAAAAAAAAAPb/AAAKAAAAAAAfAPb/AAAKAAAAAAAAAPf/AAAKAAAAAAAfAPf/AAAKAAAAAAAAAPj/AAAKAAAAAAAUAPj/AAAJAAAAAAAVAPj/AAABAAAAAAAWAPj/AAABAAAAAAAXAPj/AAABAAAAAAAYAPj/AAADAAAAAAAfAPj/AAAKAAAAAAAAAPn/AAAKAAAAAAAUAPn/AAAMAAAAAAAVAPn/AAAEAAAAAAAWAPn/AAAEAAAAAAAXAPn/AAAEAAAAAAAYAPn/AAAGAAAAAAAfAPn/AAAKAAAAAAAAAPr/AAAKAAAAAAAfAPr/AAAKAAAAAAAAAPv/AAAKAAAAAAAKAPv/AAAJAAAAAAALAPv/AAABAAAAAAAMAPv/AAABAAAAAAANAPv/AAABAAAAAAAOAPv/AAADAAAAAAAfAPv/AAAKAAAAAAAAAPz/AAAKAAAAAAAKAPz/AAAMAAAAAAALAPz/AAAEAAAAAAAMAPz/AAAEAAAAAAANAPz/AAAEAAAAAAAOAPz/AAAGAAAAAAAfAPz/AAAKAAAAAAAAAP3/AAAKAAAAAAAfAP3/AAAKAAAAAAAAAP7/AAAKAAAAAAAfAP7/AAAKAAAAAAAAAP//AAAMAAAAAAABAP//AAAFAAAAAAACAP//AAAFAAAAAAADAP//AAAFAAAAAAAEAP//AAAFAAAAAAAFAP//AAAFAAAAAAAGAP//AAAFAAAAAAAHAP//AAAFAAAAAAAIAP//AAAFAAAAAAAJAP//AAAFAAAAAAAKAP//AAAFAAAAAAALAP//AAAFAAAAAAAMAP//AAAFAAAAAAANAP//AAAFAAAAAAAOAP//AAAFAAAAAAAPAP//AAAFAAAAAAAQAP//AAAFAAAAAAARAP//AAAFAAAAAAASAP//AAAFAAAAAAATAP//AAAFAAAAAAAUAP//AAAFAAAAAAAVAP//AAAFAAAAAAAWAP//AAAFAAAAAAAXAP//AAAFAAAAAAAYAP//AAAFAAAAAAAZAP//AAAFAAAAAAAaAP//AAAFAAAAAAAbAP//AAAFAAAAAAAcAP//AAAFAAAAAAAdAP//AAAFAAAAAAAeAP//AAAFAAAAAAAfAP//AAAGAAAAAAA=")
-tile_set = ExtResource("28_00j1d")
+[node name="CPUParticles2D8" type="CPUParticles2D" parent="Lights" unique_id=256351345]
+material = SubResource("CanvasItemMaterial_6b60r")
+position = Vector2(264, -198)
+amount = 9
+lifetime = 7.0
+preprocess = 7.0
+emission_shape = 3
+emission_rect_extents = Vector2(26, 46)
+direction = Vector2(0, -1)
+spread = 180.0
+gravity = Vector2(0, 0.6)
+initial_velocity_min = 1.0
+initial_velocity_max = 3.5
+color = Color(1, 0.88, 0.6, 0.55)
+color_ramp = SubResource("Gradient_jeoco")
 
-[node name="Objects" type="Node2D" parent="." unique_id=145761921]
+[node name="Terrain" type="TileMapLayer" parent="." unique_id=975141656]
+tile_map_data = PackedByteArray("AAAAAJj+AAALAAYAAAAfAJj+AAALAAYAAAAAAJn+AAAKAAYAAAAfAJn+AAAKAAYAAAAAAJr+AAAKAAYAAAAfAJr+AAAKAAYAAAAAAJv+AAAKAAYAAAAfAJv+AAAKAAYAAAAAAJz+AAAKAAYAAAAfAJz+AAAKAAYAAAAAAJ3+AAAKAAYAAAAfAJ3+AAAKAAYAAAAAAJ7+AAAKAAYAAAAIAJ7+AAALAAYAAAASAJ7+AAALAAYAAAAfAJ7+AAAKAAYAAAAAAJ/+AAAKAAYAAAAIAJ/+AAAMAAYAAAAJAJ/+AAAFAAYAAAAKAJ/+AAAFAAYAAAALAJ/+AAAFAAYAAAAMAJ/+AAAFAAYAAAANAJ/+AAAFAAYAAAAOAJ/+AAAFAAYAAAAPAJ/+AAAFAAYAAAAQAJ/+AAAFAAYAAAARAJ/+AAAFAAYAAAASAJ/+AAAGAAYAAAAfAJ/+AAAKAAYAAAAAAKD+AAAKAAYAAAAfAKD+AAAKAAYAAAAAAKH+AAAKAAYAAAAfAKH+AAAKAAYAAAAAAKL+AAAKAAYAAAAfAKL+AAAKAAYAAAAAAKP+AAAKAAYAAAAZAKP+AAAJAAYAAAAaAKP+AAABAAYAAAAbAKP+AAABAAYAAAAcAKP+AAABAAYAAAAdAKP+AAADAAYAAAAfAKP+AAAKAAYAAAAAAKT+AAAKAAYAAAAZAKT+AAAMAAYAAAAaAKT+AAAEAAYAAAAbAKT+AAAEAAYAAAAcAKT+AAAEAAYAAAAdAKT+AAAGAAYAAAAfAKT+AAAKAAYAAAAAAKX+AAAKAAYAAAAfAKX+AAAKAAYAAAAAAKb+AAAKAAYAAAAfAKb+AAAKAAYAAAAAAKf+AAAKAAYAAAAfAKf+AAAKAAYAAAAAAKj+AAAKAAYAAAAfAKj+AAAKAAYAAAAAAKn+AAAKAAYAAAAGAKn+AAANAAYAAAAHAKn+AAAFAAYAAAAIAKn+AAAFAAYAAAAJAKn+AAAFAAYAAAAKAKn+AAAFAAYAAAALAKn+AAAHAAYAAAAfAKn+AAAKAAYAAAAAAKr+AAAKAAYAAAAfAKr+AAAKAAYAAAAAAKv+AAAKAAYAAAAfAKv+AAAKAAYAAAAAAKz+AAAKAAYAAAADAKz+AAANAAYAAAAEAKz+AAAFAAYAAAAFAKz+AAAFAAYAAAAGAKz+AAAHAAYAAAAfAKz+AAAKAAYAAAAAAK3+AAAKAAYAAAAfAK3+AAAKAAYAAAAAAK7+AAAKAAYAAAAfAK7+AAAKAAYAAAAAAK/+AAAKAAYAAAAFAK/+AAAJAAYAAAAGAK/+AAABAAYAAAAHAK/+AAABAAYAAAAIAK/+AAABAAYAAAAJAK/+AAADAAYAAAAfAK/+AAAKAAYAAAAAALD+AAAKAAYAAAAFALD+AAAMAAYAAAAGALD+AAAEAAYAAAAHALD+AAAEAAYAAAAIALD+AAAEAAYAAAAJALD+AAAGAAYAAAAfALD+AAAKAAYAAAAAALH+AAAKAAYAAAAYALH+AAALAAYAAAAfALH+AAAKAAYAAAAAALL+AAAKAAYAAAAYALL+AAAIAAYAAAAZALL+AAABAAYAAAAaALL+AAABAAYAAAAbALL+AAABAAYAAAAcALL+AAABAAYAAAAdALL+AAABAAYAAAAeALL+AAABAAYAAAAfALL+AAACAAYAAAAAALP+AAAKAAYAAAAYALP+AAAMAAYAAAAZALP+AAAEAAYAAAAaALP+AAAEAAYAAAAbALP+AAAEAAYAAAAcALP+AAAEAAYAAAAdALP+AAAEAAYAAAAeALP+AAAEAAYAAAAfALP+AAACAAYAAAAAALT+AAAKAAYAAAAfALT+AAAKAAYAAAAAALX+AAAKAAYAAAAfALX+AAAKAAYAAAAAALb+AAAKAAYAAAAfALb+AAAKAAYAAAAAALf+AAAKAAYAAAAfALf+AAAKAAYAAAAAALj+AAAKAAYAAAAfALj+AAAKAAYAAAAAALn+AAAKAAYAAAAfALn+AAAKAAYAAAAAALr+AAAKAAYAAAAMALr+AAAJAAYAAAANALr+AAABAAYAAAAOALr+AAABAAYAAAAPALr+AAABAAYAAAAQALr+AAADAAYAAAAfALr+AAAKAAYAAAAAALv+AAAKAAYAAAAMALv+AAAMAAYAAAANALv+AAAEAAYAAAAOALv+AAAEAAYAAAAPALv+AAAEAAYAAAAQALv+AAAGAAYAAAAfALv+AAAKAAYAAAAAALz+AAAKAAYAAAAfALz+AAAKAAYAAAAAAL3+AAAKAAYAAAAfAL3+AAAKAAYAAAAAAL7+AAAKAAYAAAAEAL7+AAALAAYAAAAfAL7+AAAKAAYAAAAAAL/+AAAKAAYAAAAEAL/+AAAIAAYAAAAFAL/+AAABAAYAAAAGAL/+AAABAAYAAAAHAL/+AAABAAYAAAAIAL/+AAABAAYAAAAJAL/+AAADAAYAAAAfAL/+AAAKAAYAAAAAAMD+AAAKAAYAAAAEAMD+AAAMAAYAAAAFAMD+AAAEAAYAAAAGAMD+AAAEAAYAAAAHAMD+AAAEAAYAAAAIAMD+AAAEAAYAAAAJAMD+AAAGAAYAAAAfAMD+AAAKAAYAAAAAAMH+AAAKAAYAAAAfAMH+AAAKAAYAAAAAAML+AAAKAAYAAAAfAML+AAAKAAYAAAAAAMP+AAAKAAYAAAAfAMP+AAAKAAYAAAAAAMT+AAAKAAYAAAAfAMT+AAAKAAYAAAAAAMX+AAAKAAYAAAAfAMX+AAAKAAYAAAAAAMb+AAAKAAYAAAAfAMb+AAAKAAYAAAAAAMf+AAAKAAYAAAAfAMf+AAAKAAYAAAAAAMj+AAAKAAYAAAAfAMj+AAAKAAYAAAAAAMn+AAAKAAYAAAAUAMn+AAAJAAYAAAAVAMn+AAABAAYAAAAWAMn+AAABAAYAAAAXAMn+AAADAAYAAAAfAMn+AAAKAAYAAAAAAMr+AAAKAAYAAAAUAMr+AAAMAAYAAAAVAMr+AAAEAAYAAAAWAMr+AAAEAAYAAAAXAMr+AAAGAAYAAAAfAMr+AAAKAAYAAAAAAMv+AAAKAAYAAAALAMv+AAALAAYAAAAQAMv+AAALAAYAAAAfAMv+AAAKAAYAAAAAAMz+AAAKAAYAAAALAMz+AAAIAAYAAAAMAMz+AAABAAYAAAANAMz+AAABAAYAAAAOAMz+AAABAAYAAAAPAMz+AAABAAYAAAAQAMz+AAACAAYAAAAfAMz+AAAKAAYAAAAAAM3+AAAKAAYAAAALAM3+AAAMAAYAAAAMAM3+AAAEAAYAAAANAM3+AAAEAAYAAAAOAM3+AAAEAAYAAAAPAM3+AAAEAAYAAAAQAM3+AAAGAAYAAAAfAM3+AAAKAAYAAAAAAM7+AAAKAAYAAAAfAM7+AAAKAAYAAAAAAM/+AAAKAAYAAAAfAM/+AAAKAAYAAAAAAND+AAAKAAYAAAAfAND+AAAKAAYAAAAAANH+AAAKAAYAAAAIANH+AAALAAYAAAAfANH+AAAKAAYAAAAAANL+AAAKAAYAAAADANL+AAAJAAYAAAAEANL+AAABAAYAAAAFANL+AAABAAYAAAAGANL+AAABAAYAAAAHANL+AAABAAYAAAAIANL+AAACAAYAAAAfANL+AAAKAAYAAAAAANP+AAAKAAYAAAADANP+AAAMAAYAAAAEANP+AAAEAAYAAAAFANP+AAAEAAYAAAAGANP+AAAEAAYAAAAHANP+AAAEAAYAAAAIANP+AAAGAAYAAAAfANP+AAAKAAYAAAAAANT+AAAKAAYAAAAfANT+AAAKAAYAAAAAANX+AAAKAAYAAAAMANX+AAALAAYAAAAfANX+AAAKAAYAAAAAANb+AAAKAAYAAAAMANb+AAAIAAYAAAANANb+AAABAAYAAAAOANb+AAABAAYAAAAPANb+AAABAAYAAAAQANb+AAABAAYAAAARANb+AAADAAYAAAAfANb+AAAKAAYAAAAAANf+AAAKAAYAAAAMANf+AAAMAAYAAAANANf+AAAEAAYAAAAOANf+AAAEAAYAAAAPANf+AAAEAAYAAAAQANf+AAAEAAYAAAARANf+AAAGAAYAAAAfANf+AAAKAAYAAAAAANj+AAAKAAYAAAAXANj+AAALAAYAAAAbANj+AAALAAYAAAAfANj+AAAKAAYAAAAAANn+AAAKAAYAAAAXANn+AAAIAAYAAAAYANn+AAABAAYAAAAZANn+AAABAAYAAAAaANn+AAABAAYAAAAbANn+AAACAAYAAAAfANn+AAAKAAYAAAAAANr+AAAKAAYAAAAXANr+AAAMAAYAAAAYANr+AAAEAAYAAAAZANr+AAAEAAYAAAAaANr+AAAEAAYAAAAbANr+AAAGAAYAAAAfANr+AAAKAAYAAAAAANv+AAAKAAYAAAAfANv+AAAKAAYAAAAAANz+AAAKAAYAAAAfANz+AAAKAAYAAAAAAN3+AAAKAAYAAAADAN3+AAALAAYAAAAIAN3+AAALAAYAAAAfAN3+AAAKAAYAAAAAAN7+AAAKAAYAAAADAN7+AAAIAAYAAAAEAN7+AAABAAYAAAAFAN7+AAABAAYAAAAGAN7+AAABAAYAAAAHAN7+AAABAAYAAAAIAN7+AAACAAYAAAAfAN7+AAAKAAYAAAAAAN/+AAAKAAYAAAADAN/+AAAMAAYAAAAEAN/+AAAEAAYAAAAFAN/+AAAEAAYAAAAGAN/+AAAEAAYAAAAHAN/+AAAEAAYAAAAIAN/+AAAGAAYAAAAfAN/+AAAKAAYAAAAAAOD+AAAKAAYAAAAfAOD+AAAKAAYAAAAAAOH+AAAKAAYAAAAfAOH+AAAKAAYAAAAAAOL+AAAKAAYAAAAIAOL+AAALAAYAAAANAOL+AAALAAYAAAAfAOL+AAAKAAYAAAAAAOP+AAAKAAYAAAAIAOP+AAAIAAYAAAAJAOP+AAABAAYAAAAKAOP+AAABAAYAAAALAOP+AAABAAYAAAAMAOP+AAABAAYAAAANAOP+AAACAAYAAAAfAOP+AAAKAAYAAAAAAOT+AAAKAAYAAAAIAOT+AAAMAAYAAAAJAOT+AAAEAAYAAAAKAOT+AAAEAAYAAAALAOT+AAAEAAYAAAAMAOT+AAAEAAYAAAANAOT+AAAGAAYAAAAfAOT+AAAKAAYAAAAAAOX+AAAKAAYAAAAZAOX+AAALAAYAAAAfAOX+AAAKAAYAAAAAAOb+AAAKAAYAAAAZAOb+AAAIAAYAAAAaAOb+AAABAAYAAAAbAOb+AAABAAYAAAAcAOb+AAABAAYAAAAdAOb+AAABAAYAAAAeAOb+AAABAAYAAAAfAOb+AAACAAYAAAAAAOf+AAAKAAYAAAAZAOf+AAAMAAYAAAAaAOf+AAAEAAYAAAAbAOf+AAAEAAYAAAAcAOf+AAAEAAYAAAAdAOf+AAAEAAYAAAAeAOf+AAAEAAYAAAAfAOf+AAACAAYAAAAAAOj+AAAKAAYAAAAfAOj+AAAKAAYAAAAAAOn+AAAKAAYAAAAfAOn+AAAKAAYAAAAAAOr+AAAKAAYAAAAfAOr+AAAKAAYAAAAAAOv+AAAKAAYAAAAfAOv+AAAKAAYAAAAAAOz+AAAKAAYAAAAfAOz+AAAKAAYAAAAAAO3+AAAKAAYAAAAfAO3+AAAKAAYAAAAAAO7+AAAKAAYAAAAfAO7+AAAKAAYAAAAAAO/+AAAKAAYAAAAMAO/+AAALAAYAAAARAO/+AAALAAYAAAAfAO/+AAAKAAYAAAAAAPD+AAAKAAYAAAAMAPD+AAAIAAYAAAANAPD+AAABAAYAAAAOAPD+AAABAAYAAAAPAPD+AAABAAYAAAAQAPD+AAABAAYAAAARAPD+AAACAAYAAAAfAPD+AAAKAAYAAAAAAPH+AAAKAAYAAAAMAPH+AAAMAAYAAAANAPH+AAAEAAYAAAAOAPH+AAAEAAYAAAAPAPH+AAAEAAYAAAAQAPH+AAAEAAYAAAARAPH+AAAGAAYAAAAfAPH+AAAKAAYAAAAAAPL+AAAKAAYAAAAfAPL+AAAKAAYAAAAAAPP+AAAKAAYAAAAfAPP+AAAKAAYAAAAAAPT+AAAKAAYAAAAJAPT+AAALAAYAAAAfAPT+AAAKAAYAAAAAAPX+AAAKAAYAAAADAPX+AAAJAAYAAAAEAPX+AAABAAYAAAAFAPX+AAABAAYAAAAGAPX+AAABAAYAAAAHAPX+AAABAAYAAAAIAPX+AAABAAYAAAAJAPX+AAACAAYAAAAfAPX+AAAKAAYAAAAAAPb+AAAKAAYAAAADAPb+AAAMAAYAAAAEAPb+AAAEAAYAAAAFAPb+AAAEAAYAAAAGAPb+AAAEAAYAAAAHAPb+AAAEAAYAAAAIAPb+AAAEAAYAAAAJAPb+AAAGAAYAAAAfAPb+AAAKAAYAAAAAAPf+AAAKAAYAAAAfAPf+AAAKAAYAAAAAAPj+AAAKAAYAAAALAPj+AAALAAYAAAASAPj+AAALAAYAAAAfAPj+AAAKAAYAAAAAAPn+AAAKAAYAAAALAPn+AAAIAAYAAAAMAPn+AAABAAYAAAANAPn+AAABAAYAAAAOAPn+AAABAAYAAAAPAPn+AAABAAYAAAAQAPn+AAABAAYAAAARAPn+AAABAAYAAAASAPn+AAACAAYAAAAfAPn+AAAKAAYAAAAAAPr+AAAKAAYAAAALAPr+AAAMAAYAAAAMAPr+AAAEAAYAAAANAPr+AAAEAAYAAAAOAPr+AAAEAAYAAAAPAPr+AAAEAAYAAAAQAPr+AAAEAAYAAAARAPr+AAAEAAYAAAASAPr+AAAGAAYAAAAYAPr+AAALAAYAAAAfAPr+AAAKAAYAAAAAAPv+AAAKAAYAAAAYAPv+AAAIAAYAAAAZAPv+AAABAAYAAAAaAPv+AAABAAYAAAAbAPv+AAABAAYAAAAcAPv+AAABAAYAAAAdAPv+AAABAAYAAAAeAPv+AAABAAYAAAAfAPv+AAACAAYAAAAAAPz+AAAKAAYAAAAYAPz+AAAMAAYAAAAZAPz+AAAEAAYAAAAaAPz+AAAEAAYAAAAbAPz+AAAEAAYAAAAcAPz+AAAEAAYAAAAdAPz+AAAEAAYAAAAeAPz+AAAEAAYAAAAfAPz+AAACAAYAAAAAAP3+AAAKAAYAAAAfAP3+AAAKAAYAAAAAAP7+AAAKAAYAAAAfAP7+AAAKAAYAAAAAAP/+AAAKAAYAAAAfAP/+AAAKAAYAAAAAAAD/AAAKAAYAAAAfAAD/AAAKAAYAAAAAAAH/AAAKAAYAAAAGAAH/AAALAAYAAAAMAAH/AAALAAYAAAAfAAH/AAAKAAYAAAAAAAL/AAAKAAYAAAAGAAL/AAAIAAYAAAAHAAL/AAABAAYAAAAIAAL/AAABAAYAAAAJAAL/AAABAAYAAAAKAAL/AAABAAYAAAALAAL/AAABAAYAAAAMAAL/AAACAAYAAAAfAAL/AAAKAAYAAAAAAAP/AAAKAAYAAAAGAAP/AAAMAAYAAAAHAAP/AAAEAAYAAAAIAAP/AAAEAAYAAAAJAAP/AAAEAAYAAAAKAAP/AAAEAAYAAAALAAP/AAAEAAYAAAAMAAP/AAAGAAYAAAAfAAP/AAAKAAYAAAAAAAT/AAAKAAMAAAAfAAT/AAAKAAMAAAAAAAX/AAAKAAMAAAAfAAX/AAAKAAMAAAAAAAb/AAAKAAMAAAAfAAb/AAAKAAMAAAAAAAf/AAAKAAMAAAAOAAf/AAAJAAMAAAAPAAf/AAABAAMAAAAQAAf/AAABAAMAAAARAAf/AAABAAMAAAASAAf/AAABAAMAAAATAAf/AAABAAMAAAAUAAf/AAADAAMAAAAfAAf/AAAKAAMAAAAAAAj/AAAKAAMAAAAOAAj/AAAMAAMAAAAPAAj/AAAEAAMAAAAQAAj/AAAEAAMAAAARAAj/AAAEAAMAAAASAAj/AAAEAAMAAAATAAj/AAAEAAMAAAAUAAj/AAAGAAMAAAAfAAj/AAAKAAMAAAAAAAn/AAAKAAMAAAAfAAn/AAAKAAMAAAAAAAr/AAAKAAMAAAAfAAr/AAAKAAMAAAAAAAv/AAAKAAMAAAAaAAv/AAAJAAMAAAAbAAv/AAABAAMAAAAcAAv/AAABAAMAAAAdAAv/AAABAAMAAAAeAAv/AAABAAMAAAAfAAv/AAACAAMAAAAAAAz/AAAKAAMAAAAaAAz/AAAMAAMAAAAbAAz/AAAEAAMAAAAcAAz/AAAEAAMAAAAdAAz/AAAEAAMAAAAeAAz/AAAEAAMAAAAfAAz/AAACAAMAAAAAAA3/AAAKAAMAAAAfAA3/AAAKAAMAAAAAAA7/AAAKAAMAAAASAA7/AAAJAAMAAAATAA7/AAABAAMAAAAUAA7/AAABAAMAAAAVAA7/AAABAAMAAAAWAA7/AAADAAMAAAAfAA7/AAAKAAMAAAAAAA//AAAKAAMAAAASAA//AAAMAAMAAAATAA//AAAEAAMAAAAUAA//AAAEAAMAAAAVAA//AAAEAAMAAAAWAA//AAAGAAMAAAAfAA//AAAKAAMAAAAAABD/AAAKAAMAAAAfABD/AAAKAAMAAAAAABH/AAAKAAMAAAAGABH/AAAJAAMAAAAHABH/AAABAAMAAAAIABH/AAABAAMAAAAJABH/AAABAAMAAAAKABH/AAABAAMAAAALABH/AAADAAMAAAAfABH/AAAKAAMAAAAAABL/AAAKAAMAAAAGABL/AAAMAAMAAAAHABL/AAAEAAMAAAAIABL/AAAEAAMAAAAJABL/AAAEAAMAAAAKABL/AAAEAAMAAAALABL/AAAGAAMAAAAfABL/AAAKAAMAAAAAABP/AAAKAAMAAAAfABP/AAAKAAMAAAAAABT/AAAKAAMAAAAPABT/AAAJAAMAAAAQABT/AAABAAMAAAARABT/AAABAAMAAAASABT/AAABAAMAAAATABT/AAABAAMAAAAUABT/AAABAAMAAAAVABT/AAADAAMAAAAfABT/AAAKAAMAAAAAABX/AAAKAAMAAAAPABX/AAAMAAMAAAAQABX/AAAEAAMAAAARABX/AAAEAAMAAAASABX/AAAEAAMAAAATABX/AAAEAAMAAAAUABX/AAAEAAMAAAAVABX/AAAGAAMAAAAfABX/AAAKAAMAAAAAABb/AAAKAAMAAAAfABb/AAAKAAMAAAAAABf/AAAKAAMAAAAfABf/AAAKAAMAAAAAABj/AAAKAAMAAAAfABj/AAAKAAMAAAAAABn/AAAKAAMAAAAfABn/AAAKAAMAAAAAABr/AAAKAAMAAAAaABr/AAAJAAMAAAAbABr/AAABAAMAAAAcABr/AAABAAMAAAAdABr/AAABAAMAAAAeABr/AAABAAMAAAAfABr/AAACAAMAAAAAABv/AAAKAAMAAAAaABv/AAAMAAMAAAAbABv/AAAEAAMAAAAcABv/AAAEAAMAAAAdABv/AAAEAAMAAAAeABv/AAAEAAMAAAAfABv/AAACAAMAAAAAABz/AAAKAAMAAAAfABz/AAAKAAMAAAAAAB3/AAAKAAMAAAAfAB3/AAAKAAMAAAAAAB7/AAAKAAMAAAATAB7/AAAJAAMAAAAUAB7/AAABAAMAAAAVAB7/AAABAAMAAAAWAB7/AAABAAMAAAAXAB7/AAABAAMAAAAYAB7/AAABAAMAAAAZAB7/AAADAAMAAAAfAB7/AAAKAAMAAAAAAB//AAAKAAMAAAATAB//AAAMAAMAAAAUAB//AAAEAAMAAAAVAB//AAAEAAMAAAAWAB//AAAEAAMAAAAXAB//AAAEAAMAAAAYAB//AAAEAAMAAAAZAB//AAAGAAMAAAAfAB//AAAKAAMAAAAAACD/AAAKAAMAAAADACD/AAAJAAMAAAAEACD/AAABAAMAAAAFACD/AAABAAMAAAAGACD/AAABAAMAAAAHACD/AAABAAMAAAAIACD/AAADAAMAAAAfACD/AAAKAAMAAAAAACH/AAAKAAMAAAADACH/AAAMAAMAAAAEACH/AAAEAAMAAAAFACH/AAAEAAMAAAAGACH/AAAEAAMAAAAHACH/AAAEAAMAAAAIACH/AAAGAAMAAAAfACH/AAAKAAMAAAAAACL/AAAKAAMAAAAfACL/AAAKAAMAAAAAACP/AAAKAAMAAAAfACP/AAAKAAMAAAAAACT/AAAKAAMAAAAfACT/AAAKAAMAAAAAACX/AAAKAAMAAAAfACX/AAAKAAMAAAAAACb/AAAKAAMAAAAUACb/AAAJAAMAAAAVACb/AAABAAMAAAAWACb/AAABAAMAAAAXACb/AAABAAMAAAAYACb/AAABAAMAAAAZACb/AAABAAMAAAAaACb/AAADAAMAAAAfACb/AAAKAAMAAAAAACf/AAAKAAMAAAAUACf/AAAMAAMAAAAVACf/AAAEAAMAAAAWACf/AAAEAAMAAAAXACf/AAAEAAMAAAAYACf/AAAEAAMAAAAZACf/AAAEAAMAAAAaACf/AAAGAAMAAAAfACf/AAAKAAMAAAAAACj/AAAKAAMAAAAfACj/AAAKAAMAAAAAACn/AAAKAAMAAAAfACn/AAAKAAMAAAAAACr/AAAKAAMAAAAfACr/AAAKAAMAAAAAACv/AAAKAAMAAAANACv/AAAJAAMAAAAOACv/AAABAAMAAAAPACv/AAABAAMAAAAQACv/AAABAAMAAAARACv/AAABAAMAAAASACv/AAABAAMAAAATACv/AAADAAMAAAAfACv/AAAKAAMAAAAAACz/AAAKAAMAAAANACz/AAAMAAMAAAAOACz/AAAEAAMAAAAPACz/AAAEAAMAAAAQACz/AAAEAAMAAAARACz/AAAEAAMAAAASACz/AAAEAAMAAAATACz/AAAGAAMAAAAfACz/AAAKAAMAAAAAAC3/AAAKAAMAAAAYAC3/AAAJAAMAAAAZAC3/AAABAAMAAAAaAC3/AAABAAMAAAAbAC3/AAABAAMAAAAcAC3/AAABAAMAAAAdAC3/AAABAAMAAAAeAC3/AAABAAMAAAAfAC3/AAACAAMAAAAAAC7/AAAKAAMAAAAYAC7/AAAMAAMAAAAZAC7/AAAEAAMAAAAaAC7/AAAEAAMAAAAbAC7/AAAEAAMAAAAcAC7/AAAEAAMAAAAdAC7/AAAEAAMAAAAeAC7/AAAEAAMAAAAfAC7/AAACAAMAAAAAAC//AAAKAAMAAAAfAC//AAAKAAMAAAAAADD/AAAKAAMAAAAfADD/AAAKAAMAAAAAADH/AAAKAAMAAAAfADH/AAAKAAMAAAAAADL/AAAKAAMAAAAfADL/AAAKAAMAAAAAADP/AAAKAAMAAAAfADP/AAAKAAMAAAAAADT/AAAKAAMAAAAfADT/AAAKAAMAAAAAADX/AAAKAAMAAAAMADX/AAAJAAMAAAANADX/AAABAAMAAAAOADX/AAABAAMAAAAPADX/AAADAAMAAAAfADX/AAAKAAMAAAAAADb/AAAKAAMAAAAMADb/AAAMAAMAAAANADb/AAAEAAMAAAAOADb/AAAEAAMAAAAPADb/AAAGAAMAAAAfADb/AAAKAAMAAAAAADf/AAAKAAMAAAAfADf/AAAKAAMAAAAAADj/AAAKAAMAAAAGADj/AAAJAAMAAAAHADj/AAABAAMAAAAIADj/AAABAAMAAAAJADj/AAABAAMAAAAKADj/AAABAAMAAAALADj/AAADAAMAAAAfADj/AAAKAAMAAAAAADn/AAAKAAMAAAAGADn/AAAMAAMAAAAHADn/AAAEAAMAAAAIADn/AAAEAAMAAAAJADn/AAAEAAMAAAAKADn/AAAEAAMAAAALADn/AAAGAAMAAAAfADn/AAAKAAMAAAAAADr/AAAKAAMAAAAfADr/AAAKAAMAAAAAADv/AAAKAAMAAAAfADv/AAAKAAMAAAAAADz/AAAKAAMAAAAfADz/AAAKAAMAAAAAAD3/AAAKAAMAAAAMAD3/AAAJAAMAAAANAD3/AAABAAMAAAAOAD3/AAABAAMAAAAPAD3/AAABAAMAAAAQAD3/AAABAAMAAAARAD3/AAABAAMAAAASAD3/AAADAAMAAAAfAD3/AAAKAAMAAAAAAD7/AAAKAAMAAAAMAD7/AAAMAAMAAAANAD7/AAAEAAMAAAAOAD7/AAAEAAMAAAAPAD7/AAAEAAMAAAAQAD7/AAAEAAMAAAARAD7/AAAEAAMAAAASAD7/AAAGAAMAAAAfAD7/AAAKAAMAAAAAAD//AAAKAAMAAAAfAD//AAAKAAMAAAAAAED/AAAKAAMAAAADAED/AAAJAAMAAAAEAED/AAABAAMAAAAFAED/AAABAAMAAAAGAED/AAABAAMAAAAHAED/AAABAAMAAAAIAED/AAADAAMAAAAfAED/AAAKAAMAAAAAAEH/AAAKAAMAAAADAEH/AAAMAAMAAAAEAEH/AAAEAAMAAAAFAEH/AAAEAAMAAAAGAEH/AAAEAAMAAAAHAEH/AAAEAAMAAAAIAEH/AAAGAAMAAAAfAEH/AAAKAAMAAAAAAEL/AAAKAAMAAAAfAEL/AAAKAAMAAAAAAEP/AAAKAAMAAAAfAEP/AAAKAAMAAAAAAET/AAAKAAMAAAAfAET/AAAKAAMAAAAAAEX/AAAKAAMAAAAfAEX/AAAKAAMAAAAAAEb/AAAKAAMAAAAfAEb/AAAKAAMAAAAAAEf/AAAKAAMAAAAWAEf/AAAJAAMAAAAXAEf/AAABAAMAAAAYAEf/AAABAAMAAAAZAEf/AAABAAMAAAAaAEf/AAABAAMAAAAbAEf/AAABAAMAAAAcAEf/AAADAAMAAAAfAEf/AAAKAAMAAAAAAEj/AAAKAAMAAAAWAEj/AAAMAAMAAAAXAEj/AAAEAAMAAAAYAEj/AAAEAAMAAAAZAEj/AAAEAAMAAAAaAEj/AAAEAAMAAAAbAEj/AAAEAAMAAAAcAEj/AAAGAAMAAAAfAEj/AAAKAAMAAAAAAEn/AAAKAAMAAAAfAEn/AAAKAAMAAAAAAEr/AAAKAAMAAAANAEr/AAAJAAMAAAAOAEr/AAABAAMAAAAPAEr/AAABAAMAAAAQAEr/AAABAAMAAAARAEr/AAABAAMAAAASAEr/AAABAAMAAAATAEr/AAADAAMAAAAfAEr/AAAKAAMAAAAAAEv/AAAKAAMAAAANAEv/AAAMAAMAAAAOAEv/AAAEAAMAAAAPAEv/AAAEAAMAAAAQAEv/AAAEAAMAAAARAEv/AAAEAAMAAAASAEv/AAAEAAMAAAATAEv/AAAGAAMAAAAfAEv/AAAKAAMAAAAAAEz/AAAKAAMAAAAfAEz/AAAKAAMAAAAAAE3/AAAKAAMAAAAfAE3/AAAKAAMAAAAAAE7/AAAKAAMAAAAfAE7/AAAKAAMAAAAAAE//AAAKAAMAAAAHAE//AAAJAAMAAAAIAE//AAABAAMAAAAJAE//AAABAAMAAAAKAE//AAABAAMAAAALAE//AAABAAMAAAAMAE//AAADAAMAAAASAE//AAAJAAMAAAATAE//AAABAAMAAAAUAE//AAABAAMAAAAVAE//AAADAAMAAAAfAE//AAAKAAMAAAAAAFD/AAAKAAMAAAAHAFD/AAAMAAMAAAAIAFD/AAAEAAMAAAAJAFD/AAAEAAMAAAAKAFD/AAAEAAMAAAALAFD/AAAEAAMAAAAMAFD/AAAGAAMAAAASAFD/AAAMAAMAAAATAFD/AAAEAAMAAAAUAFD/AAAEAAMAAAAVAFD/AAAGAAMAAAAfAFD/AAAKAAMAAAAAAFH/AAAKAAMAAAAfAFH/AAAKAAMAAAAAAFL/AAAKAAMAAAAfAFL/AAAKAAMAAAAAAFP/AAAKAAMAAAAfAFP/AAAKAAMAAAAAAFT/AAAKAAMAAAAbAFT/AAAJAAMAAAAcAFT/AAABAAMAAAAdAFT/AAABAAMAAAAeAFT/AAABAAMAAAAfAFT/AAACAAMAAAAAAFX/AAAKAAMAAAAbAFX/AAAMAAMAAAAcAFX/AAAEAAMAAAAdAFX/AAAEAAMAAAAeAFX/AAAEAAMAAAAfAFX/AAACAAMAAAAAAFb/AAAKAAMAAAAfAFb/AAAKAAMAAAAAAFf/AAAKAAMAAAAfAFf/AAAKAAMAAAAAAFj/AAAKAAMAAAAfAFj/AAAKAAMAAAAAAFn/AAAKAAMAAAAfAFn/AAAKAAMAAAAAAFr/AAAKAAMAAAAfAFr/AAAKAAMAAAAAAFv/AAAKAAMAAAAfAFv/AAAKAAMAAAAAAFz/AAAKAAMAAAAKAFz/AAAJAAMAAAALAFz/AAABAAMAAAAMAFz/AAABAAMAAAANAFz/AAABAAMAAAAOAFz/AAABAAMAAAAPAFz/AAABAAMAAAAQAFz/AAADAAMAAAAfAFz/AAAKAAMAAAAAAF3/AAAKAAMAAAAKAF3/AAAMAAMAAAALAF3/AAAEAAMAAAAMAF3/AAAEAAMAAAANAF3/AAAEAAMAAAAOAF3/AAAEAAMAAAAPAF3/AAAEAAMAAAAQAF3/AAAGAAMAAAAfAF3/AAAKAAMAAAAAAF7/AAAKAAMAAAAfAF7/AAAKAAMAAAAAAF//AAAKAAMAAAAfAF//AAAKAAMAAAAAAGD/AAAKAAMAAAAfAGD/AAAKAAMAAAAAAGH/AAAKAAMAAAADAGH/AAAJAAMAAAAEAGH/AAABAAMAAAAFAGH/AAABAAMAAAAGAGH/AAABAAMAAAAHAGH/AAABAAMAAAAIAGH/AAADAAMAAAAfAGH/AAAKAAMAAAAAAGL/AAAKAAMAAAADAGL/AAAMAAMAAAAEAGL/AAAEAAMAAAAFAGL/AAAEAAMAAAAGAGL/AAAEAAMAAAAHAGL/AAAEAAMAAAAIAGL/AAAGAAMAAAAfAGL/AAAKAAMAAAAAAGP/AAAKAAMAAAAfAGP/AAAKAAMAAAAAAGT/AAAKAAMAAAAMAGT/AAAJAAMAAAANAGT/AAABAAMAAAAOAGT/AAABAAMAAAAPAGT/AAABAAMAAAAQAGT/AAABAAMAAAARAGT/AAABAAMAAAASAGT/AAADAAMAAAAfAGT/AAAKAAMAAAAAAGX/AAAKAAMAAAAMAGX/AAAMAAMAAAANAGX/AAAEAAMAAAAOAGX/AAAEAAMAAAAPAGX/AAAEAAMAAAAQAGX/AAAEAAMAAAARAGX/AAAEAAMAAAASAGX/AAAGAAMAAAAaAGX/AAAJAAMAAAAbAGX/AAABAAMAAAAcAGX/AAABAAMAAAAdAGX/AAABAAMAAAAeAGX/AAABAAMAAAAfAGX/AAACAAMAAAAAAGb/AAAKAAMAAAAaAGb/AAAMAAMAAAAbAGb/AAAEAAMAAAAcAGb/AAAEAAMAAAAdAGb/AAAEAAMAAAAeAGb/AAAEAAMAAAAfAGb/AAACAAMAAAAAAGf/AAAKAAMAAAAfAGf/AAAKAAMAAAAAAGj/AAAKAAMAAAAfAGj/AAAKAAMAAAAAAGn/AAAKAAMAAAAfAGn/AAAKAAMAAAAAAGr/AAAKAAMAAAAfAGr/AAAKAAMAAAAAAGv/AAAKAAMAAAAfAGv/AAAKAAMAAAAAAGz/AAAKAAMAAAAUAGz/AAAJAAMAAAAVAGz/AAABAAMAAAAWAGz/AAABAAMAAAAXAGz/AAABAAMAAAAYAGz/AAADAAMAAAAfAGz/AAAKAAMAAAAAAG3/AAAKAAMAAAAUAG3/AAAMAAMAAAAVAG3/AAAEAAMAAAAWAG3/AAAEAAMAAAAXAG3/AAAEAAMAAAAYAG3/AAAGAAMAAAAfAG3/AAAKAAMAAAAAAG7/AAAKAAMAAAAKAG7/AAAJAAMAAAALAG7/AAABAAMAAAAMAG7/AAABAAMAAAANAG7/AAABAAMAAAAOAG7/AAADAAMAAAAfAG7/AAAKAAMAAAAAAG//AAAKAAMAAAAKAG//AAAMAAMAAAALAG//AAAEAAMAAAAMAG//AAAEAAMAAAANAG//AAAEAAMAAAAOAG//AAAGAAMAAAAfAG//AAAKAAMAAAAAAHD/AAAKAAMAAAAfAHD/AAAKAAMAAAAAAHH/AAAKAAMAAAAfAHH/AAAKAAMAAAAAAHL/AAAKAAMAAAAfAHL/AAAKAAMAAAAAAHP/AAAKAAMAAAADAHP/AAAJAAMAAAAEAHP/AAABAAMAAAAFAHP/AAABAAMAAAAGAHP/AAABAAMAAAAHAHP/AAABAAMAAAAIAHP/AAADAAMAAAAfAHP/AAAKAAMAAAAAAHT/AAAKAAMAAAADAHT/AAAMAAMAAAAEAHT/AAAEAAMAAAAFAHT/AAAEAAMAAAAGAHT/AAAEAAMAAAAHAHT/AAAEAAMAAAAIAHT/AAAGAAMAAAAfAHT/AAAKAAMAAAAAAHX/AAAKAAMAAAAfAHX/AAAKAAMAAAAAAHb/AAAKAAMAAAAfAHb/AAAKAAMAAAAAAHf/AAAKAAMAAAANAHf/AAAJAAMAAAAOAHf/AAABAAMAAAAPAHf/AAABAAMAAAAQAHf/AAABAAMAAAARAHf/AAABAAMAAAASAHf/AAABAAMAAAATAHf/AAADAAMAAAAfAHf/AAAKAAMAAAAAAHj/AAAKAAMAAAANAHj/AAAMAAMAAAAOAHj/AAAEAAMAAAAPAHj/AAAEAAMAAAAQAHj/AAAEAAMAAAARAHj/AAAEAAMAAAASAHj/AAAEAAMAAAATAHj/AAAGAAMAAAAfAHj/AAAKAAMAAAAAAHn/AAAKAAMAAAAaAHn/AAAJAAMAAAAbAHn/AAABAAMAAAAcAHn/AAABAAMAAAAdAHn/AAABAAMAAAAeAHn/AAABAAMAAAAfAHn/AAACAAMAAAAAAHr/AAAKAAMAAAAaAHr/AAAMAAMAAAAbAHr/AAAEAAMAAAAcAHr/AAAEAAMAAAAdAHr/AAAEAAMAAAAeAHr/AAAEAAMAAAAfAHr/AAACAAMAAAAAAHv/AAAKAAMAAAAfAHv/AAAKAAMAAAAAAHz/AAAKAAMAAAAfAHz/AAAKAAMAAAAAAH3/AAAKAAMAAAAfAH3/AAAKAAMAAAAAAH7/AAAKAAMAAAAfAH7/AAAKAAMAAAAAAH//AAAKAAMAAAAfAH//AAAKAAMAAAAAAID/AAAKAAMAAAAHAID/AAAJAAMAAAAIAID/AAABAAMAAAAJAID/AAABAAMAAAAKAID/AAABAAMAAAALAID/AAABAAMAAAAMAID/AAABAAMAAAANAID/AAADAAMAAAAfAID/AAAKAAMAAAAAAIH/AAAKAAMAAAAHAIH/AAAMAAMAAAAIAIH/AAAEAAMAAAAJAIH/AAAEAAMAAAAKAIH/AAAEAAMAAAALAIH/AAAEAAMAAAAMAIH/AAAEAAMAAAANAIH/AAAGAAMAAAAfAIH/AAAKAAMAAAAAAIL/AAAKAAAAAAAfAIL/AAAKAAAAAAAAAIP/AAAKAAAAAAAfAIP/AAAKAAAAAAAAAIT/AAAKAAAAAAAfAIT/AAAKAAAAAAAAAIX/AAAKAAAAAAAMAIX/AAAJAAAAAAANAIX/AAABAAAAAAAOAIX/AAABAAAAAAAPAIX/AAABAAAAAAAQAIX/AAABAAAAAAARAIX/AAADAAAAAAAfAIX/AAAKAAAAAAAAAIb/AAAKAAAAAAAMAIb/AAAMAAAAAAANAIb/AAAEAAAAAAAOAIb/AAAEAAAAAAAPAIb/AAAEAAAAAAAQAIb/AAAEAAAAAAARAIb/AAAGAAAAAAAfAIb/AAAKAAAAAAAAAIf/AAAKAAAAAAAfAIf/AAAKAAAAAAAAAIj/AAAKAAAAAAAfAIj/AAAKAAAAAAAAAIn/AAAKAAAAAAAfAIn/AAAKAAAAAAAAAIr/AAAKAAAAAAAaAIr/AAAJAAAAAAAbAIr/AAABAAAAAAAcAIr/AAABAAAAAAAdAIr/AAABAAAAAAAeAIr/AAABAAAAAAAfAIr/AAACAAAAAAAAAIv/AAAKAAAAAAAaAIv/AAAMAAAAAAAbAIv/AAAEAAAAAAAcAIv/AAAEAAAAAAAdAIv/AAAEAAAAAAAeAIv/AAAEAAAAAAAfAIv/AAACAAAAAAAAAIz/AAAKAAAAAAAfAIz/AAAKAAAAAAAAAI3/AAAKAAAAAAAfAI3/AAAKAAAAAAAAAI7/AAAKAAAAAAAfAI7/AAAKAAAAAAAAAI//AAAKAAAAAAAfAI//AAAKAAAAAAAAAJD/AAAKAAAAAAAfAJD/AAAKAAAAAAAAAJH/AAAKAAAAAAAfAJH/AAAKAAAAAAAAAJL/AAAKAAAAAAAMAJL/AAAJAAAAAAANAJL/AAABAAAAAAAOAJL/AAABAAAAAAAPAJL/AAABAAAAAAAQAJL/AAADAAAAAAAfAJL/AAAKAAAAAAAAAJP/AAAKAAAAAAAMAJP/AAAMAAAAAAANAJP/AAAEAAAAAAAOAJP/AAAEAAAAAAAPAJP/AAAEAAAAAAAQAJP/AAAGAAAAAAAfAJP/AAAKAAAAAAAAAJT/AAAKAAAAAAAfAJT/AAAKAAAAAAAAAJX/AAAKAAAAAAAfAJX/AAAKAAAAAAAAAJb/AAAKAAAAAAARAJb/AAAJAAAAAAASAJb/AAABAAAAAAATAJb/AAABAAAAAAAUAJb/AAABAAAAAAAVAJb/AAADAAAAAAAfAJb/AAAKAAAAAAAAAJf/AAAKAAAAAAARAJf/AAAMAAAAAAASAJf/AAAEAAAAAAATAJf/AAAEAAAAAAAUAJf/AAAEAAAAAAAVAJf/AAAGAAAAAAAfAJf/AAAKAAAAAAAAAJj/AAAKAAAAAAAfAJj/AAAKAAAAAAAAAJn/AAAKAAAAAAAbAJn/AAAJAAAAAAAcAJn/AAABAAAAAAAdAJn/AAABAAAAAAAeAJn/AAABAAAAAAAfAJn/AAACAAAAAAAAAJr/AAAKAAAAAAAbAJr/AAAMAAAAAAAcAJr/AAAEAAAAAAAdAJr/AAAEAAAAAAAeAJr/AAAEAAAAAAAfAJr/AAACAAAAAAAAAJv/AAAKAAAAAAAfAJv/AAAKAAAAAAAAAJz/AAAKAAAAAAAfAJz/AAAKAAAAAAAAAJ3/AAAKAAAAAAATAJ3/AAAJAAAAAAAUAJ3/AAABAAAAAAAVAJ3/AAABAAAAAAAWAJ3/AAABAAAAAAAXAJ3/AAADAAAAAAAfAJ3/AAAKAAAAAAAAAJ7/AAAKAAAAAAATAJ7/AAAMAAAAAAAUAJ7/AAAEAAAAAAAVAJ7/AAAEAAAAAAAWAJ7/AAAEAAAAAAAXAJ7/AAAGAAAAAAAfAJ7/AAAKAAAAAAAAAJ//AAAKAAAAAAAfAJ//AAAKAAAAAAAAAKD/AAAKAAAAAAAfAKD/AAAKAAAAAAAAAKH/AAAKAAAAAAAEAKH/AAAJAAAAAAAFAKH/AAABAAAAAAAGAKH/AAABAAAAAAAHAKH/AAABAAAAAAAIAKH/AAABAAAAAAAJAKH/AAADAAAAAAAfAKH/AAAKAAAAAAAAAKL/AAAKAAAAAAAEAKL/AAAMAAAAAAAFAKL/AAAEAAAAAAAGAKL/AAAEAAAAAAAHAKL/AAAEAAAAAAAIAKL/AAAEAAAAAAAJAKL/AAAGAAAAAAAfAKL/AAAKAAAAAAAAAKP/AAAKAAAAAAAfAKP/AAAKAAAAAAAAAKT/AAAKAAAAAAAUAKT/AAAJAAAAAAAVAKT/AAABAAAAAAAWAKT/AAABAAAAAAAXAKT/AAABAAAAAAAYAKT/AAADAAAAAAAfAKT/AAAKAAAAAAAAAKX/AAAKAAAAAAAUAKX/AAAMAAAAAAAVAKX/AAAEAAAAAAAWAKX/AAAEAAAAAAAXAKX/AAAEAAAAAAAYAKX/AAAGAAAAAAAfAKX/AAAKAAAAAAAAAKb/AAAKAAAAAAAfAKb/AAAKAAAAAAAAAKf/AAAKAAAAAAANAKf/AAAJAAAAAAAOAKf/AAABAAAAAAAPAKf/AAABAAAAAAAQAKf/AAADAAAAAAAfAKf/AAAKAAAAAAAAAKj/AAAKAAAAAAANAKj/AAAMAAAAAAAOAKj/AAAEAAAAAAAPAKj/AAAEAAAAAAAQAKj/AAAGAAAAAAAfAKj/AAAKAAAAAAAAAKn/AAAKAAAAAAAfAKn/AAAKAAAAAAAAAKr/AAAKAAAAAAAfAKr/AAAKAAAAAAAAAKv/AAAKAAAAAAAfAKv/AAAKAAAAAAAAAKz/AAAKAAAAAAAIAKz/AAAJAAAAAAAJAKz/AAABAAAAAAAKAKz/AAABAAAAAAALAKz/AAABAAAAAAAMAKz/AAADAAAAAAAfAKz/AAAKAAAAAAAAAK3/AAAKAAAAAAAIAK3/AAAMAAAAAAAJAK3/AAAEAAAAAAAKAK3/AAAEAAAAAAALAK3/AAAEAAAAAAAMAK3/AAAGAAAAAAAfAK3/AAAKAAAAAAAAAK7/AAAKAAAAAAAbAK7/AAAJAAAAAAAcAK7/AAABAAAAAAAdAK7/AAABAAAAAAAeAK7/AAABAAAAAAAfAK7/AAACAAAAAAAAAK//AAAKAAAAAAAbAK//AAAMAAAAAAAcAK//AAAEAAAAAAAdAK//AAAEAAAAAAAeAK//AAAEAAAAAAAfAK//AAACAAAAAAAAALD/AAAKAAAAAAAfALD/AAAKAAAAAAAAALH/AAAKAAAAAAAfALH/AAAKAAAAAAAAALL/AAAKAAAAAAAfALL/AAAKAAAAAAAAALP/AAAKAAAAAAAfALP/AAAKAAAAAAAAALT/AAAKAAAAAAAfALT/AAAKAAAAAAAAALX/AAAKAAAAAAAfALX/AAAKAAAAAAAAALb/AAAKAAAAAAAGALb/AAAJAAAAAAAHALb/AAABAAAAAAAIALb/AAABAAAAAAAJALb/AAABAAAAAAAKALb/AAADAAAAAAAfALb/AAAKAAAAAAAAALf/AAAKAAAAAAAGALf/AAAMAAAAAAAHALf/AAAEAAAAAAAIALf/AAAEAAAAAAAJALf/AAAEAAAAAAAKALf/AAAGAAAAAAAfALf/AAAKAAAAAAAAALj/AAAKAAAAAAAfALj/AAAKAAAAAAAAALn/AAAIAAAAAAABALn/AAABAAAAAAACALn/AAABAAAAAAADALn/AAABAAAAAAAEALn/AAADAAAAAAAfALn/AAAKAAAAAAAAALr/AAAIAAAAAAABALr/AAAEAAAAAAACALr/AAAEAAAAAAADALr/AAAEAAAAAAAEALr/AAAGAAAAAAAfALr/AAAKAAAAAAAAALv/AAAKAAAAAAAfALv/AAAKAAAAAAAAALz/AAAKAAAAAAAfALz/AAAKAAAAAAAAAL3/AAAKAAAAAAAHAL3/AAAJAAAAAAAIAL3/AAABAAAAAAAJAL3/AAABAAAAAAAKAL3/AAABAAAAAAALAL3/AAADAAAAAAAfAL3/AAAKAAAAAAAAAL7/AAAKAAAAAAAHAL7/AAAMAAAAAAAIAL7/AAAEAAAAAAAJAL7/AAAEAAAAAAAKAL7/AAAEAAAAAAALAL7/AAAGAAAAAAAUAL7/AAAJAAAAAAAVAL7/AAABAAAAAAAWAL7/AAABAAAAAAAXAL7/AAABAAAAAAAYAL7/AAADAAAAAAAfAL7/AAAKAAAAAAAAAL//AAAKAAAAAAAUAL//AAAMAAAAAAAVAL//AAAEAAAAAAAWAL//AAAEAAAAAAAXAL//AAAEAAAAAAAYAL//AAAGAAAAAAAfAL//AAAKAAAAAAAAAMD/AAAKAAAAAAAfAMD/AAAKAAAAAAAAAMH/AAAKAAAAAAAfAMH/AAAKAAAAAAAAAML/AAAKAAAAAAAfAML/AAAKAAAAAAAAAMP/AAAKAAAAAAAbAMP/AAAJAAAAAAAcAMP/AAABAAAAAAAdAMP/AAABAAAAAAAeAMP/AAABAAAAAAAfAMP/AAACAAAAAAAAAMT/AAAKAAAAAAAbAMT/AAAMAAAAAAAcAMT/AAAEAAAAAAAdAMT/AAAEAAAAAAAeAMT/AAAEAAAAAAAfAMT/AAACAAAAAAAAAMX/AAAKAAAAAAAfAMX/AAAKAAAAAAAAAMb/AAAKAAAAAAAfAMb/AAAKAAAAAAAAAMf/AAAKAAAAAAAfAMf/AAAKAAAAAAAAAMj/AAAKAAAAAAAUAMj/AAAJAAAAAAAVAMj/AAABAAAAAAAWAMj/AAABAAAAAAAXAMj/AAABAAAAAAAYAMj/AAADAAAAAAAfAMj/AAAKAAAAAAAAAMn/AAAKAAAAAAAUAMn/AAAMAAAAAAAVAMn/AAAEAAAAAAAWAMn/AAAEAAAAAAAXAMn/AAAEAAAAAAAYAMn/AAAGAAAAAAAfAMn/AAAKAAAAAAAAAMr/AAAKAAAAAAAfAMr/AAAKAAAAAAAAAMv/AAAKAAAAAAAfAMv/AAAKAAAAAAAAAMz/AAAKAAAAAAAMAMz/AAAJAAAAAAANAMz/AAABAAAAAAAOAMz/AAABAAAAAAAPAMz/AAABAAAAAAAQAMz/AAABAAAAAAARAMz/AAADAAAAAAAfAMz/AAAKAAAAAAAAAM3/AAAKAAAAAAAMAM3/AAAMAAAAAAANAM3/AAAEAAAAAAAOAM3/AAAEAAAAAAAPAM3/AAAEAAAAAAAQAM3/AAAEAAAAAAARAM3/AAAGAAAAAAAfAM3/AAAKAAAAAAAAAM7/AAAKAAAAAAAfAM7/AAAKAAAAAAAAAM//AAAKAAAAAAAfAM//AAAKAAAAAAAAAND/AAAKAAAAAAAYAND/AAAJAAAAAAAZAND/AAABAAAAAAAaAND/AAABAAAAAAAbAND/AAABAAAAAAAcAND/AAABAAAAAAAdAND/AAABAAAAAAAeAND/AAABAAAAAAAfAND/AAACAAAAAAAAANH/AAAKAAAAAAAYANH/AAAMAAAAAAAZANH/AAAEAAAAAAAaANH/AAAEAAAAAAAbANH/AAAEAAAAAAAcANH/AAAEAAAAAAAdANH/AAAEAAAAAAAeANH/AAAEAAAAAAAfANH/AAACAAAAAAAAANL/AAAKAAAAAAAfANL/AAAKAAAAAAAAANP/AAAKAAAAAAAfANP/AAAKAAAAAAAAANT/AAAKAAAAAAAfANT/AAAKAAAAAAAAANX/AAAKAAAAAAAfANX/AAAKAAAAAAAAANb/AAAKAAAAAAAfANb/AAAKAAAAAAAAANf/AAAKAAAAAAAfANf/AAAKAAAAAAAAANj/AAAKAAAAAAAfANj/AAAKAAAAAAAAANn/AAAKAAAAAAAfANn/AAAKAAAAAAAAANr/AAAKAAAAAAAKANr/AAAJAAAAAAALANr/AAABAAAAAAAMANr/AAABAAAAAAANANr/AAABAAAAAAAOANr/AAADAAAAAAAfANr/AAAKAAAAAAAAANv/AAAKAAAAAAAKANv/AAAMAAAAAAALANv/AAAEAAAAAAAMANv/AAAEAAAAAAANANv/AAAEAAAAAAAOANv/AAAGAAAAAAAfANv/AAAKAAAAAAAAANz/AAAKAAAAAAAfANz/AAAKAAAAAAAAAN3/AAAKAAAAAAAfAN3/AAAKAAAAAAAAAN7/AAAKAAAAAAAfAN7/AAAKAAAAAAAAAN//AAAKAAAAAAACAN//AAAJAAAAAAADAN//AAABAAAAAAAEAN//AAABAAAAAAAFAN//AAABAAAAAAAGAN//AAADAAAAAAAfAN//AAAKAAAAAAAAAOD/AAAKAAAAAAACAOD/AAAMAAAAAAADAOD/AAAEAAAAAAAEAOD/AAAEAAAAAAAFAOD/AAAEAAAAAAAGAOD/AAAGAAAAAAAfAOD/AAAKAAAAAAAAAOH/AAAKAAAAAAAfAOH/AAAKAAAAAAAAAOL/AAAKAAAAAAAfAOL/AAAKAAAAAAAAAOP/AAAKAAAAAAAOAOP/AAAJAAAAAAAPAOP/AAABAAAAAAAQAOP/AAABAAAAAAARAOP/AAABAAAAAAASAOP/AAADAAAAAAAfAOP/AAAKAAAAAAAAAOT/AAAKAAAAAAAOAOT/AAAMAAAAAAAPAOT/AAAEAAAAAAAQAOT/AAAEAAAAAAARAOT/AAAEAAAAAAASAOT/AAAGAAAAAAAfAOT/AAAKAAAAAAAAAOX/AAAKAAAAAAAfAOX/AAAKAAAAAAAAAOb/AAAKAAAAAAAfAOb/AAAKAAAAAAAAAOf/AAAKAAAAAAAfAOf/AAAKAAAAAAAAAOj/AAAKAAAAAAAaAOj/AAAJAAAAAAAbAOj/AAABAAAAAAAcAOj/AAABAAAAAAAdAOj/AAABAAAAAAAeAOj/AAABAAAAAAAfAOj/AAACAAAAAAAAAOn/AAAKAAAAAAAaAOn/AAAMAAAAAAAbAOn/AAAEAAAAAAAcAOn/AAAEAAAAAAAdAOn/AAAEAAAAAAAeAOn/AAAEAAAAAAAfAOn/AAACAAAAAAAAAOr/AAAKAAAAAAAfAOr/AAAKAAAAAAAAAOv/AAAKAAAAAAAfAOv/AAAKAAAAAAAAAOz/AAAKAAAAAAAFAOz/AAAJAAAAAAAGAOz/AAABAAAAAAAHAOz/AAABAAAAAAAIAOz/AAABAAAAAAAJAOz/AAABAAAAAAAKAOz/AAADAAAAAAAfAOz/AAAKAAAAAAAAAO3/AAAKAAAAAAAFAO3/AAAMAAAAAAAGAO3/AAAEAAAAAAAHAO3/AAAEAAAAAAAIAO3/AAAEAAAAAAAJAO3/AAAEAAAAAAAKAO3/AAAGAAAAAAAfAO3/AAAKAAAAAAAAAO7/AAAKAAAAAAAfAO7/AAAKAAAAAAAAAO//AAAKAAAAAAAfAO//AAAKAAAAAAAAAPD/AAAKAAAAAAAfAPD/AAAKAAAAAAAAAPH/AAAKAAAAAAAfAPH/AAAKAAAAAAAAAPL/AAAKAAAAAAAOAPL/AAAJAAAAAAAPAPL/AAABAAAAAAAQAPL/AAABAAAAAAARAPL/AAABAAAAAAASAPL/AAADAAAAAAAfAPL/AAAKAAAAAAAAAPP/AAAKAAAAAAAOAPP/AAAMAAAAAAAPAPP/AAAEAAAAAAAQAPP/AAAEAAAAAAARAPP/AAAEAAAAAAASAPP/AAAGAAAAAAAfAPP/AAAKAAAAAAAAAPT/AAAKAAAAAAAbAPT/AAAJAAAAAAAcAPT/AAABAAAAAAAdAPT/AAABAAAAAAAeAPT/AAABAAAAAAAfAPT/AAACAAAAAAAAAPX/AAAKAAAAAAAbAPX/AAAMAAAAAAAcAPX/AAAEAAAAAAAdAPX/AAAEAAAAAAAeAPX/AAAEAAAAAAAfAPX/AAACAAAAAAAAAPb/AAAKAAAAAAAfAPb/AAAKAAAAAAAAAPf/AAAKAAAAAAAfAPf/AAAKAAAAAAAAAPj/AAAKAAAAAAAUAPj/AAAJAAAAAAAVAPj/AAABAAAAAAAWAPj/AAABAAAAAAAXAPj/AAABAAAAAAAYAPj/AAADAAAAAAAfAPj/AAAKAAAAAAAAAPn/AAAKAAAAAAAUAPn/AAAMAAAAAAAVAPn/AAAEAAAAAAAWAPn/AAAEAAAAAAAXAPn/AAAEAAAAAAAYAPn/AAAGAAAAAAAfAPn/AAAKAAAAAAAAAPr/AAAKAAAAAAAfAPr/AAAKAAAAAAAAAPv/AAAKAAAAAAAKAPv/AAAJAAAAAAALAPv/AAABAAAAAAAMAPv/AAABAAAAAAANAPv/AAABAAAAAAAOAPv/AAADAAAAAAAfAPv/AAAKAAAAAAAAAPz/AAAKAAAAAAAKAPz/AAAMAAAAAAALAPz/AAAEAAAAAAAMAPz/AAAEAAAAAAANAPz/AAAEAAAAAAAOAPz/AAAGAAAAAAAfAPz/AAAKAAAAAAAAAP3/AAAKAAAAAAAfAP3/AAAKAAAAAAAAAP7/AAAKAAAAAAAfAP7/AAAKAAAAAAAAAP//AAAMAAAAAAABAP//AAAFAAAAAAACAP//AAAFAAAAAAADAP//AAAFAAAAAAAEAP//AAAFAAAAAAAFAP//AAAFAAAAAAAGAP//AAAFAAAAAAAHAP//AAAFAAAAAAAIAP//AAAFAAAAAAAJAP//AAAFAAAAAAAKAP//AAAFAAAAAAALAP//AAAFAAAAAAAMAP//AAAFAAAAAAANAP//AAAFAAAAAAAOAP//AAAFAAAAAAAPAP//AAAFAAAAAAAQAP//AAAFAAAAAAARAP//AAAFAAAAAAASAP//AAAFAAAAAAATAP//AAAFAAAAAAAUAP//AAAFAAAAAAAVAP//AAAFAAAAAAAWAP//AAAFAAAAAAAXAP//AAAFAAAAAAAYAP//AAAFAAAAAAAZAP//AAAFAAAAAAAaAP//AAAFAAAAAAAbAP//AAAFAAAAAAAcAP//AAAFAAAAAAAdAP//AAAFAAAAAAAeAP//AAAFAAAAAAAfAP//AAAGAAAAAAA=")
+tile_set = ExtResource("28_fegaj")
+
+[node name="Objects" type="Node2D" parent="." unique_id=191194904]
 z_index = 1
 
-[node name="GoalPocket" type="Node2D" parent="Objects" unique_id=427543089]
+[node name="LostBall26" type="Node2D" parent="Objects" unique_id=1440309788]
+position = Vector2(440, -5416)
+script = ExtResource("29_fve7n")
+number = 26
+
+[node name="LostBall25" type="Node2D" parent="Objects" unique_id=2078102574]
+position = Vector2(456, -4776)
+script = ExtResource("29_fve7n")
+number = 25
+
+[node name="LostBall24" type="Node2D" parent="Objects" unique_id=1854784905]
+position = Vector2(456, -4248)
+script = ExtResource("29_fve7n")
+number = 24
+
+[node name="LostBall23" type="Node2D" parent="Objects" unique_id=1936112348]
+position = Vector2(88, -3656)
+script = ExtResource("29_fve7n")
+number = 23
+
+[node name="LostBall22" type="Node2D" parent="Objects" unique_id=632216351]
+position = Vector2(440, -3032)
+script = ExtResource("29_fve7n")
+number = 22
+
+[node name="LostBall21" type="Node2D" parent="Objects" unique_id=1447191829]
+position = Vector2(392, -2664)
+script = ExtResource("29_fve7n")
+number = 21
+
+[node name="LostBall20" type="Node2D" parent="Objects" unique_id=951183624]
+position = Vector2(456, -2232)
+script = ExtResource("29_fve7n")
+number = 20
+
+[node name="LostBall19" type="Node2D" parent="Objects" unique_id=381686776]
+position = Vector2(136, -1640)
+script = ExtResource("29_fve7n")
+number = 19
+
+[node name="LostBall18" type="Node2D" parent="Objects" unique_id=884915856]
+position = Vector2(440, -1080)
+script = ExtResource("29_fve7n")
+number = 18
+
+[node name="LostBall17" type="Node2D" parent="Objects" unique_id=246001250]
+position = Vector2(360, -504)
+script = ExtResource("29_fve7n")
+number = 17
+
+[node name="GoalPocket" type="Node2D" parent="Objects" unique_id=591079486]
 position = Vector2(216, -5656)
-script = ExtResource("29_fegaj")
+script = ExtResource("30_xjurg")
 goal = true
 
-[node name="Pocket" type="Node2D" parent="Objects" unique_id=414835714]
+[node name="Pocket" type="Node2D" parent="Objects" unique_id=1576820700]
 position = Vector2(392, -3384)
-script = ExtResource("29_fegaj")
+script = ExtResource("30_xjurg")
 exit = Vector2(104, -3208)
 
-[node name="Bumper" type="Node2D" parent="Objects" unique_id=1612459784]
+[node name="Bumper" type="Node2D" parent="Objects" unique_id=1689784252]
 position = Vector2(200, -3352)
-script = ExtResource("30_fve7n")
+script = ExtResource("31_irf5k")
 
-[node name="Pocket2" type="Node2D" parent="Objects" unique_id=960690327]
+[node name="Pocket2" type="Node2D" parent="Objects" unique_id=1491620384]
 position = Vector2(312, -2200)
-script = ExtResource("29_fegaj")
+script = ExtResource("30_xjurg")
 exit = Vector2(456, -1896)
 
-[node name="Bumper2" type="Node2D" parent="Objects" unique_id=1717793861]
+[node name="Bumper2" type="Node2D" parent="Objects" unique_id=1141877995]
 position = Vector2(360, -2200)
-script = ExtResource("30_fve7n")
+script = ExtResource("31_irf5k")
 number = 3
 
-[node name="Movers" type="Node2D" parent="." unique_id=1812369398]
+[node name="Movers" type="Node2D" parent="." unique_id=905044924]
 
-[node name="Platform_s19_0" type="Node2D" parent="Movers" unique_id=1287710429]
+[node name="Platform_s19_0" type="Node2D" parent="Movers" unique_id=1388215712]
 position = Vector2(224, -5536)
-script = ExtResource("31_xjurg")
+script = ExtResource("32_vvu6f")
 a = Vector2(224, -5536)
 b = Vector2(352, -5536)
 tiles = 4
 zone = 2
 
-[node name="Spinner_s19_1" type="Node2D" parent="Movers" unique_id=145093351]
+[node name="Spinner_s19_1" type="Node2D" parent="Movers" unique_id=1069910200]
 z_index = 6
 position = Vector2(312, -5624)
-script = ExtResource("32_irf5k")
+script = ExtResource("33_m47kx")
 length = 38.0
 speed = 1.3
 
-[node name="Platform_s18_0" type="Node2D" parent="Movers" unique_id=1952166852]
+[node name="Platform_s18_0" type="Node2D" parent="Movers" unique_id=1919082737]
 position = Vector2(288, -5248)
-script = ExtResource("31_xjurg")
+script = ExtResource("32_vvu6f")
 a = Vector2(288, -5248)
 b = Vector2(288, -5328)
 period = 5.0
 zone = 2
 
-[node name="Spinner_s18_1" type="Node2D" parent="Movers" unique_id=1518901413]
+[node name="Spinner_s18_1" type="Node2D" parent="Movers" unique_id=504602297]
 z_index = 6
 position = Vector2(248, -5352)
-script = ExtResource("32_irf5k")
+script = ExtResource("33_m47kx")
 length = 42.0
 speed = 1.8
 
-[node name="Spinner_s17_0" type="Node2D" parent="Movers" unique_id=338942201]
+[node name="Spinner_s17_0" type="Node2D" parent="Movers" unique_id=662073465]
 z_index = 6
 position = Vector2(424, -5032)
-script = ExtResource("32_irf5k")
+script = ExtResource("33_m47kx")
 arms = 4
 length = 24.0
 speed = 1.1
 
-[node name="Platform_s17_1" type="Node2D" parent="Movers" unique_id=1670218854]
+[node name="Platform_s17_1" type="Node2D" parent="Movers" unique_id=1854334628]
 position = Vector2(224, -5008)
-script = ExtResource("31_xjurg")
+script = ExtResource("32_vvu6f")
 a = Vector2(224, -5008)
 b = Vector2(224, -5136)
 tiles = 4
 period = 7.0
 zone = 2
 
-[node name="Platform_s16_0" type="Node2D" parent="Movers" unique_id=911854833]
+[node name="Platform_s16_0" type="Node2D" parent="Movers" unique_id=784265464]
 position = Vector2(176, -4672)
-script = ExtResource("31_xjurg")
+script = ExtResource("32_vvu6f")
 a = Vector2(176, -4672)
 b = Vector2(288, -4704)
 tiles = 4
 zone = 2
 
-[node name="Spike_s16_1" type="Node2D" parent="Movers" unique_id=1550047855]
+[node name="Spike_s16_1" type="Node2D" parent="Movers" unique_id=279166491]
 z_index = 6
 position = Vector2(344, -4760)
-script = ExtResource("33_vvu6f")
+script = ExtResource("34_du2r8")
 a = Vector2(344, -4760)
 b = Vector2(344, -4856)
 period = 4.0
 
-[node name="Spinner_s15_0" type="Node2D" parent="Movers" unique_id=1621591281]
+[node name="Spinner_s15_0" type="Node2D" parent="Movers" unique_id=1286031146]
 z_index = 6
 position = Vector2(120, -4440)
-script = ExtResource("32_irf5k")
+script = ExtResource("33_m47kx")
 arms = 3
 length = 30.0
 speed = 1.2
 
-[node name="Platform_s15_1" type="Node2D" parent="Movers" unique_id=1239357283]
+[node name="Platform_s15_1" type="Node2D" parent="Movers" unique_id=346520591]
 position = Vector2(320, -4368)
-script = ExtResource("31_xjurg")
+script = ExtResource("32_vvu6f")
 a = Vector2(320, -4368)
 b = Vector2(320, -4496)
 tiles = 4
 zone = 2
 
-[node name="Spinner_s15_2" type="Node2D" parent="Movers" unique_id=775765494]
+[node name="Spinner_s15_2" type="Node2D" parent="Movers" unique_id=632051214]
 z_index = 6
 position = Vector2(264, -4504)
-script = ExtResource("32_irf5k")
+script = ExtResource("33_m47kx")
 length = 38.0
 angle0 = 0.8
 
-[node name="Platform_s14_0" type="Node2D" parent="Movers" unique_id=1583198162]
+[node name="Platform_s14_0" type="Node2D" parent="Movers" unique_id=1192864499]
 position = Vector2(240, -4112)
-script = ExtResource("31_xjurg")
+script = ExtResource("32_vvu6f")
 a = Vector2(240, -4112)
 b = Vector2(368, -4112)
 tiles = 5
 zone = 2
 
-[node name="Spike_s13_0" type="Node2D" parent="Movers" unique_id=510968428]
+[node name="Spike_s13_0" type="Node2D" parent="Movers" unique_id=1234526700]
 z_index = 6
 position = Vector2(216, -3784)
-script = ExtResource("33_vvu6f")
+script = ExtResource("34_du2r8")
 a = Vector2(216, -3784)
 b = Vector2(216, -3960)
 period = 4.0
 
-[node name="Spike_s13_1" type="Node2D" parent="Movers" unique_id=786152496]
+[node name="Spike_s13_1" type="Node2D" parent="Movers" unique_id=781537376]
 z_index = 6
 position = Vector2(392, -3816)
-script = ExtResource("33_vvu6f")
+script = ExtResource("34_du2r8")
 a = Vector2(392, -3816)
 b = Vector2(392, -3992)
 phase = 0.5
 
-[node name="Platform_s12_0" type="Node2D" parent="Movers" unique_id=831044315]
+[node name="Platform_s12_0" type="Node2D" parent="Movers" unique_id=2044500064]
 position = Vector2(176, -3520)
-script = ExtResource("31_xjurg")
+script = ExtResource("32_vvu6f")
 a = Vector2(176, -3520)
 b = Vector2(64, -3520)
 tiles = 5
 period = 5.0
 zone = 1
 
-[node name="Spinner_s12_1" type="Node2D" parent="Movers" unique_id=907562623]
+[node name="Spinner_s12_1" type="Node2D" parent="Movers" unique_id=1461380483]
 z_index = 6
 position = Vector2(216, -3608)
-script = ExtResource("32_irf5k")
+script = ExtResource("33_m47kx")
 length = 42.0
 speed = -1.6
 
-[node name="Platform_s11_0" type="Node2D" parent="Movers" unique_id=247859285]
+[node name="Platform_s11_0" type="Node2D" parent="Movers" unique_id=843460977]
 position = Vector2(288, -3232)
-script = ExtResource("31_xjurg")
+script = ExtResource("32_vvu6f")
 a = Vector2(288, -3232)
 b = Vector2(288, -3360)
 tiles = 4
 period = 7.0
 zone = 1
 
-[node name="Spike_s10_0" type="Node2D" parent="Movers" unique_id=1760713084]
+[node name="Spike_s10_0" type="Node2D" parent="Movers" unique_id=707776921]
 z_index = 6
 position = Vector2(328, -2920)
-script = ExtResource("33_vvu6f")
+script = ExtResource("34_du2r8")
 a = Vector2(328, -2920)
 b = Vector2(328, -3080)
 period = 4.0
 
-[node name="Platform_s10_1" type="Node2D" parent="Movers" unique_id=209297293]
+[node name="Platform_s10_1" type="Node2D" parent="Movers" unique_id=1208206767]
 position = Vector2(240, -3024)
-script = ExtResource("31_xjurg")
+script = ExtResource("32_vvu6f")
 a = Vector2(240, -3024)
 b = Vector2(96, -3024)
 tiles = 5
 zone = 1
 
-[node name="Platform_s9_0" type="Node2D" parent="Movers" unique_id=726537268]
+[node name="Platform_s9_0" type="Node2D" parent="Movers" unique_id=148562124]
 position = Vector2(304, -2640)
-script = ExtResource("31_xjurg")
+script = ExtResource("32_vvu6f")
 a = Vector2(304, -2640)
 b = Vector2(400, -2736)
 period = 7.0
 zone = 1
 
-[node name="Spinner_s9_1" type="Node2D" parent="Movers" unique_id=1879558490]
+[node name="Spinner_s9_1" type="Node2D" parent="Movers" unique_id=1741089736]
 z_index = 6
 position = Vector2(264, -2760)
-script = ExtResource("32_irf5k")
+script = ExtResource("33_m47kx")
 arms = 4
 length = 26.0
 speed = 1.0
 
-[node name="Spike_s8_0" type="Node2D" parent="Movers" unique_id=1955845090]
+[node name="Spike_s8_0" type="Node2D" parent="Movers" unique_id=925670819]
 z_index = 6
 position = Vector2(232, -2424)
-script = ExtResource("33_vvu6f")
+script = ExtResource("34_du2r8")
 a = Vector2(232, -2424)
 b = Vector2(408, -2424)
 period = 6.0
 
-[node name="Platform_s7_0" type="Node2D" parent="Movers" unique_id=1818239073]
+[node name="Platform_s7_0" type="Node2D" parent="Movers" unique_id=1881706203]
 position = Vector2(240, -2096)
-script = ExtResource("31_xjurg")
+script = ExtResource("32_vvu6f")
 a = Vector2(240, -2096)
 b = Vector2(352, -2096)
 tiles = 6
 zone = 1
 
-[node name="Platform_s6_0" type="Node2D" parent="Movers" unique_id=1363840735]
+[node name="Platform_s6_0" type="Node2D" parent="Movers" unique_id=1947319067]
 position = Vector2(320, -1792)
-script = ExtResource("31_xjurg")
+script = ExtResource("32_vvu6f")
 a = Vector2(320, -1792)
 b = Vector2(320, -1904)
 
-[node name="Spinner_s6_1" type="Node2D" parent="Movers" unique_id=1957937082]
+[node name="Spinner_s6_1" type="Node2D" parent="Movers" unique_id=1200148259]
 z_index = 6
 position = Vector2(360, -1960)
-script = ExtResource("32_irf5k")
+script = ExtResource("33_m47kx")
 length = 26.0
 speed = 1.3
 angle0 = 1.57
 
-[node name="Spike_s5_0" type="Node2D" parent="Movers" unique_id=124685969]
+[node name="Spike_s5_0" type="Node2D" parent="Movers" unique_id=1698995094]
 z_index = 6
 position = Vector2(232, -1496)
-script = ExtResource("33_vvu6f")
+script = ExtResource("34_du2r8")
 a = Vector2(232, -1496)
 b = Vector2(232, -1656)
 
-[node name="Platform_s4_0" type="Node2D" parent="Movers" unique_id=278977186]
+[node name="Platform_s4_0" type="Node2D" parent="Movers" unique_id=841692570]
 position = Vector2(224, -1248)
-script = ExtResource("31_xjurg")
+script = ExtResource("32_vvu6f")
 a = Vector2(224, -1248)
 b = Vector2(368, -1248)
 period = 5.0
 
-[node name="Spinner_s4_1" type="Node2D" parent="Movers" unique_id=860982057]
+[node name="Spinner_s4_1" type="Node2D" parent="Movers" unique_id=1817470981]
 z_index = 6
 position = Vector2(312, -1352)
-script = ExtResource("32_irf5k")
+script = ExtResource("33_m47kx")
 arms = 3
 length = 34.0
 speed = -1.2
 
-[node name="Spinner_s3_0" type="Node2D" parent="Movers" unique_id=1505263489]
+[node name="Spinner_s3_0" type="Node2D" parent="Movers" unique_id=689511198]
 z_index = 6
 position = Vector2(200, -952)
-script = ExtResource("32_irf5k")
+script = ExtResource("33_m47kx")
 
-[node name="Platform_s2_0" type="Node2D" parent="Movers" unique_id=869734379]
+[node name="Platform_s2_0" type="Node2D" parent="Movers" unique_id=1766617981]
 position = Vector2(288, -624)
-script = ExtResource("31_xjurg")
+script = ExtResource("32_vvu6f")
 a = Vector2(288, -624)
 b = Vector2(288, -752)
 tiles = 4
 period = 7.0
 
-[node name="Platform_s1_0" type="Node2D" parent="Movers" unique_id=928313613]
+[node name="Platform_s1_0" type="Node2D" parent="Movers" unique_id=332128075]
 position = Vector2(208, -352)
-script = ExtResource("31_xjurg")
+script = ExtResource("32_vvu6f")
 a = Vector2(208, -352)
 b = Vector2(336, -352)
 tiles = 4

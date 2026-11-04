@@ -108,6 +108,8 @@ The title's **Normal mode** and **Hardcore mode** buttons each open a small felt
 
 Levels are ASCII files baked by `tools/build_tower.gd`. Moving things are `@` lines under a screen header (syntax at the top of that script).
 
+**Unlocking.** The Long Rack shows as locked until The Tower has been finished in either mode, and finishing in one mode opens it in both. A run already under way stays playable, so nobody is locked out of their own save.
+
 ## The Long Rack (level 2)
 
 20 screens, twice The Tower, with 31 moving things:
@@ -128,3 +130,9 @@ The clock only ticks with the physics, so pausing freezes everything, and it is 
 ## Route solver with moving things
 
 Moving things are deterministic, so the solver replays them exactly. A spot on a carriage counts as one spot wherever the carriage is. Near moving things, each spot's shot sweep is repeated at several moments (a player can wait for the right one), and a move's score is its working shots at the best moment. To keep this tractable it writes off shots that fall over 300 px and doesn't explore from spots more than 48 px below the current one; that can only hide routes, never invent one. `--from-screen` and `--to-screen` check a stretch while tuning.
+
+## Level 2 lost balls and the rainbow ball
+
+Ten more lost balls (Chalk, Neon, Checker, Tournament, Marble, Ember, Ocean, Night, Gold, Moon; skins 17–26) sit along The Long Rack, placed with `@ lost x y number` lines. Each is a pattern painted on the sphere in `tools/art_balls.lua`. They can be collected in either mode, and either ball can pick them up.
+
+Winning The Long Rack on Hardcore earns **the rainbow ball** (skin 27). Its skin is greyscale; `shaders/ball.gdshader` tints it with a hue that runs around the ball and drifts over time, so colours shimmer as it rolls. `BallVisual` adds a soft glow behind it that cycles through the colours and pulses. The Ball Rack now has 28 slots.

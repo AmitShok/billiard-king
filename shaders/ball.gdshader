@@ -10,7 +10,7 @@ render_mode unshaded;
 
 uniform sampler2D skin : source_color, filter_nearest, repeat_disable;
 uniform vec2 cell = vec2(0.0, 0.0);        // atlas cell of this ball's skin
-uniform vec2 grid = vec2(4.0, 5.0);        // atlas cells across / down
+uniform vec2 grid = vec2(4.0, 7.0);        // atlas cells across / down
 uniform mat3 orientation = mat3(1.0);      // ball-local -> world rotation
 uniform float view_pitch = 0.42;           // look slightly down on the ball so rolls read in 3D
 uniform float diameter_px = 16.0;
@@ -19,6 +19,7 @@ uniform vec4 outline_color : source_color = vec4(0.07, 0.05, 0.07, 1.0);
 uniform vec4 shadow_tint : source_color = vec4(0.22, 0.16, 0.26, 1.0);
 uniform float flash = 0.0;                 // 0..1 white hit flash
 uniform float alpha = 1.0;
+uniform float rainbow = 0.0;                // 1 = colours cycle over the skin's greyscale
 
 varying vec4 tint_in; // node modulate (vertex colour), so fades and silhouettes still work
 
@@ -44,6 +45,13 @@ void fragment() {
 		u = clamp(u, 0.5 / texel.x, 1.0 - 0.5 / texel.x);
 		v = clamp(v, 0.5 / texel.y, 1.0 - 0.5 / texel.y);
 		vec3 albedo = textureLod(skin, (cell + vec2(u, v)) / grid, 0.0).rgb;
+
+		if (rainbow > 0.5) {
+			// Hue runs around the ball and drifts over time, so it shimmers as it rolls.
+			float hue = fract(u * 2.0 + v * 0.75 + TIME * 0.35);
+			vec3 k = abs(fract(vec3(hue) + vec3(0.0, 2.0 / 3.0, 1.0 / 3.0)) * 6.0 - 3.0) - 1.0;
+			albedo = mix(vec3(1.0), clamp(k, 0.0, 1.0), 0.8) * albedo;
+		}
 
 		vec3 l = normalize(light_dir);
 		float lam = max(dot(n_view, l), 0.0);

@@ -64,6 +64,14 @@ func _add_row(box: Control, i: int) -> void:
 	about.text = LEVELS[i].about
 	about.add_theme_color_override("font_color", Color("a89e8a"))
 	text.add_child(about)
+	if not SaveData.level_unlocked(lvl):
+		ball.modulate = Color(0.08, 0.06, 0.08, 1)
+		title.add_theme_color_override("font_color", Color("6a6458"))
+		about.text = "Finish %s to unlock" % LEVELS[i - 1].name
+		var locked := UIKit.button(row, "Locked", func(): pass)
+		locked.disabled = true
+		locked.focus_mode = Control.FOCUS_NONE
+		return
 	var running := SaveData.has_run_for(mode, lvl)
 	if running:
 		var cont := UIKit.button(row, "Continue", _start.bind(lvl, false))
