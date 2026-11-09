@@ -35,6 +35,7 @@ var white: WhiteBall          # Hardcore only
 var white_start := Vector2.ZERO
 var _arrow: WhiteBallArrow
 var weather: WeatherLayer
+var rain: RainLayer           # falling rain on the storm and fire-escape screens
 var intro: GoalIntro          # goal pop-up, while it is open
 var show_intro := true        # tests that aren't about the pop-up switch it off
 
@@ -86,6 +87,10 @@ func _ready() -> void:
 	camera.process_callback = Camera2D.CAMERA2D_PROCESS_PHYSICS
 	add_child(camera)
 	camera.make_current()
+	rain = RainLayer.new()
+	rain.tower = tower
+	rain.camera = camera
+	tower.add_child(rain)
 
 	_build_hud()
 	player.shot_taken.connect(_on_shot)
@@ -438,6 +443,7 @@ func _physics_process(_delta: float) -> void:
 	var view_y := Tower.screen_center(screen).y
 	var wind := tower.world.wind_at(view_y)
 	weather.wind = wind
+	rain.wind = wind
 	weather.low_gravity = tower.world.gravity_scale_at(view_y) < 1.0
 	for prop in _props_by_screen.get(screen, []):
 		prop.feel_wind(wind)

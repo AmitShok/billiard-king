@@ -222,3 +222,12 @@ The game used Godot's default web **Sample** playback (`AudioBufferSourceNode`s)
 **Fix:** `audio/general/default_playback_type.web=0` (Stream). Web audio now goes through Godot's own mixer in an AudioWorklet, like desktop.
 
 **Verified** in the user's Chrome on a release export with the fix: no sample sources start, audio is suspended until the first click, and then the output peaks at 0.45 idle on the title (music and ambience) and 0.45 in level 1. **Not checked:** Firefox, Safari, mobile, and the re-uploaded itch.io page itself (it needs the user's upload).
+
+## Animated rain: 9 November 2026
+
+The rain painted into `bg_storm` and `bg_fire_escape` is gone, and `RainLayer` animates it instead. The level 4 tests (conditions suite, now 74) check that:
+- it rains on the rooftops and on the fire escape, but not in the bell tower;
+- the drops actually move;
+- an updraft slows them, a crosswind slants them and a downdraft speeds them up.
+
+The rendered fire escape and rooftop screens show the rain behind the ledges. All suites pass: gameplay 46, menus 35, props 27, Hardcore 51, conditions 74, level 2 64, training 38.

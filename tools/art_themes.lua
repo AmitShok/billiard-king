@@ -128,11 +128,7 @@ do
     end
   end
   c:vline(496, 0, H - 1, "2c3440"); c:vline(497, 0, H - 1, "3a4452"); c:vline(498, 0, H - 1, "1a2028")
-  for i = 0, 200 do
-    local x = math.floor(A.hash(i, 1, 105) * W)
-    local y = math.floor(A.hash(i, 2, 105) * H)
-    for d = 0, 3 do c:px(x + d, y + d * 3, "3e5060") end
-  end
+  -- Rain is animated in game (RainLayer), not baked in.
   c:save("bg_fire_escape")
 end
 

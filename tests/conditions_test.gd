@@ -335,6 +335,19 @@ func _game_tests() -> void:
 	await _physics(6)
 	check("the weather layer sees the gust", game.weather.wind.length() > 100.0, str(game.weather.wind))
 	check("the rooftop gust is an updraft", game.weather.wind.y < -100.0 and absf(game.weather.wind.x) < 1.0, str(game.weather.wind))
+	# Rain falls on the rooftops (it used to be painted into the backdrop).
+	var rain: RainLayer = game.rain
+	check("it's raining on the rooftops", rain != null and rain._rain_in_view())
+	var before_drops: Array[Vector2] = rain._pos.duplicate()
+	await _frames(10)
+	check("the rain is falling, not painted on", rain._pos != before_drops)
+	check("the updraft slows the rain", rain.drop_velocity(1.0).y < RainLayer.FALL - 100.0, str(rain.drop_velocity(1.0)))
+	var keep_wind: Vector2 = rain.wind
+	rain.wind = Vector2(280, 0)
+	check("a crosswind slants it hard", rain.drop_velocity(1.0).x > RainLayer.FALL / 3.0 + 200.0)
+	rain.wind = Vector2(0, 320)
+	check("a downdraft drives it down", rain.drop_velocity(1.0).y > RainLayer.FALL + 200.0)
+	rain.wind = keep_wind
 	var socks: Array = _props(game, WindProp).filter(func(p): return Tower.screen_of(p.global_position.y) == 3 and p.style == WindProp.Style.SOCK)
 	var sock: WindProp = socks[0]
 	check("wind socks feel the wind", sock._wind.length() > 100.0)
@@ -348,6 +361,12 @@ func _game_tests() -> void:
 	var flung: WindProp = bunting[0]
 	flung.poke(flung.global_position, Vector2(300, 0))
 	check("bunting reacts to a knock", flung._kick > 0.0)
+	game.player.place(Vector2(200, -9 * 288 - 40))
+	await _physics(90)
+	check("no rain indoors in the bell tower", game.screen == 9 and not game.rain._rain_in_view(), str(game.screen))
+	game.player.place(game.tower.spawn)
+	await _physics(90)
+	check("rain on the fire escape", game.screen == 0 and game.rain._rain_in_view())
 	game.queue_free()
 	await _frames(2)
 

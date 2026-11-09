@@ -109,7 +109,7 @@ Only traps use red and yellow hazard colours, so they can't be mistaken for deco
 
 ## Level 4: The Gale
 
-15 screens from The Fire Escape up The Rooftops, with a calm stretch through The Bell Tower. Each windy stretch blows one way, right, left, up or down, for about three seconds at a time with calm in between. Gusts only push your ball in the air. Pale streaks and rain show where the wind is going, and wind socks, bunting and weather vanes follow it.
+15 screens from The Fire Escape up The Rooftops, with a calm stretch through The Bell Tower. Each windy stretch blows one way, right, left, up or down, for about three seconds at a time with calm in between. Gusts only push your ball in the air. Rain falls on the Fire Escape and the Rooftops and bends with each gust (slanting in a crosswind, slowed by an updraft, driven down by a downdraft), pale streaks show where the wind is going, and wind socks, bunting and weather vanes follow it.
 
 ## The tower
 

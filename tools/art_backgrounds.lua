@@ -260,12 +260,7 @@ do
       x = x + w
     end
   end
-  -- Thin slanting rain baked into the sky.
-  for i = 0, 170 do
-    local x = math.floor(A.hash(i, 1, 61) * W)
-    local y = math.floor(A.hash(i, 2, 61) * H)
-    for d = 0, 3 do c:px(x + d, y + d * 3, "3a4c58") end
-  end
+  -- Rain is animated in game (RainLayer), not baked in.
   c:save("bg_storm")
 end
 
