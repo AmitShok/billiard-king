@@ -20,6 +20,10 @@ boot_splash/use_filter=false
 boot_splash/image="res://assets/textures/game_icon.png"
 config/icon="res://assets/textures/game_icon.png"
 
+[audio]
+
+general/default_playback_type.web=0
+
 [autoload]
 
 SaveData="*res://scripts/autoload/save_data.gd"

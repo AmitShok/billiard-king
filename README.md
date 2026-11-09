@@ -144,7 +144,7 @@ Only traps use red and yellow hazard colours, so they can't be mistaken for deco
 
 The game renders at 512×288 and scales by whole numbers (1536×864 window by default). Fullscreen, volumes and screen shake are under **Options**.
 
-**Web build:** export with the **Web** preset (single-threaded, so it runs on itch.io without special headers). Browsers only allow sound after the first click or key press on the page, so the game is silent until then. Opening `index.html` straight from disk doesn't work; serve the folder over HTTP (for example `python -m http.server` in it) or upload it to itch.io.
+**Web build:** export with the **Web** preset (single-threaded, so it runs on itch.io without special headers). Web audio uses Godot's **Stream** playback (`audio/general/default_playback_type.web`), the same mixer as the desktop game. The default Sample mode played nothing in real Chrome, on itch.io or anywhere else. Browsers only allow sound after the first click or key press inside the game, so it is silent until then. For itch.io, export with **Export Project** (release, not debug: debug builds show the test unlock button), zip the folder's contents and upload. Opening `index.html` straight from disk doesn't work; serve the folder over HTTP (for example `python -m http.server` in it) or upload it to itch.io.
 
 ## Saves & settings
 

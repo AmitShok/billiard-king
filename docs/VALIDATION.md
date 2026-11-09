@@ -159,7 +159,7 @@ Level 2's terrain and physics did not change, so its earlier proof stands and wa
 
 **Regression:** gameplay 43, menus 19, props 27, Hardcore and music 47, level 2 64.
 
-**Web export, sound:** a release export of the Web preset served over HTTP in Chromium: after the first click the AudioContext is running, menu blips start AudioBufferSourceNodes, and an analyser on the mix measured a peak of 0.32. The user's own earlier debug export measured 0.26 the same way. Not checked: Safari, Firefox, mobile browsers or itch.io.
+**Web export, sound:** superseded, see "Web audio on itch.io" below. Those checks ran in the app's built-in browser, which plays audio without a click, and measured inside the mix rather than at the speakers, so they missed the real problem.
 
 **Not verified:** the feel of low gravity and wind, the new music and ambience by ear, whether Hardcore can be completed on any level (the solver covers only your ball), and how the props look in motion beyond captures. All of these need playtesting.
 
@@ -186,7 +186,7 @@ The route solver now tries six moments spread across each gust cycle in wind, th
 
 The condition tests (67) cover one-way wind, the lull, updrafts, the white ball in a gale from every direction, the new zones, and that no bar or club decor appears in levels 3 or 4.
 
-**Web export:** sound plays (see above). The export now ships a `default_bus_layout.tres` and leaves out `tests/`, `tools/`, `docs/` and `builds/`. `builds/` is git-ignored.
+**Web export:** The export now ships a `default_bus_layout.tres` and leaves out `tests/`, `tools/`, `docs/` and `builds/`. `builds/` is git-ignored.
 
 ## Camera glide and Training mode: 9 November 2026
 
@@ -207,3 +207,18 @@ The condition tests (67) cover one-way wind, the lull, updrafts, the white ball 
 **Rendered:** `training.png` (two flags, newest lit), `training_wind.png` and `title.png` (six-button menu fits).
 
 **Not verified:** how the glide and the flags feel in real play at full frame rate, gamepad buttons for flags on real hardware, and Training on the web build. These need playtesting.
+
+## Web audio on itch.io: 9 November 2026
+
+**Problem:** the user's itch.io build was silent in Chrome: no music, no ambience, no effects.
+
+**Reproduced** in the user's real Chrome (Claude in Chrome) on the build itch serves. An analyser on everything connected to the speakers (`AudioDestinationNode`) read:
+- before any click: audio `suspended` (Chrome's autoplay block, as expected);
+- after clicking into the game: audio `running`, but **peak 0**, idle and during menu blips;
+- a test tone injected into the same context: 0.05, so the measurement works.
+
+The game used Godot's default web **Sample** playback (`AudioBufferSourceNode`s), and every gain was set to 1 and then to 0 a second later. The built-in browser had hidden this: it plays audio without a click, and earlier checks there tapped nodes inside the mix, not the output.
+
+**Fix:** `audio/general/default_playback_type.web=0` (Stream). Web audio now goes through Godot's own mixer in an AudioWorklet, like desktop.
+
+**Verified** in the user's Chrome on a release export with the fix: no sample sources start, audio is suspended until the first click, and then the output peaks at 0.45 idle on the title (music and ambience) and 0.45 in level 1. **Not checked:** Firefox, Safari, mobile, and the re-uploaded itch.io page itself (it needs the user's upload).
