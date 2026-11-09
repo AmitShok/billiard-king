@@ -18,6 +18,7 @@ const MAX_STEPS := 900
 const MAX_NODES := 4000
 const STATIC_MOMENTS := 3     # moments tried from still ground near moving things
 const RIDING_MOMENTS := 4     # moments tried from a moving platform, across its period
+const WIND_MOMENTS := 6       # moments tried in wind, across one gust and calm
 const DROP_ALLOWED := 48.0    # px below a spot that is still worth exploring from
 const FALL_ABANDON := 300.0   # a shot that has dropped this far below its start is written off
 
@@ -237,10 +238,16 @@ func _moments(node: Dictionary) -> Array:
 		for i in RIDING_MOMENTS:
 			out.append(p.period * i / RIDING_MOMENTS)
 		return out
-	# In wind, wait for the right part of the gust cycle.
+	# In wind, a player watches the rhythm and shoots as a gust starts, in
+	# the thick of it, as the calm starts, or in the middle of the calm.
 	var wind: Variant = world.screen_wind.get(Tower.screen_of(node.pos.y))
 	if wind != null:
-		return [wind.period * 0.1, wind.period * 0.35, wind.period * 0.6, wind.period * 0.85]
+		var cycle: float = wind.on + wind.off
+		var gust_start := fposmod(-wind.phase * cycle, cycle)
+		var out: Array = []
+		for i in WIND_MOMENTS:
+			out.append(gust_start + 0.1 + cycle * i / WIND_MOMENTS)
+		return out
 	if mover_screens.has(Tower.screen_of(node.pos.y)):
 		return [0.0, 1.37, 2.81, 4.19].slice(0, STATIC_MOMENTS)
 	return [0.0]

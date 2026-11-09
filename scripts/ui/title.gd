@@ -105,6 +105,7 @@ func _build_menu() -> void:
 	var buttons: Array = []
 	buttons.append(UIKit.button(_menu, "Normal mode", _open_levels.bind(SaveData.CLASSIC)))
 	buttons.append(UIKit.button(_menu, "Hardcore mode", _open_levels.bind(SaveData.HARDCORE)))
+	buttons.append(UIKit.button(_menu, "Training", _open_levels.bind(SaveData.TRAINING)))
 	buttons.append(UIKit.button(_menu, "Ball Rack", _open.bind(BallRack)))
 	buttons.append(UIKit.button(_menu, "Options", _open.bind(OptionsMenu)))
 	buttons.append(UIKit.button(_menu, "Quit", func(): get_tree().quit()))

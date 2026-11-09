@@ -1,5 +1,6 @@
--- Vertical Billiard: terrain tiles (16x16), five zones.
--- Atlas 256x240. For zone z (0 Back Room, 1 Neon Bar, 2 Royal Club, 3 Moon, 4 Storm):
+-- Vertical Billiard: terrain tiles (16x16), nine zones.
+-- Atlas 256x432. For zone z (0 Back Room, 1 Neon Bar, 2 Royal Club, 3 Moon, 4 Storm,
+-- 5 Observatory, 6 Station, 7 Fire Escape, 8 Bell Tower):
 --   row 3z   : table block, 16 autotile variants (col = exposure mask)
 --   row 3z+1 : rubber cushion block, 16 autotile variants
 --   row 3z+2 : col 0 slope rising right, col 1 slope rising left,
@@ -9,7 +10,7 @@
 local A = dofile(app.params["root"] .. "/tools/art_lib.lua")
 
 local T = 16
-local c = A.canvas(T * 16, T * 15)
+local c = A.canvas(T * 16, T * 27)
 
 local ZONES = {
   { -- Back Room: green felt, walnut rails, plank cabinet
@@ -57,6 +58,42 @@ local ZONES = {
     stud = { "8a9098", "e0e4e8" },
     pattern = "shingle",
   },
+  { -- Observatory: midnight-blue felt, bronze rails, riveted navy plate
+    felt = { "1a1a4a", "26266a", "34348c", "4c4cb0", "8a8ae0" },
+    rail = { "2a1c0c", "4a3418", "6e5420", "a07a2a" },
+    body = { "10142a", "161c36", "1e2644", "283252" },
+    shadow = "080a16",
+    cush = { "1a1240", "281c5c", "3a2a80", "5040a8", "7c6ad0" },
+    stud = { "e0bc5a", "fff0a8" },
+    pattern = "riveted",
+  },
+  { -- Station: teal felt on white hull panels
+    felt = { "0e3a40", "14565e", "1e7a80", "34a0a0", "7cd8d0" },
+    rail = { "3c4a5c", "5c6c80", "8a98ac", "c8d4e0" },
+    body = { "6a7686", "8692a2", "a4aebc", "c4ccd8" },
+    shadow = "232a34",
+    cush = { "203040", "304860", "406484", "5c84a8", "8cb0d0" },
+    stud = { "6af0ff", "ffffff" },
+    pattern = "panels",
+  },
+  { -- Fire escape: moss felt on rusted iron grating
+    felt = { "1c2e18", "2a4224", "3a5a30", "547a44", "8cae6c" },
+    rail = { "1a120e", "2e2018", "4a3424", "6a4c34" },
+    body = { "14100e", "221a16", "322620", "44342a" },
+    shadow = "0a0806",
+    cush = { "2a2028", "403040", "584860", "706080", "988aa8" },
+    stud = { "8a7a6a", "c8b8a0" },
+    pattern = "grate",
+  },
+  { -- Bell tower: plum felt on old timber
+    felt = { "2e1428", "461e3c", "602a52", "804070", "b070a0" },
+    rail = { "1e1408", "3a2610", "5a3c1a", "7a5428" },
+    body = { "1c140c", "2a1e12", "3a2a1a", "4a3624" },
+    shadow = "0c0806",
+    cush = { "1c2a30", "28404a", "385a66", "4c7684", "70a0ae" },
+    stud = { "b07a26", "ffd890" },
+    pattern = "timber",
+  },
 }
 
 local function body_color(z, x, y)
@@ -84,6 +121,26 @@ local function body_color(z, x, y)
     if lx == 7 then return p[1] end
     if y % 5 == 0 then return p[4] end
     return A.hash(lx, course, 37) > 0.5 and p[3] or p[2]
+  elseif pat == "riveted" then
+    -- Navy plate with bronze seams and rivets.
+    if x % 8 == 7 or y % 8 == 7 then return p[1] end
+    if (x % 8 == 1 or x % 8 == 5) and (y % 8 == 1 or y % 8 == 5) then return "a07a2a" end
+    return y % 8 == 0 and p[4] or p[3]
+  elseif pat == "panels" then
+    -- Hull panels: pale squares with dark seams and a corner screw.
+    if x % 16 == 15 or y % 16 == 15 then return p[1] end
+    if x % 16 == 2 and y % 16 == 2 then return p[1] end
+    return (x + y) % 16 < 2 and p[4] or p[3]
+  elseif pat == "grate" then
+    -- Diamond iron grating over darkness.
+    local d = (x + y) % 6 == 0 or (x - y) % 6 == 0
+    if d then return A.hash(x, y, 71) > 0.7 and p[4] or p[3] end
+    return p[1]
+  elseif pat == "timber" then
+    -- Heavy horizontal beams with dark joints and grain.
+    if y % 8 == 7 then return p[1] end
+    if (x + (y // 8) * 7) % 16 == 0 then return p[1] end
+    return A.hash(x // 4, y, 73) > 0.75 and p[4] or p[3]
   elseif pat == "lacquer" then
     -- Deep lacquer with slim vertical inlay lines and a soft sheen band.
     if x % 8 == 3 then return p[3] end
@@ -190,7 +247,7 @@ local function draw_slope(z, ox, oy, rising_right, cushion)
   end
 end
 
-for z = 1, 5 do
+for z = 1, 9 do
   local row = (z - 1) * 3
   for mask = 0, 15 do
     draw_table(z, mask * T, row * T, mask)

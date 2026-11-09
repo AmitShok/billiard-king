@@ -10,6 +10,7 @@ const MAX_SPIN := 3.2
 
 @export var length := 60.0
 @export var crystal := false   # chandeliers tinkle, lamps clink
+@export var bell := false      # tower bells ring
 
 var angle := 0.0
 var spin := 0.0
@@ -32,7 +33,9 @@ func react(ball_pos: Vector2, ball_vel: Vector2) -> void:
 	var reach := clampf((ball_pos - global_position).dot(dir) / length, 0.3, 1.0)
 	spin = clampf(spin + ball_vel.dot(tangent) * reach * 0.9 / length, -MAX_SPIN, MAX_SPIN)
 	var loud := clampf(ball_vel.length() / 500.0, 0.0, 1.0)
-	if crystal:
+	if bell:
+		Sfx.play("chime", lerpf(-12.0, -2.0, loud), 0.55)
+	elif crystal:
 		Sfx.play("tinkle", lerpf(-16.0, -4.0, loud))
 	else:
 		Sfx.play("clack", lerpf(-22.0, -10.0, loud), 0.7)

@@ -8,6 +8,9 @@ signal settings_changed
 const VERSION := 1
 const CLASSIC := "classic"
 const HARDCORE := "hardcore"
+## Practice any level already opened, with checkpoint flags. Never saved,
+## never recorded, never unlocks anything.
+const TRAINING := "training"
 
 var path := "user://vertical_billiard.cfg"
 
@@ -79,6 +82,9 @@ func _setup_input() -> void:
 		"look_up": [KEY_UP],
 		"look_down": [KEY_DOWN],
 		"pause": [KEY_ESCAPE, KEY_P, JOY_BUTTON_START],
+		"flag_place": [KEY_C, JOY_BUTTON_Y],
+		"flag_remove": [KEY_X, JOY_BUTTON_LEFT_SHOULDER],
+		"flag_return": [KEY_R, JOY_BUTTON_X],
 	}
 	for action in binds:
 		if InputMap.has_action(action):
@@ -182,6 +188,8 @@ func load_data() -> void:
 
 
 func _load_run(cfg: ConfigFile) -> void:
+	if mode == TRAINING:
+		cfg = ConfigFile.new()   # training always starts clean
 	var s := run_section()
 	has_run = cfg.get_value(s, "active", false)
 	ball_pos = cfg.get_value(s, "pos", Vector2.ZERO)
@@ -209,6 +217,24 @@ func save() -> void:
 	cfg.set_value("settings", "fullscreen", fullscreen)
 	cfg.set_value("settings", "shake", screen_shake)
 	var s := run_section()
+	if mode == TRAINING:
+		s = ""   # nothing about a training run is kept
+	if s != "":
+		_write_run(cfg, s)
+	cfg.set_value("rack", "collected", collected)
+	cfg.set_value("rack", "skin", skin)
+	cfg.set_value("rack", "wins", wins)
+	cfg.set_value("rack", "best_time", best_time)
+	cfg.set_value("rack", "best_strokes", best_strokes)
+	cfg.set_value("rack", "hc_wins", hc_wins)
+	cfg.set_value("rack", "hc_best_time", hc_best_time)
+	cfg.set_value("rack", "hc_best_strokes", hc_best_strokes)
+	cfg.set_value("rack", "records", records)
+	cfg.set_value("rack", "all_unlocked", all_unlocked)
+	cfg.save(path)
+
+
+func _write_run(cfg: ConfigFile, s: String) -> void:
 	cfg.set_value(s, "active", has_run)
 	cfg.set_value(s, "pos", ball_pos)
 	cfg.set_value(s, "white_pos", white_pos)
@@ -221,17 +247,6 @@ func save() -> void:
 	cfg.set_value(s, "best_screen", best_screen)
 	cfg.set_value(s, "seen_zones", seen_zones)
 	cfg.set_value(s, "broken", broken)
-	cfg.set_value("rack", "collected", collected)
-	cfg.set_value("rack", "skin", skin)
-	cfg.set_value("rack", "wins", wins)
-	cfg.set_value("rack", "best_time", best_time)
-	cfg.set_value("rack", "best_strokes", best_strokes)
-	cfg.set_value("rack", "hc_wins", hc_wins)
-	cfg.set_value("rack", "hc_best_time", hc_best_time)
-	cfg.set_value("rack", "hc_best_strokes", hc_best_strokes)
-	cfg.set_value("rack", "records", records)
-	cfg.set_value("rack", "all_unlocked", all_unlocked)
-	cfg.save(path)
 
 
 func start_new_run() -> void:
@@ -251,6 +266,9 @@ func start_new_run() -> void:
 
 
 func finish_run() -> void:
+	if mode == TRAINING:
+		has_run = false
+		return
 	if level > 1:
 		var r := record(mode, level)
 		r.wins += 1
@@ -311,6 +329,8 @@ func mark_broken(prop_name: String) -> void:
 
 
 func collect_ball(number: int) -> void:
+	if mode == TRAINING:
+		return
 	if not collected.has(number):
 		collected.append(number)
 		collected.sort()

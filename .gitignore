@@ -4,3 +4,6 @@
 
 # Upscaled art previews (regenerate with tools/build_art.ps1 -Preview)
 docs/art_preview/
+
+# Exported builds (web, desktop)
+builds/

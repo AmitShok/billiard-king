@@ -25,7 +25,7 @@ func _ready() -> void:
 	crown.custom_minimum_size = Vector2(0, 20)
 	crown.scale = Vector2(2, 2)
 	box.add_child(crown)
-	UIKit.heading(box, "The table is yours", 16)
+	UIKit.heading(box, stats.get("title", "The table is yours"), 16)
 	UIKit.label(box, "Vertical Billiard", Color("f2d27a"))
 	UIKit.label(box, "")
 	UIKit.label(box, "Time  %s" % SaveData.format_time(stats.get("time", 0.0)))
@@ -33,6 +33,8 @@ func _ready() -> void:
 	var unlocked: Array = stats.get("unlocked", [])
 	if not unlocked.is_empty():
 		UIKit.label(box, "New balls in the rack: %s" % ", ".join(unlocked.map(func(n): return BallRack.display_name(n))), Color("9fe0a8"))
+	if stats.has("note"):
+		UIKit.label(box, stats.note, Color("9ff0b4"))
 	UIKit.label(box, "")
 	var hint := UIKit.label(box, "Press to return", Color("8a8070"))
 	var tw := create_tween()

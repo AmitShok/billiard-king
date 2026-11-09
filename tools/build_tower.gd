@@ -23,16 +23,19 @@ extends SceneTree
 ##   @ spike x0 y0 x1 y1 period phase          spiked ball between two tile centres
 ##   @ lost x y number                         a lost ball numbered above 15 (no map char for those)
 ##   @ gravity scale                           low gravity for this whole screen
-##   @ wind strength period phase [dirs]       gusts in turn from dirs (default RULD), in px/s^2
-## Zones: 0 Back Room, 1 Neon Bar, 2 Royal Club, 3 summit, 4 Moon, 5 Storm, 6 Space.
+##   @ wind dir strength on off phase         one-way gusts (dir R, L, U or D): blows for `on` s,
+##                                             calm for `off` s; strength in px/s^2
+## Zones: 0 Back Room, 1 Neon Bar, 2 Royal Club, 3 summit, 4 Moon, 5 Storm, 6 Space,
+##        7 Observatory, 8 Station, 9 Fire Escape, 10 Bell Tower.
 ## More decor: A asteroid  G satellite  N moon flag  V wind sock  U bunting  Y weather vane
+##   I lantern  h bell  M star chart  X porthole  g flower pot  D telescope  J orrery  Z console  j gear
 
 const TILE := 16
 const W := 32
 const H := 18
 const SCREEN_H := H * TILE
-const ZONE_BG := ["bg_backroom", "bg_neonbar", "bg_royal", "bg_summit", "bg_moon", "bg_storm", "bg_space"]
-const TILE_ZONE := [0, 1, 2, 2, 3, 4, 3]   # tile palette for each zone
+const ZONE_BG := ["bg_backroom", "bg_neonbar", "bg_royal", "bg_summit", "bg_moon", "bg_storm", "bg_space", "bg_observatory", "bg_station", "bg_fire_escape", "bg_bell_tower"]
+const TILE_ZONE := [0, 1, 2, 2, 3, 4, 3, 5, 6, 7, 8]   # tile palette for each zone
 
 var tex := {}
 var _bad := false
@@ -41,10 +44,10 @@ var _winds := {}
 
 
 func _initialize() -> void:
-	var ok := _bake("res://levels/tower.txt", "res://scenes/world/tower.tscn", ["The Back Room", "Lucky's Neon Bar", "The Royal Club", "The King's Table", "", "", ""])
-	ok = _bake("res://levels/tower2.txt", "res://scenes/world/tower2.tscn", ["The Cellar", "The Jukebox Floor", "The Grand Salon", "The Rooftop Final", "", "", ""]) and ok
-	ok = _bake("res://levels/tower3.txt", "res://scenes/world/tower3.tscn", ["", "The Launch Bar", "The Planetarium", "", "The Sea of Felt", "", "Open Space"]) and ok
-	ok = _bake("res://levels/tower4.txt", "res://scenes/world/tower4.tscn", ["The Attic", "The Back Alley", "", "", "", "The Rooftops", ""]) and ok
+	var ok := _bake("res://levels/tower.txt", "res://scenes/world/tower.tscn", ["The Back Room", "Lucky's Neon Bar", "The Royal Club", "The King's Table", "", "", "", "", "", "", ""])
+	ok = _bake("res://levels/tower2.txt", "res://scenes/world/tower2.tscn", ["The Cellar", "The Jukebox Floor", "The Grand Salon", "The Rooftop Final", "", "", "", "", "", "", ""]) and ok
+	ok = _bake("res://levels/tower3.txt", "res://scenes/world/tower3.tscn", ["", "", "", "", "The Sea of Felt", "", "Open Space", "The Observatory", "The Launch Deck", "", ""]) and ok
+	ok = _bake("res://levels/tower4.txt", "res://scenes/world/tower4.tscn", ["", "", "", "", "", "The Rooftops", "", "", "", "The Fire Escape", "The Bell Tower"]) and ok
 	quit(0 if ok else 1)
 
 
@@ -211,6 +214,45 @@ func _bake(source: String, target: String, zone_names: PackedStringArray) -> boo
 				var ng := _glow(neon, Vector2.ZERO, Color(1.0, 0.4, 0.75, 0.7) if ch == "P" else Color(0.4, 0.95, 1.0, 0.7), 1.6)
 				ng.name = "Glow"
 				ng.z_index = 1
+			"I", "h":
+				# Lantern or bell: hangs from the ceiling and swings, like the lamps.
+				var top2 := _ceiling_y(grid, cell)
+				var hang := _center(cell)
+				var length2 := hang.y - top2
+				var swing2 := _prop(decor, "swing", ch, cell, Vector2(hang.x, top2))
+				swing2.set("length", length2)
+				swing2.set("crystal", false)
+				swing2.set("bell", ch == "h")
+				var rope := Sprite2D.new()
+				rope.name = "Chain"
+				rope.texture = _tex("chain")
+				rope.region_enabled = true
+				rope.texture_repeat = CanvasItem.TEXTURE_REPEAT_ENABLED
+				rope.region_rect = Rect2(0, 0, 4, maxf(length2 - 10.0, 2.0))
+				rope.centered = false
+				rope.position = Vector2(-2, 0)
+				_add(swing2, rope)
+				_sprite(swing2, "lantern" if ch == "I" else "bell", Vector2(0, length2)).name = "Body"
+				if ch == "I":
+					var lg := _glow(swing2, Vector2(0, length2 + 2), Color(1.0, 0.8, 0.45, 0.7), 1.3)
+					lg.name = "Light"
+					lg.z_index = 1
+			"M", "X":
+				var plaque := _prop(decor, "tilt", ch, cell, _center(cell) - Vector2(0, 14))
+				plaque.set("hit_size", Vector2(28, 30))
+				plaque.set("hit_offset", Vector2(0, 14))
+				plaque.set("crooked", ch == "M")
+				_sprite(plaque, "star_chart" if ch == "M" else "porthole", Vector2(0, 14)).name = "Body"
+			"g":
+				var pot := _prop(decor, "knock", ch, cell, _center(cell) + Vector2(0, 2))
+				pot.set("half_size", Vector2(4, 6))
+				pot.set("hit_size", Vector2(10, 12))
+				pot.set("heavy", false)
+				pot.set("min_speed", 40.0)
+				_sprite(pot, "flower_pot", Vector2.ZERO).name = "Body"
+			"D", "J", "Z", "j":
+				var gadget := _prop(decor, "gadget", ch, cell, _center(cell))
+				gadget.set("style", {"D": 0, "J": 1, "Z": 2, "j": 3}[ch])
 			"V", "U", "Y":
 				var wp := _prop(decor, "wind", ch, cell, _center(cell))
 				wp.set("style", {"V": 0, "U": 1, "Y": 2}[ch])
@@ -387,7 +429,7 @@ func _make_tileset() -> TileSet:
 	var src := TileSetAtlasSource.new()
 	src.texture = _tex("tiles")
 	src.texture_region_size = Vector2i(TILE, TILE)
-	for y in 15:
+	for y in 27:
 		for x in 16:
 			if y % 3 == 2 and x >= 4:
 				continue
@@ -406,6 +448,7 @@ const PROP_SCRIPTS := {
 	"knock": "res://scripts/world/props/knock_prop.gd",
 	"wind": "res://scripts/world/props/wind_props.gd",
 	"space": "res://scripts/world/props/space_props.gd",
+	"gadget": "res://scripts/world/props/gadget_prop.gd",
 }
 
 
@@ -429,7 +472,7 @@ func _add_movers(parent: Node, objects: Node, s: Dictionary) -> void:
 			_gravity[s.index] = float(m[2])
 			continue
 		if kind == "wind":
-			_winds[s.index] = { "strength": float(m[2]), "period": float(m[3]), "phase": float(m[4]), "dirs": m[5] if m.size() > 5 else "RULD" }
+			_winds[s.index] = { "dir": m[2], "strength": float(m[3]), "on": float(m[4]), "off": float(m[5]), "phase": float(m[6]) }
 			continue
 		if kind == "lost":
 			var lb := Node2D.new()

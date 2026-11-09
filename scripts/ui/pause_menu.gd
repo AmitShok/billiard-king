@@ -37,7 +37,7 @@ func _ready() -> void:
 			restart.text = "Press again to restart")
 	restart.focus_exited.connect(func(): restart.text = "Restart climb")
 	buttons.append(restart)
-	buttons.append(UIKit.button(_box, "Save and quit", func(): game.quit_to_title()))
+	buttons.append(UIKit.button(_box, "Quit" if game.training() else "Save and quit", func(): game.quit_to_title()))
 	UIKit.chain_focus(buttons)
 
 
@@ -45,7 +45,10 @@ func open() -> void:
 	if visible:
 		return
 	game.save_progress()
-	_stats.text = ("Level %d\n" % SaveData.level) + "Time  %s\nStrokes  %d\nFalls  %d\nLost balls  %d / %d" % [
+	if game.training():
+		_stats.text = "Training, level %d\nTime  %s\nStrokes  %d\nFalls  %d\nFlags  %d" % [SaveData.level, SaveData.format_time(SaveData.run_time), SaveData.strokes, SaveData.falls, game.flags.size()]
+	else:
+		_stats.text = ("Level %d\n" % SaveData.level) + "Time  %s\nStrokes  %d\nFalls  %d\nLost balls  %d / %d" % [
 		SaveData.format_time(SaveData.run_time), SaveData.strokes, SaveData.falls,
 		game.tower.lost_numbers().filter(func(n): return SaveData.collected.has(n)).size(), game.tower.lost_numbers().size()]
 	visible = true

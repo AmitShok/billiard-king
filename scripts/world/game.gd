@@ -1,17 +1,19 @@
 extends Node2D
-## The climb. Fixed one-screen camera that cuts as the ball crosses screen
-## edges (Jump King), area title cards, stats, saving where the ball rests,
-## and the ending at the gold pocket.
+## The climb. One-screen camera that glides to the next screen as the ball
+## crosses an edge, area title cards, stats, saving where the ball rests, the
+## ending at the gold pocket, and Training mode's checkpoint flags.
 
 const TOWERS := { 1: "res://scenes/world/tower.tscn", 2: "res://scenes/world/tower2.tscn", 3: "res://scenes/world/tower3.tscn", 4: "res://scenes/world/tower4.tscn" }
 const LEVEL_WARNINGS := {
 	2: "\nRed traps fling you. Brass carriages carry you.",
 	3: "\nOut on the moon, gravity is low. Shots float far.",
-	4: "\nOn the rooftops, wind pushes you while you fly.\nIt turns in four directions. Wait for the lulls.",
+	4: "\nGusts push you while you fly, one way per stretch.\nWatch the rain and aim into it, or wait for the calm.",
 }
 const PAUSE_MENU := preload("res://scripts/ui/pause_menu.gd")
 const ENDING := preload("res://scripts/ui/ending.gd")
 const FONT_SIZE_TITLE := 16
+const CAMERA_GLIDE := 0.32      # s to glide one screen; longer jumps take a little longer
+const FLAG_DUPLICATE := 12.0    # px: closer than this to a flag counts as the same spot
 
 ## Bonus skins for finished climbs (balls 1-10 are hidden in the tower).
 const AWARDS := [
@@ -49,15 +51,22 @@ var _props_by_screen := {}   # screen index -> Array of Prop
 var _hint: RichTextLabel
 var _hint_wait := 0.0
 var _using_pad := false
+var camera_target := Vector2.ZERO
+var _cam_tween: Tween
+var flags: Array[CheckpointFlag] = []   # Training: oldest first, the last is where R sends you
+var _training_hud: RichTextLabel
 
 const HINT_KEYS := "[center][color=#f2d27a]A D[/color] aim   [color=#f2d27a]W S[/color] spin   [color=#f2d27a]UP DOWN[/color] look   hold [color=#f2d27a]SPACE[/color] to strike   [color=#f2d27a]ESC[/color] pause[/center]"
 const HINT_PAD := "[center][color=#f2d27a]D-PAD[/color] aim and spin   [color=#f2d27a]R-STICK[/color] look   hold [color=#f2d27a]A[/color] to strike   [color=#f2d27a]START[/color] pause[/center]"
+const TRAINING_KEYS := "[color=#9ff0b4]TRAINING[/color]   [color=#f2d27a]C[/color] plant flag   [color=#f2d27a]R[/color] back to flag   [color=#f2d27a]X[/color] remove flag"
+const TRAINING_PAD := "[color=#9ff0b4]TRAINING[/color]   [color=#f2d27a]Y[/color] plant flag   [color=#f2d27a]X[/color] back to flag   [color=#f2d27a]LB[/color] remove flag"
 
 
 func _ready() -> void:
 	tower = load(TOWERS.get(SaveData.level, TOWERS[1])).instantiate()
 	add_child(tower)
-	tower.build_world(SaveData.collected)
+	# Training has no lost balls: practice only.
+	tower.build_world(range(1, BallRack.TOTAL + 1) if training() else SaveData.collected)
 	tower.resume_movers(SaveData.world_time)
 	_setup_props()
 
@@ -93,7 +102,9 @@ func _ready() -> void:
 	# A fresh climb (nothing struck yet) states the goal first.
 	if show_intro and SaveData.strokes == 0 and SaveData.run_time < 1.0:
 		var warning: String = LEVEL_WARNINGS.get(SaveData.level, "")
-		if hardcore():
+		if training():
+			intro = GoalIntro.new().setup("Training", "Practise any stretch. Rest on the felt and\nplant a flag, then go back to it after a fall.\nNothing here counts or unlocks." + warning, SaveData.skin)
+		elif hardcore():
 			intro = GoalIntro.new().setup("Hardcore", "Push the white ball up the tower\ninto the gold pocket at the top." + warning, 16)
 		else:
 			intro = GoalIntro.new().setup("The climb", "Reach the gold pocket\nat the top of the tower." + warning, SaveData.skin)
@@ -148,6 +159,21 @@ func _build_hud() -> void:
 	_hint.text = HINT_KEYS
 	_hint.modulate.a = 0.0
 	hud.add_child(_hint)
+	if training():
+		_training_hud = RichTextLabel.new()
+		_training_hud.theme = UIKit.theme()
+		_training_hud.bbcode_enabled = true
+		_training_hud.scroll_active = false
+		_training_hud.autowrap_mode = TextServer.AUTOWRAP_OFF
+		_training_hud.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_training_hud.position = Vector2(4, 2)
+		_training_hud.size = Vector2(504, 10)
+		_training_hud.add_theme_color_override("default_color", Color("d8d0bc"))
+		_training_hud.add_theme_color_override("font_shadow_color", Color("0a0604"))
+		_training_hud.add_theme_constant_override("shadow_offset_x", 1)
+		_training_hud.add_theme_constant_override("shadow_offset_y", 1)
+		hud.add_child(_training_hud)
+		_update_training_hud()
 	pause_menu = PAUSE_MENU.new()
 	pause_menu.game = self
 	hud.add_child(pause_menu)
@@ -186,6 +212,16 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("pause") and not finished and not is_instance_valid(intro):
 		pause_menu.open()
 		get_viewport().set_input_as_handled()
+	if training() and not finished and not is_instance_valid(intro) and not get_tree().paused:
+		if event.is_action_pressed("flag_place"):
+			plant_flag()
+			get_viewport().set_input_as_handled()
+		elif event.is_action_pressed("flag_return"):
+			return_to_flag()
+			get_viewport().set_input_as_handled()
+		elif event.is_action_pressed("flag_remove"):
+			remove_flag()
+			get_viewport().set_input_as_handled()
 
 
 func _update_screen(force: bool) -> void:
@@ -193,10 +229,9 @@ func _update_screen(force: bool) -> void:
 	if k == screen and not force:
 		return
 	var old_zone := tower.zone_of_screen(screen) if screen >= 0 else -1
+	var from_screen := screen
 	screen = k
-	camera.position = Tower.screen_center(clampi(k, 0, tower.screen_count() - 1))
-	camera.reset_physics_interpolation()
-	camera.force_update_scroll()
+	_move_camera(clampi(k, 0, tower.screen_count() - 1), force or from_screen < 0)
 	var zone := tower.zone_of_screen(k)
 	Sfx.set_ambience(zone)
 	Sfx.set_music_zone(zone)
@@ -205,6 +240,30 @@ func _update_screen(force: bool) -> void:
 	if zone != old_zone and not SaveData.seen_zones.has(zone):
 		SaveData.seen_zones.append(zone)
 		show_area_title(tower.zone_names[zone])
+
+
+## Glides to a screen instead of cutting, so the ball is easy to follow
+## across the edge. A load or restart (force) snaps straight there.
+func _move_camera(k: int, snap: bool) -> void:
+	camera_target = Tower.screen_center(k)
+	if _cam_tween:
+		_cam_tween.kill()
+		_cam_tween = null
+	if snap:
+		camera.position = camera_target
+		camera.reset_physics_interpolation()
+		camera.force_update_scroll()
+		return
+	var screens := absf(camera.position.y - camera_target.y) / 288.0
+	var time := clampf(CAMERA_GLIDE + (screens - 1.0) * 0.08, CAMERA_GLIDE * 0.6, 0.6)
+	_cam_tween = create_tween()
+	_cam_tween.set_process_mode(Tween.TWEEN_PROCESS_PHYSICS)
+	_cam_tween.tween_property(camera, "position", camera_target, time).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+
+
+## True while the camera is between screens.
+func camera_moving() -> bool:
+	return _cam_tween != null and _cam_tween.is_running()
 
 
 func show_area_title(text: String) -> void:
@@ -275,7 +334,9 @@ func _on_won() -> void:
 	player.input_enabled = false
 	Sfx.stop_roll()
 	var unlocked: Array[int] = []
-	if hardcore():
+	if training():
+		pass
+	elif hardcore():
 		# Hardcore's prize is the white ball itself, for the Ball Rack.
 		if not SaveData.collected.has(16):
 			SaveData.collected.append(16)
@@ -289,12 +350,15 @@ func _on_won() -> void:
 		if not SaveData.collected.has(n):
 			all_found = false
 	var checks := [true, SaveData.strokes < 400, SaveData.run_time < 1800.0, SaveData.falls <= 10, all_found]
-	for i in (0 if hardcore() or SaveData.level > 1 else AWARDS.size()):
+	for i in (0 if hardcore() or training() or SaveData.level > 1 else AWARDS.size()):
 		var n: int = AWARDS[i][0]
 		if checks[i] and not SaveData.collected.has(n):
 			SaveData.collected.append(n)
 			unlocked.append(n)
 	var stats := { "time": SaveData.run_time, "strokes": SaveData.strokes, "falls": SaveData.falls, "unlocked": unlocked }
+	if training():
+		stats.title = "Training run complete"
+		stats.note = "Practice only: no records, balls or unlocks"
 	SaveData.finish_run()
 	Sfx.set_music_zone(-1)
 	Sfx.set_gust(0.0)
@@ -321,7 +385,9 @@ func on_bottom_floor() -> bool:
 
 
 func _update_hint(delta: float) -> void:
-	var show := on_bottom_floor() and not finished
+	# Training also shows the controls whenever the ball rests, not just on
+	# the bottom floor; its own keys stay on the top line all the time.
+	var show := (on_bottom_floor() or (training() and player.sim.resting)) and not finished
 	if show:
 		_hint_wait += delta
 	else:
@@ -339,6 +405,7 @@ func _input(event: InputEvent) -> void:
 	if pad != _using_pad:
 		_using_pad = pad
 		_hint.text = HINT_PAD if pad else HINT_KEYS
+		_update_training_hud()
 
 
 # --- Reactive decor -----------------------------------------------------------------
@@ -410,6 +477,11 @@ func _on_wall_hit(impact: float) -> void:
 
 func hardcore() -> bool:
 	return SaveData.mode == SaveData.HARDCORE
+
+
+func training() -> bool:
+	return SaveData.mode == SaveData.TRAINING
+
 
 
 func _setup_white() -> void:
@@ -507,3 +579,84 @@ func _on_trapped(e: Dictionary) -> void:
 func _flash_trap(id: int) -> void:
 	if id < tower.trap_nodes.size():
 		tower.trap_nodes[id].hit()
+
+
+# --- Training: checkpoint flags ---------------------------------------------------------
+# Like Geometry Dash's practice mode: plant a flag (C), go back to the newest
+# one (R), and pull it up (X) to fall back on the one before. Flags are decor:
+# they never touch the physics, and nothing about them is saved.
+
+## Can a flag go where the ball is now? Only on still felt, not on a carriage.
+func can_plant() -> bool:
+	return player.sim.resting and player.sim.grounded and player.sim.riding < 0 and not player.sim.in_pocket
+
+
+func plant_flag() -> bool:
+	if not can_plant():
+		toast("Come to rest on the felt to plant a flag")
+		Sfx.play("aim_tick", -8.0, 0.6)
+		return false
+	var at := player.sim.pos
+	for f in flags:
+		if f.spot.distance_to(at) < FLAG_DUPLICATE:
+			# Already flagged: make it the one R goes back to.
+			flags.erase(f)
+			flags.append(f)
+			_refresh_flags()
+			f.welcome()
+			toast("Back to this flag next")
+			return false
+	var flag: CheckpointFlag = CheckpointFlag.new().setup(at)
+	flag.world = tower.world
+	flag.z_index = 4
+	tower.get_node("Decor").add_child(flag)
+	flags.append(flag)
+	var k := Tower.screen_of(flag.global_position.y)
+	if not _props_by_screen.has(k):
+		_props_by_screen[k] = []
+	_props_by_screen[k].append(flag)
+	_refresh_flags()
+	Sfx.play("chime", -6.0, 1.3)
+	Sfx.play("cushion", -10.0, 0.8)
+	return true
+
+
+func remove_flag() -> bool:
+	if flags.is_empty():
+		toast("No flags to remove")
+		Sfx.play("aim_tick", -8.0, 0.6)
+		return false
+	var flag: CheckpointFlag = flags.pop_back()
+	for k in _props_by_screen:
+		_props_by_screen[k].erase(flag)
+	flag.remove()
+	_refresh_flags()
+	Sfx.play("ui_back", -6.0, 1.1)
+	toast("Flag removed" if not flags.is_empty() else "Flag removed - R now goes back to the start")
+	return true
+
+
+## Sends the ball back to the newest flag, or to the start if there are none.
+func return_to_flag() -> void:
+	var to := tower.spawn
+	if not flags.is_empty():
+		to = flags[-1].spot
+		flags[-1].welcome()
+	player.place(to)
+	_update_screen(false)
+	Sfx.stop_roll()
+	Sfx.play("lost_ball", -6.0, 1.2)
+	_add_shake(0.5)
+
+
+func _refresh_flags() -> void:
+	for i in flags.size():
+		flags[i].active = i == flags.size() - 1
+	_update_training_hud()
+
+
+func _update_training_hud() -> void:
+	if _training_hud == null:
+		return
+	var keys := TRAINING_PAD if _using_pad else TRAINING_KEYS
+	_training_hud.text = keys + "   flags [color=#9ff0b4]%d[/color]" % flags.size()

@@ -11,7 +11,7 @@ const ZONE_NAMES := ["The Back Room", "Lucky's Neon Bar", "The Royal Club", "The
 @export var screen_zones: PackedInt32Array
 @export var spawn := Vector2.ZERO
 @export var zone_names: PackedStringArray = ZONE_NAMES
-## Low gravity and wind sections: screen -> multiplier, screen -> {strength, period, phase, dirs}.
+## Low gravity and wind sections: screen -> multiplier, screen -> {dir, strength, on, off, phase}.
 @export var screen_gravity: Dictionary = {}
 @export var screen_winds: Dictionary = {}
 
@@ -60,10 +60,7 @@ func build_world(collected: Array = []) -> CollisionWorld:
 	var wind_dirs := { "R": Vector2.RIGHT, "U": Vector2.UP, "L": Vector2.LEFT, "D": Vector2.DOWN }
 	for k in screen_winds:
 		var w: Dictionary = screen_winds[k]
-		var dirs := PackedVector2Array()
-		for ch in String(w.dirs):
-			dirs.append(wind_dirs[ch])
-		world.screen_wind[k] = { "strength": w.strength, "period": w.period, "phase": w.phase, "dirs": dirs }
+		world.screen_wind[k] = { "dir": wind_dirs[w.dir], "strength": w.strength, "on": w.on, "off": w.off, "phase": w.phase }
 	return world
 
 

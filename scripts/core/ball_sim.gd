@@ -24,7 +24,7 @@ const AIM_LIMIT_DEG := 80
 const SPIN_LEVELS := 2              # -2 draw .. +2 follow
 const SPIN_SPEED := 75.0            # px/s added along the shot per spin level on first landing
 
-const ROLL_DECEL := [420.0, 380.0, 150.0, 340.0, 380.0]  # felt drag per tile zone (Royal Club felt is fast)
+const ROLL_DECEL := [420.0, 380.0, 150.0, 340.0, 380.0, 360.0, 300.0, 400.0, 420.0]  # felt drag per tile zone (Royal Club felt is fast)
 const CHARGE_BRAKE := 1400.0
 const REST_SPEED := 5.0
 const SHOOTABLE_NORMAL_Y := -0.86   # flatter than ~30 degrees
@@ -140,8 +140,9 @@ func step(world: CollisionWorld, dt: float = DT) -> void:
 	if riding >= 0:
 		ride_vel = world.platforms[riding].vel
 		pos += ride_vel * dt
-	# Wind only catches a ball in the air, like Jump King.
-	if floating or not grounded:
+	# Wind only catches your ball in the air, like Jump King. The white ball
+	# in Hardcore is never blown.
+	if not floating and not grounded:
 		vel += world.wind_at(pos.y) * dt
 	if floating:
 		vel = vel.move_toward(Vector2.ZERO, FLOAT_DRAG * dt)
@@ -150,7 +151,7 @@ func step(world: CollisionWorld, dt: float = DT) -> void:
 		var t := Vector2(-ground_normal.y, ground_normal.x)
 		var vt := vel.dot(t)
 		var vn := vel.dot(ground_normal)
-		vt = move_toward(vt, 0.0, ROLL_DECEL[clampi(ground_zone, 0, 4)] * dt)
+		vt = move_toward(vt, 0.0, ROLL_DECEL[clampi(ground_zone, 0, 8)] * dt)
 		vel = t * vt + ground_normal * vn
 	if not resting and not floating:
 		var g := world.gravity_scale_at(pos.y)

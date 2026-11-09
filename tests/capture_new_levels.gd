@@ -7,7 +7,7 @@ func _ready() -> void:
 	for level in [3, 4]:
 		SaveData.set_run(SaveData.CLASSIC, level)
 		SaveData.start_new_run()
-		SaveData.seen_zones.assign([0, 1, 2, 3, 4, 5, 6])
+		SaveData.seen_zones.assign(range(11))
 		var game: Node2D = load("res://scenes/world/game.tscn").instantiate()
 		game.show_intro = false
 		add_child(game)

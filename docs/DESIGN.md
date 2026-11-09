@@ -2,7 +2,7 @@
 
 You are the cue ball, and you have to climb a pool hall tower. The design takes from three games:
 
-- **Jump King**: you charge a shot and release it. There is no air control and no checkpoints. The camera is fixed to one screen at a time and cuts when the ball crosses an edge. A missed shot can drop you several screens. Falls and time are counted. Your position is saved where the ball rests.
+- **Jump King**: you charge a shot and release it. There is no air control and no checkpoints. The camera shows one screen at a time; where Jump King cuts, this camera glides to the next screen in about a third of a second so the ball is never lost (see Camera). A missed shot can drop you several screens. Falls and time are counted. Your position is saved where the ball rests.
 - **Fallosophy**: pinball-style vertical climbing. Brass-collared bumper balls kick you away, rubber cushions stay lively, and pockets swallow the ball and drop it far below through the ball return.
 - **Ballgame**: you *are* the ball, and you shape your bounces and rolls with english. Strokes are counted like golf. Lost balls are hidden around the course and unlock as skins in the Ball Rack.
 
@@ -15,8 +15,9 @@ You are the cue ball, and you have to climb a pool hall tower. The design takes 
 | Look up / down | Up / Down arrows (hold) | Right stick |
 | Charge, release to strike | Space, Z or J (hold) | A |
 | Pause | Esc or P | Start |
+| Training: plant flag / back to flag / remove flag | C / R / X | Y / X / LB |
 
-Holding Look pans the camera up to 56 px toward the next or previous screen, easing in at 160 px/s and back at 260 px/s. It never peeks below the bottom floor or above the summit. Looking is view only: the screen cut, the ball and its physics are untouched. You can aim and set spin at any time. You can only strike while the ball sits on felt that is flatter than about 30°, so on slopes you slide just like in Jump King. If you are holding the charge button when the ball lands, the charge starts on touchdown. A full charge fires by itself.
+Holding Look pans the camera up to 56 px toward the next or previous screen, easing in at 160 px/s and back at 260 px/s. It never peeks below the bottom floor or above the summit. Looking is view only: the screen change, the ball and its physics are untouched. You can aim and set spin at any time. You can only strike while the ball sits on felt that is flatter than about 30°, so on slopes you slide just like in Jump King. If you are holding the charge button when the ball lands, the charge starts on touchdown. A full charge fires by itself.
 
 ## Tuning
 
@@ -129,7 +130,7 @@ The clock only ticks with the physics, so pausing freezes everything, and it is 
 
 ## Route solver with moving things
 
-Moving things are deterministic, so the solver replays them exactly. A spot on a carriage counts as one spot wherever the carriage is. Near moving things, each spot's shot sweep is repeated at several moments (a player can wait for the right one), and a move's score is its working shots at the best moment. To keep this tractable it writes off shots that fall over 300 px and doesn't explore from spots more than 48 px below the current one; that can only hide routes, never invent one. `--from-screen` and `--to-screen` check a stretch while tuning.
+Moving things are deterministic, so the solver replays them exactly. A spot on a carriage counts as one spot wherever the carriage is. Near moving things, each spot's shot sweep is repeated at several moments (a player can wait for the right one), and a move's score is its working shots at the best moment. In wind it tries six moments spread over one gust and calm, starting as the gust begins, the way a player watches the rhythm before shooting. To keep this tractable it writes off shots that fall over 300 px and doesn't explore from spots more than 48 px below the current one; that can only hide routes, never invent one. `--from-screen` and `--to-screen` check a stretch while tuning.
 
 ## Lost balls and the rainbow ball
 
@@ -143,7 +144,9 @@ Winning The Long Rack on Hardcore earns **the rainbow ball** (skin 27). Its skin
 
 ## Wind
 
-`@ wind strength period phase [dirs]` gives a screen gusts that take turns through `dirs` (default right, up, left, down). Each gust swells and dies as a half-sine, so there is a true lull between them, as a pure function of the world clock like everything else that moves. It accelerates a ball only while it is in the air, as in Jump King. The white ball is pushed too, but felt drag (260 px/s²) holds it still against anything lighter. Strengths run 120 to 300 px/s² against gravity's 900.
+`@ wind dir strength on off phase` gives a screen gusts that always blow the same way (`R`, `L`, `U` or `D`), as in Jump King, where each windy stretch has its own direction. The gust blows for `on` seconds, swells in and out over 0.35 s, then drops to dead calm for `off` seconds. It is a pure function of the world clock like everything else that moves, so the player can watch the rhythm and time a shot into the gust or into the calm. It accelerates your ball only while it is in the air. Hardcore's white ball never feels it. Strengths run 200 to 320 px/s² against gravity's 900, enough that a full shot lands well off where it would in still air.
+
+The Gale changes direction stretch by stretch: a tailwind right then a headwind left on the fire escape, an updraft that carries jumps higher on the first rooftops, a downdraft that cuts them short, and so on, with all four directions used. The Bell Tower in the middle is calm.
 
 The wind is visible: pale streaks race along it, and `feel_wind` tells every prop on screen. Socks stream out, bunting ripples, vanes turn, hanging lamps sway, and a gust sound follows its strength.
 
@@ -154,5 +157,32 @@ The wind is visible: pale streaks race along it, and `feel_wind` tells every pro
 | 4 Moon | `bg_moon`: stars, a green-felt world, cratered ground | Silver felt, titanium rails, pitted rock | Felt of Tranquility |
 | 5 Storm | `bg_storm`: cloud bands, rain, rooftops and water towers | Teal felt, weathered rails, slate shingles | Rooftop Gale |
 | 6 Space | `bg_space`: nebula, stars, a ringed nine-ball planet | Same as the moon | Felt of Tranquility |
+| 7 Observatory | `bg_observatory`: a dome with gold ribs, a slit open to the stars, constellations | Midnight-blue felt, bronze rails, riveted navy plate | Felt of Tranquility |
+| 8 Station | `bg_station`: steel hull panels, portholes onto stars and a green planet | Teal felt on white hull panels | Felt of Tranquility |
+| 9 Fire Escape | `bg_fire_escape`: a brick block at night, lit windows, iron stairs, rain | Moss felt on rusted iron grating | Rooftop Gale |
+| 10 Bell Tower | `bg_bell_tower`: timber frame, louvred openings, a great bell | Plum felt on old timber | Rooftop Gale |
 
-New responsive decor: **A** asteroid, **G** satellite, **N** moon flag (`SpaceProp`); **V** wind sock, **U** bunting, **Y** weather vane (`WindProp`).
+Levels 3 and 4 don't reuse any of levels 1 and 2's rooms or decor: The Moon Shot starts in the Observatory and refuels on the Launch Deck (Station), The Gale starts on the Fire Escape and rests in the Bell Tower.
+
+New responsive decor: **A** asteroid, **G** satellite, **N** moon flag (`SpaceProp`); **V** wind sock, **U** bunting, **Y** weather vane (`WindProp`); **I** lantern and **h** bell (`SwingProp`, the bell rings when hit); **M** star chart and **X** porthole (`TiltProp`); **g** flower pot (`KnockProp`); **D** telescope that scans the sky, **J** orrery with orbiting planets, **Z** console with blinking lights, **j** turning gear (`GadgetProp`).
+
+## Camera
+
+Each screen is still a fixed frame, but crossing an edge glides the camera there instead of cutting. The glide takes 0.32 s with a cubic ease-out: it starts fast so the new screen is in view almost at once, then settles exactly on the frame. A fall across several screens takes a little longer, up to 0.6 s. Loading a run or restarting snaps straight to the right screen. The glide runs on physics ticks with physics interpolation, so it stays smooth at any frame rate. Look (peek) and screen shake are camera offsets on top of it and are unchanged.
+
+## Training mode
+
+A practice mode modelled on Geometry Dash's. There you press Z to place a checkpoint and X to remove the last one, a crash respawns you at the newest checkpoint, collectibles are only decoration, and practice progress never counts. Vertical Billiard has no deaths, only falls, so returning is a key instead of automatic:
+
+| Key | Pad | Does |
+| --- | --- | --- |
+| C | Y | Plants a flag where the ball rests. Not mid-air, not on a carriage. Planting on an existing flag (within 12 px) makes it the newest again. |
+| R | X | Puts the ball back on the newest flag, or the start if there are none. The camera glides there. |
+| X | LB | Pulls up the newest flag, so R falls back to the one before. |
+
+Z is already a strike key here, so C is the plant key.
+
+- **Opening it:** the title's **Training** button opens the level list, which shows only levels already opened in Normal or Hardcore. Each has a single **Practise** button that always starts fresh.
+- **Nothing counts:** the `training` mode never writes a run section to the save. Winning shows a "Training run complete" card with the run's numbers but changes no records, balls or unlocks. There are no lost balls: every one is hidden and left out of the physics.
+- **The flag** (`CheckpointFlag`, a `Prop`) is a brass pole with a cue-ball finial and a felt swallowtail pennant (`tools/art_checkpoint.lua`). The pennant is drawn one pixel column at a time, each shifted by a travelling sine wave that grows toward the fly end. Wind speeds the wave up and flattens the sag, flips the pennant downwind, and lifts it in an updraft. A ball rolling past or a heavy landing makes it flutter. It pops up with green sparks when planted, folds down when removed, and waves when you return to it. Only the newest flag is lit green and pulsing; older ones fade but stay standing to mark your route. Like all props it never touches the physics.
+- **Hints:** the training keys stay on the top line of the screen with the flag count. The normal controls line shows whenever the ball rests anywhere, not only on the bottom floor.

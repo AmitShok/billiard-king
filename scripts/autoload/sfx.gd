@@ -5,8 +5,8 @@ extends Node
 ## music by tools/build_music.gd.
 
 const DIR := "res://assets/audio/"
-const AMBIENCE := ["amb_backroom", "amb_neonbar", "amb_royal", "amb_summit", "amb_moon", "amb_storm", "amb_moon"]
-const MUSIC := ["music/music_backroom", "music/music_neonbar", "music/music_royal", "music/music_summit", "music/music_moon", "music/music_storm", "music/music_moon"]
+const AMBIENCE := ["amb_backroom", "amb_neonbar", "amb_royal", "amb_summit", "amb_moon", "amb_storm", "amb_moon", "amb_moon", "amb_moon", "amb_storm", "amb_storm"]
+const MUSIC := ["music/music_backroom", "music/music_neonbar", "music/music_royal", "music/music_summit", "music/music_moon", "music/music_storm", "music/music_moon", "music/music_moon", "music/music_moon", "music/music_storm", "music/music_storm"]
 const MUSIC_FADE := 2.0
 const VOICES := 14
 

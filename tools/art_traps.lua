@@ -10,16 +10,20 @@ local OUT = "11090c"
 
 -- Moving platform tiles.
 do
-  local c = A.canvas(48, 80)
+  local c = A.canvas(48, 144)
   local felts = {
     { "74c07a", "4a9c5e", "2f7c4c" },
     { "d4607a", "a83a52", "822840" },
     { "72aaf8", "3c80e0", "2660b8" },
     { "d8deea", "9aa2b6", "737a90" },
     { "7cc0b4", "45908c", "2c6a6e" },
+    { "8a8ae0", "4c4cb0", "34348c" },
+    { "7cd8d0", "34a0a0", "1e7a80" },
+    { "8cae6c", "547a44", "3a5a30" },
+    { "b070a0", "804070", "602a52" },
   }
   local brass = { "5a4218", "8c6a28", "c49a40", "f0d080" }
-  for z = 0, 4 do
+  for z = 0, 8 do
     local f = felts[z + 1]
     for part = 0, 2 do
       local ox, oy = part * 16, z * 16

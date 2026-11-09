@@ -259,13 +259,29 @@ func _game_tests() -> void:
 	check("no air control", is_equal_approx(p.sim.vel.x, vx))
 	await _physics_frames(300)
 
-	# Camera cuts when the ball crosses into the next screen.
+	# The camera glides to the next screen when the ball crosses the edge.
 	p.place(Vector2(200, -300))
 	await _physics_frames(3)
-	check("camera cuts to screen 1", game.screen == 1 and game.camera.position == Tower.screen_center(1))
+	var mid: Vector2 = game.camera.position
+	check("camera heads for screen 1", game.screen == 1 and game.camera_target == Tower.screen_center(1))
+	check("it glides rather than cutting", game.camera_moving() and mid.y < Tower.screen_center(0).y and mid.y > Tower.screen_center(1).y, str(mid))
+	# Hold the ball still so it can't drop back while the glide is measured.
+	p.set_physics_process(false)
+	var path: Array[float] = []
+	for i in 60:
+		await get_tree().physics_frame
+		path.append(game.camera.position.y)
+	var steady := true
+	for i in range(1, path.size()):
+		if path[i] > path[i - 1] + 0.001:
+			steady = false
+	check("the glide never doubles back", steady)
+	check("and settles exactly on screen 1", game.camera.position == Tower.screen_center(1) and not game.camera_moving(), str(game.camera.position))
+	p.set_physics_process(true)
 	p.place(game.tower.spawn)
 	await _physics_frames(3)
-	check("camera cuts back to screen 0", game.screen == 0)
+	check("camera heads back to screen 0", game.screen == 0 and game.camera_target == Tower.screen_center(0))
+	await _physics_frames(60)
 
 	# Resting saves the spot.
 	await _physics_frames(200)

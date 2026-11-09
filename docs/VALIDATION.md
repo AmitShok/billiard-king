@@ -141,10 +141,11 @@ Not verified: how the rainbow ball looks in motion over a full climb, and whethe
 `tests/conditions_test.tscn`: 59 / 59 passed. It covers the following:
 
 - **Low gravity:** a full shot rises about 2.2 times as high at 0.45 gravity. Gravity is set per screen, and a ball falls slowly there. Low gravity is on exactly the moon and space screens.
-- **Wind:** gusts blow in all four directions in turn, peak at the set strength, and have a lull between them. Wind only exists on windy screens. It pushes a ball in the air, and a ball resting on the felt ignores it. Felt drag holds the white ball against a light wind, and a strong gust moves it. Windy shots replay identically.
+- **Wind:** a stretch's wind only ever blows one way, peaks at the set strength, drops to dead calm between gusts and blows for its `on` time each cycle. Wind only exists on windy screens. A gust pushes a ball in the air, the same shot in the lull flies exactly as in still air, an updraft carries a jump higher, and a ball resting on the felt ignores it. Hardcore's white ball stays put in a 600 px/s² gale from each of the four directions. Windy shots replay identically.
+- **Themes:** level 3 starts in the Observatory and passes the Station, level 4 starts on the Fire Escape and rests in the Bell Tower, and neither level's map uses any of levels 1 and 2's decor. Every level-4 windy stretch blows one way with an on and off time, and all four directions are used.
 - **Lost balls:** each of the four levels hides exactly 6, spread over at least half its height and none buried. There are 24 different balls, matching the Ball Rack's list.
 - **Locks:** a fresh game opens only level 1, and each finish (in either mode) opens only the next level.
-- **In the game:** the pop-ups warn about low gravity and wind, and the moon and rooftops have their own music. Bumped asteroids drift and struck satellites spin up. The weather layer, wind socks and vanes follow the gust, and bunting reacts to a knock. Hardcore plays the new levels.
+- **In the game:** the pop-ups warn about low gravity and gusts, the observatory has normal gravity, the rooftop gust is an updraft, and the moon and rooftops have their own music. Bumped asteroids drift and struck satellites spin up. The weather layer, wind socks and vanes follow the gust, and bunting reacts to a knock. Hardcore plays the new levels.
 
 **Route solver, whole level, real gravity and wind:**
 
@@ -158,6 +159,8 @@ Level 2's terrain and physics did not change, so its earlier proof stands and wa
 
 **Regression:** gameplay 43, menus 19, props 27, Hardcore and music 47, level 2 64.
 
+**Web export, sound:** a release export of the Web preset served over HTTP in Chromium: after the first click the AudioContext is running, menu blips start AudioBufferSourceNodes, and an analyser on the mix measured a peak of 0.32. The user's own earlier debug export measured 0.26 the same way. Not checked: Safari, Firefox, mobile browsers or itch.io.
+
 **Not verified:** the feel of low gravity and wind, the new music and ambience by ear, whether Hardcore can be completed on any level (the solver covers only your ball), and how the props look in motion beyond captures. All of these need playtesting.
 
 ## Unlock and reset
@@ -169,3 +172,38 @@ The menus suite is now 35 / 35. New checks:
 - **Options panel:** it still fits on screen with the new buttons.
 
 **Not verified:** that a release export hides the unlock button. It relies on `OS.is_debug_build()`, and this project has no release export to test against.
+
+## Themed levels 3 and 4, one-way wind: 9 November 2026
+
+Levels 3 and 4 no longer reuse the Back Room, Neon Bar or Royal Club. Level 3 now starts in the Observatory and passes the Station (Launch Deck). Level 4 starts on the Fire Escape and rests in the Bell Tower. Every windy stretch of level 4 blows one way (R, L, U or D) for about 3 s, then drops to calm for about 3 s. The white ball ignores wind. Some level 4 ledges were widened or given lips at their downwind end, so a gust carries you onto the ledge instead of off it.
+
+The route solver now tries six moments spread across each gust cycle in wind, the way a player waits for the rhythm.
+
+| Level | Spots explored | Route | Hardest stroke | Lost balls reachable |
+| --- | --- | --- | --- | --- |
+| 3 | 575 | 43 strokes | 6 of 238 | all 6 |
+| 4 | 686 | 56 strokes | 5 of 238 | all 6 |
+
+The condition tests (67) cover one-way wind, the lull, updrafts, the white ball in a gale from every direction, the new zones, and that no bar or club decor appears in levels 3 or 4.
+
+**Web export:** sound plays (see above). The export now ships a `default_bus_layout.tres` and leaves out `tests/`, `tools/`, `docs/` and `builds/`. `builds/` is git-ignored.
+
+## Camera glide and Training mode: 9 November 2026
+
+`tests/training_test.tscn`: 38 / 38 passed.
+
+- **Menus:** the title has Training. Its level list offers Practise only on opened levels; with only level 1 open, levels 2 to 4 stay Locked. There is no Continue or New.
+- **Pop-up and hints:** the training pop-up explains flags and that nothing counts. The top line names C, R and X and counts the flags.
+- **No lost balls:** none are visible and none are in the physics.
+- **Flags:** you can't plant one mid-air. C (sent as a real input action) plants on the resting spot, inside the tower's decor and outside the physics. The flag pops to full height. A second flag lights while the first fades, and planting on a flag doesn't stack another. A gust turns the pennant downwind, and a passing ball makes it flutter.
+- **Return and remove:** R returns to the newest flag and the camera follows. X removes it, it folds away, and R then goes to the flag before. With no flags, R goes to the start.
+- **Pause:** shows Training and the flag count, and offers Quit, not Save and quit.
+- **Nothing counts:** no training section is ever written to the save. A training win says it's practice, opens no level, records no win, gives no balls and leaves the Normal run untouched.
+
+**Camera** (gameplay suite, now 46): crossing into screen 1 sets the target. The camera is partway there 3 ticks later, never doubles back, and settles exactly on the screen.
+
+**Regression:** gameplay 46, menus 35, props 27, Hardcore and music 51, conditions 67, level 2 64, training 38. All pass.
+
+**Rendered:** `training.png` (two flags, newest lit), `training_wind.png` and `title.png` (six-button menu fits).
+
+**Not verified:** how the glide and the flags feel in real play at full frame rate, gamepad buttons for flags on real hardware, and Training on the web build. These need playtesting.

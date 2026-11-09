@@ -74,45 +74,65 @@ func _gravity_tests() -> void:
 	check("falls slowly in low gravity", absf(sim.vel.y - 900.0 * 0.45 * 0.5) < 10.0, str(sim.vel))
 
 
-func _windy(strength := 240.0, period := 8.0, dirs := PackedVector2Array([Vector2.RIGHT, Vector2.UP, Vector2.LEFT, Vector2.DOWN])) -> CollisionWorld:
+func _windy(strength := 240.0, dir := Vector2.RIGHT, on := 3.0, off := 3.0) -> CollisionWorld:
 	var w := _flat()
 	for k in 3:
-		w.screen_wind[k] = { "strength": strength, "period": period, "phase": 0.0, "dirs": dirs }
+		w.screen_wind[k] = { "dir": dir, "strength": strength, "on": on, "off": off, "phase": 0.0 }
 	return w
 
 
 func _wind_tests() -> void:
-	var w := _windy()
-	var seen := {}
+	var w := _windy(240.0, Vector2.LEFT)
+	var dirs := {}
 	var peak := 0.0
 	var lull := INF
-	for i in 960:
+	var gusting := 0
+	for i in 1440:  # two full cycles
 		w.advance(BallSim.DT)
 		var v := w.wind_at(-100.0)
 		peak = maxf(peak, v.length())
 		lull = minf(lull, v.length())
-		if v.length() > 100.0:
-			seen[v.normalized().round()] = true
-	check("wind blows in all four directions in turn", seen.size() == 4 and seen.has(Vector2.RIGHT) and seen.has(Vector2.UP) and seen.has(Vector2.LEFT) and seen.has(Vector2.DOWN), str(seen.keys()))
+		if v.length() > 0.0:
+			gusting += 1
+			dirs[v.normalized().round()] = true
+	check("a stretch's wind only ever blows one way", dirs.size() == 1 and dirs.has(Vector2.LEFT), str(dirs.keys()))
 	check("gusts peak at the set strength", absf(peak - 240.0) < 2.0, str(peak))
-	check("there's a lull between gusts", lull < 3.0, str(lull))
+	check("the wind drops to dead calm between gusts", lull == 0.0, str(lull))
+	check("it blows for the 'on' time each cycle", absf(gusting * BallSim.DT - 6.0) < 0.1, str(gusting * BallSim.DT))
 	check("only windy screens have wind", w.wind_at(-288.0 * 8.0) == Vector2.ZERO and CollisionWorld.new().wind_at(-100.0) == Vector2.ZERO)
 
-	# The same shot in calm air and in a rightward gust.
+	# The same shot in calm air, mid-gust and in the lull.
 	var results := []
-	for world in [_flat(), _windy(280.0, 8.0, PackedVector2Array([Vector2.RIGHT]))]:
+	for setup in [[_flat(), 0.0], [_windy(280.0, Vector2.RIGHT), 1.5], [_windy(280.0, Vector2.RIGHT), 4.5]]:
+		var world: CollisionWorld = setup[0]
 		var s := BallSim.new()
 		s.reset(Vector2(0, -8))
 		world.set_time(0.0)
 		for i in 30:
 			s.step(world)
-		world.set_time(4.0)  # mid-gust
+		world.set_time(setup[1])
 		s.shoot(0.0, 60, 0)
 		for i in 60:
 			world.advance(BallSim.DT)
 			s.step(world)
 		results.append(s.pos.x)
-	check("wind pushes a ball in the air", results[1] > results[0] + 20.0, str(results))
+	check("a gust pushes a ball in the air", results[1] > results[0] + 20.0, str(results))
+	check("in the lull the same shot flies true", absf(results[2] - results[0]) < 0.5, str(results))
+	var up := []
+	for setup in [_flat(), _windy(300.0, Vector2.UP)]:
+		var s := BallSim.new()
+		s.reset(Vector2(0, -8))
+		for i in 30:
+			s.step(setup)
+		setup.set_time(1.0)
+		s.shoot(0.0, 40, 0)
+		var top := 0.0
+		for i in 120:
+			setup.advance(BallSim.DT)
+			s.step(setup)
+			top = minf(top, s.pos.y)
+		up.append(top)
+	check("an updraft carries a jump higher", up[1] < up[0] - 10.0, str(up))
 
 	var rest := _windy(400.0)
 	rest.set_time(1.0)
@@ -127,26 +147,22 @@ func _wind_tests() -> void:
 		grounded.step(rest)
 	check("a ball resting on the felt ignores the wind", grounded.grounded and grounded.pos.x == settled_x, str(grounded.pos))
 
-	var calm_float := _windy(100.0)
-	var white := BallSim.new()
-	white.floating = true
-	white.reset(Vector2(0, -100))
-	for i in 240:
-		calm_float.advance(BallSim.DT)
-		white.step(calm_float)
-	check("felt drag holds the white ball against a light wind", white.pos == Vector2(0, -100), str(white.pos))
-	var hard_float := _windy(400.0)
-	var blown := BallSim.new()
-	blown.floating = true
-	blown.reset(Vector2(0, -100))
-	for i in 240:
-		hard_float.advance(BallSim.DT)
-		blown.step(hard_float)
-	check("a strong gust moves the white ball", blown.pos != Vector2(0, -100))
+	var calm := true
+	for dir in [Vector2.RIGHT, Vector2.UP, Vector2.LEFT, Vector2.DOWN]:
+		var gale := _windy(600.0, dir, 5.0, 0.5)
+		var white := BallSim.new()
+		white.floating = true
+		white.reset(Vector2(0, -100))
+		for i in 360:
+			gale.advance(BallSim.DT)
+			white.step(gale)
+		if white.pos != Vector2(0, -100):
+			calm = false
+	check("Hardcore's white ball never feels the wind", calm)
 
 	var runs := []
 	for run in 2:
-		var d := _windy()
+		var d := _windy(260.0, Vector2.DOWN)
 		d.set_time(2.3)
 		var b := BallSim.new()
 		b.reset(Vector2(0, -8))
@@ -193,6 +209,8 @@ func _level_tests() -> void:
 		if level == 3:
 			var low := t.screen_zones.size()
 			check("level 3 has 15 screens", low == 15)
+			var zones: Array = range(low).map(func(k): return t.zone_of_screen(k))
+			check("level 3 climbs from the observatory via the station", zones.slice(0, 3) == [7, 7, 7] and zones.slice(8, 10) == [8, 8], str(zones))
 			var moon_ok := true
 			for k in low:
 				var is_space: bool = t.zone_of_screen(k) == 4 or t.zone_of_screen(k) == 6
@@ -201,12 +219,28 @@ func _level_tests() -> void:
 			check("low gravity exactly on the moon and space screens", moon_ok and t.world.screen_gravity.size() >= 8, str(t.world.screen_gravity))
 		if level == 4:
 			check("level 4 has 15 screens", t.screen_zones.size() == 15)
+			var zones4: Array = range(15).map(func(k): return t.zone_of_screen(k))
+			check("level 4 starts on the fire escape and rests in the bell tower", zones4.slice(0, 3) == [9, 9, 9] and zones4.slice(9, 11) == [10, 10], str(zones4))
 			check("wind on most of level 4", t.world.screen_wind.size() >= 10, str(t.world.screen_wind.size()))
-			var four := true
+			var ways := {}
+			var clean := true
 			for k in t.world.screen_wind:
-				if t.world.screen_wind[k].dirs.size() != 4:
-					four = false
-			check("every gale blows all four ways", four)
+				var gust: Dictionary = t.world.screen_wind[k]
+				ways[gust.dir] = true
+				if gust.dir.length() != 1.0 or gust.on <= 0.0 or gust.off <= 0.0:
+					clean = false
+			check("each windy stretch blows one way, on and off", clean)
+			check("level 4's stretches use all four directions", ways.size() == 4, str(ways.keys()))
+		if level >= 3:
+			# None of levels 1 and 2's bar and club decor comes back.
+			var old_decor := ""
+			for line in FileAccess.get_file_as_string("res://levels/tower%d.txt" % level).split("\n"):
+				if line.begins_with(";") or line.begins_with("=") or line.begins_with("@"):
+					continue
+				for ch in "HFWTPELRk":
+					if line.contains(ch):
+						old_decor += ch
+			check("level %d uses its own decor, not the bar's" % level, old_decor == "", old_decor)
 		t.free()
 	var unique := {}
 	for n in all:
@@ -266,7 +300,7 @@ func _game_tests() -> void:
 	var words: String = await _dismiss(game)
 	check("level 3's pop-up warns about low gravity", words.contains("gravity"), words)
 	await _physics(5)
-	check("the planetarium has normal gravity and its own name", not game.weather.low_gravity and game.tower.zone_names[2] == "The Planetarium")
+	check("the observatory has normal gravity and its own name", not game.weather.low_gravity and game.tower.zone_names[7] == "The Observatory")
 	game.player.place(Vector2(256, -3 * 288 - 40))
 	await _physics(4)
 	await _frames(1)
@@ -290,16 +324,17 @@ func _game_tests() -> void:
 	# Level 4: the gale.
 	game = _load(4)
 	words = await _dismiss(game)
-	check("level 4's pop-up warns about the wind", words.contains("wind"), words)
+	check("level 4's pop-up warns about the gusts", words.contains("gust"), words)
 	game.player.place(Vector2(100, -3 * 288 - 40))
 	await _physics(3)
 	check("the rooftops have their own music", Sfx.current_music() == Sfx.MUSIC[5], Sfx.current_music())
 	# Jump to mid-gust and let the decor catch up.
 	var w: CollisionWorld = game.tower.world
-	var period: float = w.screen_wind[3].period
-	game.tower.resume_movers(period * 0.125)
+	var gust: Dictionary = w.screen_wind[3]
+	game.tower.resume_movers(gust.on * 0.5 - gust.phase * (gust.on + gust.off))
 	await _physics(6)
 	check("the weather layer sees the gust", game.weather.wind.length() > 100.0, str(game.weather.wind))
+	check("the rooftop gust is an updraft", game.weather.wind.y < -100.0 and absf(game.weather.wind.x) < 1.0, str(game.weather.wind))
 	var socks: Array = _props(game, WindProp).filter(func(p): return Tower.screen_of(p.global_position.y) == 3 and p.style == WindProp.Style.SOCK)
 	var sock: WindProp = socks[0]
 	check("wind socks feel the wind", sock._wind.length() > 100.0)

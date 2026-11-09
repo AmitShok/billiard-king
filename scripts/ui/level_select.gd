@@ -9,7 +9,7 @@ const LEVELS := [
 	{ "name": "The Tower", "about": "10 screens" },
 	{ "name": "The Long Rack", "about": "20 screens, traps, moving carriages" },
 	{ "name": "The Moon Shot", "about": "15 screens, low gravity in space" },
-	{ "name": "The Gale", "about": "15 screens, wind from four directions" },
+	{ "name": "The Gale", "about": "15 screens, one-way gusts of wind" },
 ]
 
 var mode := SaveData.CLASSIC
@@ -27,7 +27,7 @@ func _ready() -> void:
 	dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(dim)
 	var box := UIKit.panel(self, Vector2(340, 0))
-	UIKit.heading(box, "Hardcore mode" if mode == SaveData.HARDCORE else "Normal mode")
+	UIKit.heading(box, { SaveData.HARDCORE: "Hardcore mode", SaveData.TRAINING: "Training" }.get(mode, "Normal mode"))
 	for i in LEVELS.size():
 		_add_row(box, i)
 	_info = UIKit.label(box, "", Color("a89e8a"))
@@ -72,6 +72,10 @@ func _add_row(box: Control, i: int) -> void:
 		locked.disabled = true
 		locked.focus_mode = Control.FOCUS_NONE
 		return
+	if mode == SaveData.TRAINING:
+		# Practice only: always a fresh run, nothing to continue.
+		_track(UIKit.button(row, "Practise", _start.bind(lvl, true)), i)
+		return
 	var running := SaveData.has_run_for(mode, lvl)
 	if running:
 		var cont := UIKit.button(row, "Continue", _start.bind(lvl, false))
@@ -96,7 +100,11 @@ func _track(b: Button, i: int) -> void:
 
 func _on_level_focus(i: int) -> void:
 	_focused = i
+	if mode == SaveData.TRAINING:
+		_info.text = "Flags, no lost balls. Nothing here counts or unlocks."
+		return
 	var r := SaveData.record(mode, i + 1)
+
 	if r.wins > 0:
 		_info.text = "Finished %d   Best %s   Fewest strokes %d" % [r.wins, SaveData.format_time(r.best_time), r.best_strokes]
 	else:

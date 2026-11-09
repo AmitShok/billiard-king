@@ -14,6 +14,7 @@ enum Trap { SPINNER, SPIKE }
 
 const TILE := 16.0
 const SPINNER_HALF_WIDTH := 2.0
+const WIND_SWELL := 0.35   # seconds for a gust to build or die
 
 ## Vector2i -> [shape, material, zone]
 var cells: Dictionary = {}
@@ -24,7 +25,7 @@ var lost_balls: Array[Dictionary] = [] # {pos, number}
 var platforms: Array[Dictionary] = [] # {a, b, size, period, phase, zone, pos, vel}; pos = top-left
 var traps: Array[Dictionary] = []     # spinner {kind, center, arms, length, speed, angle0}, spike {kind, a, b, period, phase, radius, pos, vel}
 var time := 0.0
-## Per-screen conditions: screen -> gravity multiplier, screen -> {strength, period, phase, dirs}.
+## Per-screen conditions: screen -> gravity multiplier, screen -> {dir, strength, on, off, phase}.
 var screen_gravity := {}
 var screen_wind := {}
 ## Set by set_active_window: only these movers tick and collide. Null means all of them.
@@ -233,18 +234,25 @@ func gravity_scale_at(y: float) -> float:
 	return screen_gravity.get(floori(-y / 288.0), 1.0)
 
 
-## The wind acceleration at this height right now. Gusts blow in turn through
-## the screen's directions, swelling and dying so there's a lull between them.
+## The wind acceleration at this height right now. Each windy section blows
+## one way only (like Jump King's bluffs): it gusts for `on` seconds, then
+## falls calm for `off` seconds, with a short swell at each end.
 func wind_at(y: float) -> Vector2:
 	if screen_wind.is_empty():
 		return Vector2.ZERO
 	var w: Variant = screen_wind.get(floori(-y / 288.0))
 	if w == null:
 		return Vector2.ZERO
-	var dirs: PackedVector2Array = w.dirs
-	var t := fposmod(time / w.period + w.phase, 1.0) * dirs.size()
-	var i := int(t)
-	return dirs[i] * w.strength * sin(PI * (t - i))
+	return w.dir * w.strength * gust_level(w)
+
+
+## 0 in the lull, rising to 1 through the gust.
+func gust_level(w: Dictionary) -> float:
+	var cycle: float = w.on + w.off
+	var t := fposmod(time / cycle + w.phase, 1.0) * cycle
+	if t >= w.on:
+		return 0.0
+	return minf(1.0, minf(t, w.on - t) / WIND_SWELL)
 
 
 # --- Moving platforms and traps -----------------------------------------------------
