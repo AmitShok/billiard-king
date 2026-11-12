@@ -191,9 +191,8 @@ Tuning values and how the rolling ball is rendered are in [docs/DESIGN.md](docs/
 
 - **Game, code, pixel art, synthesised audio and music:** Floor 38 Studio. Art is authored in Aseprite via `tools/art_*.lua`, sounds are designed in `tools/build_sfx.gd`.
 - **UI blips, win jingle and summit wind:** [Ninja Adventure Asset Pack](https://pixel-boy.itch.io/ninja-adventure-asset-pack) by Pixel-boy & AAA (CC0).
-- **Billiard Kit** (the original prototype's sprites, kept in `assets/Billiard Kit/`): Luca Pixel (CC0).
 - **Inspired by** *Jump King* (Nexile), *Fallosophy* (Reliable Plumbing Services) and *Ballgame* (Human Computer).
 
 ## License
 
-Code and original art © Floor 38 Studio. Third-party assets keep their CC0 licences (see `assets/audio/NINJA_ADVENTURE_LICENSE.txt` and `assets/Billiard Kit/License CC0.txt`).
+Code and original art © Floor 38 Studio. The Ninja Adventure sounds keep their CC0 licence (see `assets/audio/NINJA_ADVENTURE_LICENSE.txt`).
