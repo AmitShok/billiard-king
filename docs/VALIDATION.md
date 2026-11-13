@@ -291,3 +291,13 @@ The rendered fire escape and rooftop screens show the rain behind the ledges. Al
 - All suites pass.
 
 **Not checked:** the user's iPhone itself.
+
+**Follow-up, same day:** the user's iPhone was still broken. Measuring their landscape screenshot showed about one page pixel per game pixel, on a canvas about 2.4 times wider than the visible frame. That points to the frame growing to fit its content (an iOS iframe behaviour), not to pixel density.
+
+**Fix:** the head include now pins `html`, `body` and the canvas with `position: fixed` (the canvas with `!important`, over the engine's inline `absolute`), so the page has nothing that can widen the iframe. The hidpi change was reverted: at 1.2× the pixel font lost rows ("NUMMAL MUUE").
+
+**Verified** in a page that frames the game full screen, like itch.io's mobile view, at 700×340, 2×:
+- the frame reports 700×340 and scrolls no wider;
+- the canvas is 1400×680 backing (699×339 CSS) and the whole title shows, sharp.
+
+**Not checked:** the user's iPhone.
