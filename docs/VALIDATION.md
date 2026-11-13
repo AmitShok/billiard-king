@@ -301,3 +301,24 @@ The rendered fire escape and rooftop screens show the rain behind the ledges. Al
 - the canvas is 1400×680 backing (699×339 CSS) and the whole title shows, sharp.
 
 **Not checked:** the user's iPhone.
+
+**Measured on the iPhone** (the `?debug` readout, game opened outside itch.io, sideways, Chrome on iOS):
+
+| | |
+| --- | --- |
+| page | 729×314 |
+| screen | dpr 3 |
+| canvas | 2187×942 backing, 729×314 CSS at 0,0 |
+| framed | no |
+
+Every browser size is right, and it is still cut off without itch.io. The letters are the right size but shifted about 300 game pixels to the right. So the bug is in how Godot draws, not in the page: the `viewport` stretch mode's scaled copy of the 512×288 image to the screen goes wrong on iOS WebKit.
+
+**Fix:** touch devices use `canvas_items` stretch (draw at screen resolution, no scaled copy). `touch.ball_at` is now computed from the camera, because `get_global_transform_with_canvas` gives screen pixels in that mode. The readout adds Godot's own window and view sizes and its stretch mode.
+
+**Verified** on an emulated Android phone at the iPhone's 729×314:
+- the readout shows `godot window (1458, 628) view (512.0, 288.0) scale 1 0`;
+- the title is complete and sharp, and the level shows with its touch buttons;
+- a touch shot works;
+- all suites pass.
+
+**Not checked:** the iPhone itself.

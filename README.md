@@ -80,7 +80,7 @@ Somewhere above the Back Room, past Lucky's Neon Bar and the Royal Club, there's
 
 A controls hint appears on the rail of the bottom table while the ball sits there. It hides as you climb and comes back if you fall all the way down, switching to gamepad prompts when you use a pad.
 
-**Touchscreens.** The buttons appear only on a phone, tablet or touchscreen computer. In the default **Auto** setting a key or gamepad press hides them and a touch brings them back; **Options > Touch controls** can also force them **On** or **Off**. Menus work by tapping, a tap dismisses the goal pop-up and the ending, and holding a phone upright shows a reminder to turn it sideways. On touch devices the picture fills the screen instead of scaling by whole numbers.
+**Touchscreens.** The buttons appear only on a phone, tablet or touchscreen computer. In the default **Auto** setting a key or gamepad press hides them and a touch brings them back; **Options > Touch controls** can also force them **On** or **Off**. Menus work by tapping, a tap dismisses the goal pop-up and the ending, and holding a phone upright shows a reminder to turn it sideways. On touch devices the picture fills the screen instead of scaling by whole numbers, and it's drawn straight at screen resolution (sharper text, and it fixes a shifted, cut-off picture on iPhones). Add `?debug` to the game's address, or tap its top-left corner three times, for a readout of the sizes the browser and Godot report.
 
 You can only strike from flat felt; slopes make you slide. A full charge fires by itself. If you hold the charge button while you land, the charge starts on touchdown.
 

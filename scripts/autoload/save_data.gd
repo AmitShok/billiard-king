@@ -64,6 +64,13 @@ func _ready() -> void:
 	_setup_input()
 	load_data()
 	apply_settings()
+	if OS.has_feature("web"):
+		var t := Timer.new()
+		t.wait_time = 0.5
+		t.autostart = true
+		t.process_mode = Node.PROCESS_MODE_ALWAYS
+		t.timeout.connect(_report_size)
+		add_child(t)
 
 
 ## The game used to be called Billiard King, and Godot keeps saves in a folder
@@ -349,10 +356,22 @@ func apply_settings() -> void:
 		var mode := DisplayServer.WINDOW_MODE_FULLSCREEN if fullscreen else DisplayServer.WINDOW_MODE_WINDOWED
 		if DisplayServer.get_name() != "headless" and DisplayServer.window_get_mode() != mode:
 			DisplayServer.window_set_mode(mode)
-	# Phones: fill the screen. Whole-number scaling leaves wide black borders on them.
+	# Phones and tablets: fill the screen (whole-number scaling leaves wide black
+	# borders), and draw straight at screen resolution. The default draws into a
+	# 512x288 image and copies it up scaled; on iPhones that copy came out shifted
+	# and cut off.
 	if TouchControls.touch_device():
-		get_tree().root.content_scale_stretch = Window.CONTENT_SCALE_STRETCH_FRACTIONAL
+		var root := get_tree().root
+		root.content_scale_stretch = Window.CONTENT_SCALE_STRETCH_FRACTIONAL
+		root.content_scale_mode = Window.CONTENT_SCALE_MODE_CANVAS_ITEMS
 	settings_changed.emit()
+
+
+## Web only: what Godot itself thinks the screen is, for the ?debug readout.
+func _report_size() -> void:
+	var root := get_tree().root
+	var info := "godot window %s  view %s  scale %s %s" % [DisplayServer.window_get_size(), root.get_visible_rect().size, root.content_scale_mode, root.content_scale_stretch]
+	JavaScriptBridge.eval("window.__godotInfo = %s;" % JSON.stringify(info))
 
 
 static func format_time(seconds: float) -> String:

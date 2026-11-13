@@ -195,7 +195,8 @@ func _process(delta: float) -> void:
 	if not finished:
 		SaveData.run_time += delta
 	touch.suspended = finished
-	touch.ball_at = player.get_global_transform_with_canvas().origin
+	# In the 512x288 view's own coordinates, whichever way the window is scaled.
+	touch.ball_at = player.global_position - camera.get_screen_center_position() + Vector2(256, 144)
 	_update_screen(false)
 	_update_hint(delta)
 	_update_look(delta)
