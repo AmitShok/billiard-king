@@ -58,6 +58,11 @@ func _process(delta: float) -> void:
 func _input(event: InputEvent) -> void:
 	if not _ready_for_input:
 		return
+	# A tap anywhere on a touchscreen.
+	if event is InputEventScreenTouch and not event.pressed:
+		get_viewport().set_input_as_handled()
+		dismiss()
+		return
 	for action in ["charge", "ui_accept", "pause"]:
 		if event.is_action_released(action):
 			get_viewport().set_input_as_handled()

@@ -21,6 +21,7 @@ var ambience_volume := 0.7
 var music_volume := 0.6
 var fullscreen := false
 var screen_shake := true
+var touch_controls := "auto"     # "auto" (touch devices only), "on" or "off"
 
 # Which climb is being played. Each mode keeps its own run.
 var mode := CLASSIC
@@ -172,6 +173,7 @@ func load_data() -> void:
 	music_volume = cfg.get_value("settings", "music", music_volume)
 	fullscreen = cfg.get_value("settings", "fullscreen", fullscreen)
 	screen_shake = cfg.get_value("settings", "shake", screen_shake)
+	touch_controls = cfg.get_value("settings", "touch", touch_controls)
 	_load_run(cfg)
 	collected.assign(cfg.get_value("rack", "collected", []))
 	skin = cfg.get_value("rack", "skin", 0)
@@ -216,6 +218,7 @@ func save() -> void:
 	cfg.set_value("settings", "music", music_volume)
 	cfg.set_value("settings", "fullscreen", fullscreen)
 	cfg.set_value("settings", "shake", screen_shake)
+	cfg.set_value("settings", "touch", touch_controls)
 	var s := run_section()
 	if mode == TRAINING:
 		s = ""   # nothing about a training run is kept
@@ -341,6 +344,9 @@ func apply_settings() -> void:
 	var mode := DisplayServer.WINDOW_MODE_FULLSCREEN if fullscreen else DisplayServer.WINDOW_MODE_WINDOWED
 	if DisplayServer.get_name() != "headless" and DisplayServer.window_get_mode() != mode:
 		DisplayServer.window_set_mode(mode)
+	# Phones: fill the screen. Whole-number scaling leaves wide black borders on them.
+	if TouchControls.touch_device():
+		get_tree().root.content_scale_stretch = Window.CONTENT_SCALE_STRETCH_FRACTIONAL
 	settings_changed.emit()
 
 

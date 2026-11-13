@@ -17,6 +17,8 @@ You are the cue ball, and you have to climb a pool hall tower. The design takes 
 | Pause | Esc or P | Start |
 | Training: plant flag / back to flag / remove flag | C / R / X | Y / X / LB |
 
+On touchscreens the same actions have on-screen buttons (see Touch controls below).
+
 Holding Look pans the camera up to 56 px toward the next or previous screen, easing in at 160 px/s and back at 260 px/s. It never peeks below the bottom floor or above the summit. Looking is view only: the screen change, the ball and its physics are untouched. You can aim and set spin at any time. You can only strike while the ball sits on felt that is flatter than about 30°, so on slopes you slide just like in Jump King. If you are holding the charge button when the ball lands, the charge starts on touchdown. A full charge fires by itself.
 
 ## Tuning
@@ -190,3 +192,13 @@ Z is already a strike key here, so C is the plant key.
 ## Rain
 
 The Rooftops storm and the Fire Escape used to have rain streaks painted into their backdrops, which looked frozen. The backdrops are now dry, and `RainLayer` draws about 170 falling drops just above the backdrop and behind the ledges and decor. It draws only on screens whose zone is rainy, so the rain stops cleanly at a zone edge even while the camera glides. Drops fall at up to 380 px/s, slanting one pixel across for every three down, like the old painted streaks, and nearer drops are lighter and faster. The gust on screen bends them: a crosswind slants them hard, an updraft slows them almost to a hang, and a downdraft drives them down. The Bell Tower is indoors and dry.
+
+## Touch controls
+
+`TouchControls` is a CanvasLayer of Godot `TouchScreenButton`s, one per action: aim left and right, spin up and down, look up and down, pause, the big cue button for charge, and the three flag buttons in Training. Each button presses its input action exactly as the key does, so the game and the ball read touch through the same `Input` calls and need no touch code of their own. `TouchScreenButton` only reacts to real touches, never to the mouse, so a click on a computer can't press one.
+
+**When they show.** The setting is `SaveData.touch_controls`: `auto` (the default), `on` or `off`. Auto shows the buttons only when `DisplayServer.is_touchscreen_available()` (or the mobile or web_android / web_ios features) says the device has a touchscreen. In Auto a key or pad press hides them and releases anything they held, and a touch brings them back, so a touchscreen laptop used with a keyboard stays clean. Options cycles the setting.
+
+**Layout** (in the 512×288 view): aim arrows bottom left with the spin buttons above, the look buttons bottom right beside the 44 px cue button, pause in the top-right corner, and the flags in a row beside it. Each touch area is the drawing plus 3 px, and no two overlap. Buttons sit at 50% opacity, light up while held and drop to 15% while the ball is behind one, so they never hide it. They live on layer 4, under the HUD, and are pausable: they hide and release under the pause menu, the goal pop-up and the ending.
+
+**Phones.** On a touch device the window scales fractionally instead of by whole numbers, so the picture fills a phone screen; integer scaling left wide black borders. A tap dismisses the goal pop-up and the ending, and menus are tapped like any Godot button. In portrait, a "Turn your device sideways" line shows. The art is drawn by `tools/art_touch.lua`: round brass rims around green felt, matching the table.

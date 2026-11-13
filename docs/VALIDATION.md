@@ -231,3 +231,28 @@ The rain painted into `bg_storm` and `bg_fire_escape` is gone, and `RainLayer` a
 - an updraft slows them, a crosswind slants them and a downdraft speeds them up.
 
 The rendered fire escape and rooftop screens show the rain behind the ledges. All suites pass: gameplay 46, menus 35, props 27, Hardcore 51, conditions 74, level 2 64, training 38.
+
+## Touch controls: 13 November 2026
+
+**Touch suite (57 checks, `tests/touch_test.gd`).** Touches are pushed into the root viewport the way a phone delivers them. The suite checks:
+- On a computer (no touchscreen): no buttons, the keyboard hint stays, and a mouse click where a button would be presses nothing.
+- Turned on: one button per action; holding the arrow turns the aim; a spin tap adds one spin; the eye peeks the camera.
+- Holding the cue button charges, and letting go strikes. Two fingers press two buttons at once.
+- Pause opens the menu, the buttons hide and let go under it, then come back. They also hide while the ending is up.
+- Layout: every button is on screen and no two touch areas overlap. A button fades while the ball is behind it.
+- Auto mode: a touch shows the buttons, a key press hides them and releases what they held, and the hint text follows. Off ignores touches, and On shows them at once.
+- Training: the flag buttons plant, return and remove a flag, and a tap dismisses the goal pop-up.
+- Options cycles Auto, On and Off, and the setting is saved.
+
+**In the browser** (release web export, built-in browser): emulated as an Android phone at 740×360 with touch, driven by real `TouchEvent`s.
+- The game filled the height at 2.5×.
+- Taps opened Normal mode and continued a run.
+- The buttons showed with the touch hint, and the strike and look buttons faded over the ball.
+- Holding the arrow, then the cue button, fired the ball up and to the left.
+- The pause button opened the pause menu with the buttons hidden, and Options showed "Touch controls: Auto" with room to spare.
+- At 360×740 portrait, "Turn your device sideways" appeared.
+- In the same browser back at desktop size (no touch points), there were no buttons in the game.
+
+**All suites pass:** gameplay 46, menus 35, props 27, Hardcore 51, conditions 74, level 2 64, training 38, touch 57.
+
+**Not checked:** a real phone or tablet (iOS Safari especially), and a touchscreen laptop.

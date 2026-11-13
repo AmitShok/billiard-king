@@ -27,6 +27,20 @@ func _ready() -> void:
 		_save("training_wind.png")
 	game.queue_free()
 	await _frames(2)
+	# The on-screen buttons a phone or tablet gets, in the Back Room.
+	SaveData.touch_controls = "on"
+	SaveData.set_run(SaveData.CLASSIC, 1)
+	SaveData.start_new_run()
+	var touch_game: Node2D = load("res://scenes/world/game.tscn").instantiate()
+	touch_game.show_intro = false
+	add_child(touch_game)
+	await _physics(10)
+	await _rest(touch_game, touch_game.tower.spawn + Vector2(160, 0))
+	await get_tree().create_timer(1.0).timeout
+	_save("touch.png")
+	touch_game.queue_free()
+	await _frames(2)
+	SaveData.touch_controls = "auto"
 	SaveData.all_unlocked = false
 	SaveData.set_run(SaveData.CLASSIC, 1)
 	var title: Control = load("res://scenes/ui/title.tscn").instantiate()

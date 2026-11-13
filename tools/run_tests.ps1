@@ -17,6 +17,7 @@ Run 'Hardcore mode and music' @('--headless', '--quit-after', '20000', 'res://te
 Run 'Low gravity, wind, new levels, locks' @('--headless', '--quit-after', '30000', 'res://tests/conditions_test.tscn', '--', '--save-profile=conditions')
 Run 'Level 2, moving things, level select' @('--headless', '--quit-after', '30000', 'res://tests/level2_test.tscn', '--', '--save-profile=level2')
 Run 'Training mode and camera glide' @('--headless', '--quit-after', '20000', 'res://tests/training_test.tscn', '--', '--save-profile=training')
+Run 'Touchscreen controls' @('--headless', '--quit-after', '20000', 'res://tests/touch_test.tscn', '--', '--save-profile=touch')
 if (-not $SkipSolver) { Run 'Route solver (about 3 minutes)' @('--headless', '--script', 'tests/route_solver.gd') }
 if ($failed -gt 0) { Write-Output "$failed suite(s) FAILED"; exit 1 }
 Write-Output 'All suites passed.'

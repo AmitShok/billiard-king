@@ -54,7 +54,8 @@ func _crown_frame() -> AtlasTexture:
 func _unhandled_input(event: InputEvent) -> void:
 	if not _ready_for_input:
 		return
-	if event.is_action_pressed("charge") or event.is_action_pressed("ui_accept") or event.is_action_pressed("pause"):
+	if event.is_action_pressed("charge") or event.is_action_pressed("ui_accept") or event.is_action_pressed("pause") \
+			or (event is InputEventScreenTouch and event.pressed):
 		get_viewport().set_input_as_handled()
 		_ready_for_input = false
 		get_parent().get_parent().quit_to_title()

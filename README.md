@@ -39,6 +39,7 @@ Somewhere above the Back Room, past Lucky's Neon Bar and the Royal Club, there's
 - **A room that reacts.** Lamps and chandeliers swing on their chains, windows shatter and stay broken, neon shorts out, portraits hang crooked, beads slide along the score wire and chalk gets knocked off ledges. All of it is cosmetic: the ball's path never changes.
 - **Three zones and a summit:** the Back Room, Lucky's Neon Bar, the Royal Club (fast felt) and the King's Table under the moon.
 - **Training mode.** Practise any level you've opened, Geometry Dash style: rest on the felt and press **C** to plant a checkpoint flag, **R** to go straight back to the newest flag, **X** to pull it up and fall back on the one before. Flags wave, stream out in the wind, flutter as you roll past and glow while they're the one R returns to. Training has no lost balls, and nothing in it is saved, recorded or unlocked.
+- **Plays on phones and tablets.** On a touchscreen, round brass buttons appear over the game: arrows to aim, spin and look on the left, a big cue button to strike on the right, pause at the top, and the flag buttons in Training. They're see-through, and fade almost away when the ball is behind one. They only show on touch devices, so they never get in the way on a computer.
 - **Proven climbable.** A headless solver fires every shot from every resting spot using the real physics. It checks that the gold pocket can be reached and measures how forgiving each jump is.
 
 ## Screenshots
@@ -61,21 +62,25 @@ Somewhere above the Back Room, past Lucky's Neon Bar and the Royal Club, there's
 | *Hardcore: your ball and the floating white ball* | *The edge arrow points to it off screen* |
 | <img src="docs/screenshots/training.png" width="420"> | <img src="docs/screenshots/training_wind.png" width="420"> |
 | *Training: the newest flag is lit, older ones fade* | *A flag streaming in a rooftop gust* |
+| <img src="docs/screenshots/touch.png" width="420"> | |
+| *Touch controls on a phone or tablet* | |
 
 ## Controls
 
-| Action | Keyboard | Gamepad |
-| --- | --- | --- |
-| Aim (5° notches, hold to sweep) | A / D or ← / → | D-pad / left stick |
-| English: follow / draw | W / S | D-pad / left stick |
-| Look up / down (camera peek) | ↑ / ↓ (hold) | Right stick |
-| Charge, release to strike | Space, Z or J (hold) | A |
-| Pause | Esc or P | Start |
-| Training: plant a flag | C | Y |
-| Training: back to the newest flag (or the start) | R | X |
-| Training: remove the newest flag | X | LB |
+| Action | Keyboard | Gamepad | Touch |
+| --- | --- | --- | --- |
+| Aim (5° notches, hold to sweep) | A / D or ← / → | D-pad / left stick | Arrow buttons, bottom left |
+| English: follow / draw | W / S | D-pad / left stick | Ball buttons above the arrows |
+| Look up / down (camera peek) | ↑ / ↓ (hold) | Right stick | Eye buttons, bottom right |
+| Charge, release to strike | Space, Z or J (hold) | A | Cue button (hold) |
+| Pause | Esc or P | Start | Pause button, top right |
+| Training: plant a flag | C | Y | Flag + button, top right |
+| Training: back to the newest flag (or the start) | R | X | Flag ↩ button |
+| Training: remove the newest flag | X | LB | Flag × button |
 
 A controls hint appears on the rail of the bottom table while the ball sits there. It hides as you climb and comes back if you fall all the way down, switching to gamepad prompts when you use a pad.
+
+**Touchscreens.** The buttons appear only on a phone, tablet or touchscreen computer. In the default **Auto** setting a key or gamepad press hides them and a touch brings them back; **Options > Touch controls** can also force them **On** or **Off**. Menus work by tapping, a tap dismisses the goal pop-up and the ending, and holding a phone upright shows a reminder to turn it sideways. On touch devices the picture fills the screen instead of scaling by whole numbers.
 
 You can only strike from flat felt; slopes make you slide. A full charge fires by itself. If you hold the charge button while you land, the charge starts on touchdown.
 
@@ -142,7 +147,7 @@ Only traps use red and yellow hazard colours, so they can't be mistaken for deco
 1. Install **Godot 4.7** (the standard build; the project uses the Compatibility renderer).
 2. Open `project.godot` and press **F5**.
 
-The game renders at 512×288 and scales by whole numbers (1536×864 window by default). Fullscreen, volumes and screen shake are under **Options**.
+The game renders at 512×288 and scales by whole numbers (1536×864 window by default). Fullscreen, volumes, screen shake and touch controls are under **Options**.
 
 **Web build:** export with the **Web** preset (single-threaded, so it runs on itch.io without special headers). Web audio uses Godot's **Stream** playback (`audio/general/default_playback_type.web`), the same mixer as the desktop game. The default Sample mode played nothing in real Chrome, on itch.io or anywhere else. Browsers only allow sound after the first click or key press inside the game, so it is silent until then. For itch.io, export with **Export Project** (release, not debug: debug builds show the test unlock button), zip the folder's contents and upload. Opening `index.html` straight from disk doesn't work; serve the folder over HTTP (for example `python -m http.server` in it) or upload it to itch.io.
 
@@ -163,11 +168,11 @@ scripts/core   ball_sim.gd (physics), collision_world.gd (tiles, bumpers, pocket
 scripts/world  player_ball, ball_visual, cue_stick, tower, game, bumper, pocket, lost_ball
 scripts/world (movers)  moving_platform, trap_spinner, trap_spike, rail_line, weather_layer, checkpoint_flag
 scripts/world/props  reactive decor (swing, window, neon, tilt, rattle, beads, knock)
-scripts/ui     title, pause, options, ball rack, ending, ui_kit
+scripts/ui     title, pause, options, ball rack, ending, ui_kit, touch_controls
 scripts/autoload  save_data.gd, sfx.gd
 shaders/       ball.gdshader (rolling-ball sphere mapping), vignette.gdshader
 tools/         art_*.lua (Aseprite), build_tower.gd, build_sfx.gd, *.ps1 helpers
-tests/         gameplay_test, menu_test, props_test, hardcore_test, level2_test, conditions_test, route_solver, capture*
+tests/         gameplay_test, menu_test, props_test, hardcore_test, level2_test, conditions_test, training_test, touch_test, route_solver, capture*
 docs/          DESIGN.md, VALIDATION.md, screenshots/
 ```
 

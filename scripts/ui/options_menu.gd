@@ -37,6 +37,14 @@ func _ready() -> void:
 		shake.text = _onoff("Screen shake", SaveData.screen_shake))
 	shake.text = _onoff("Screen shake", SaveData.screen_shake)
 	controls.append(shake)
+	var touch := UIKit.button(box, "", func(): pass)
+	touch.pressed.connect(func():
+		var order := ["auto", "on", "off"]
+		SaveData.touch_controls = order[(order.find(SaveData.touch_controls) + 1) % order.size()]
+		SaveData.apply_settings()
+		touch.text = touch_label())
+	touch.text = touch_label()
+	controls.append(touch)
 	var reset := UIKit.button(box, "Reset all progress", func(): pass)
 	reset.pressed.connect(func():
 		if reset.text == CONFIRM_RESET:
@@ -65,6 +73,11 @@ func _reset_progress() -> void:
 	Sfx.set_gust(0.0)
 	get_tree().paused = false
 	get_tree().change_scene_to_file("res://scenes/ui/title.tscn")
+
+
+## Auto shows the on-screen buttons only on touch devices.
+static func touch_label() -> String:
+	return "Touch controls: %s" % { "on": "On", "off": "Off" }.get(SaveData.touch_controls, "Auto")
 
 
 func _onoff(text: String, on: bool) -> String:

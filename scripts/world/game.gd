@@ -56,11 +56,14 @@ var camera_target := Vector2.ZERO
 var _cam_tween: Tween
 var flags: Array[CheckpointFlag] = []   # Training: oldest first, the last is where R sends you
 var _training_hud: RichTextLabel
+var touch: TouchControls         # on-screen buttons, shown on touch devices
 
 const HINT_KEYS := "[center][color=#f2d27a]A D[/color] aim   [color=#f2d27a]W S[/color] spin   [color=#f2d27a]UP DOWN[/color] look   hold [color=#f2d27a]SPACE[/color] to strike   [color=#f2d27a]ESC[/color] pause[/center]"
 const HINT_PAD := "[center][color=#f2d27a]D-PAD[/color] aim and spin   [color=#f2d27a]R-STICK[/color] look   hold [color=#f2d27a]A[/color] to strike   [color=#f2d27a]START[/color] pause[/center]"
 const TRAINING_KEYS := "[color=#9ff0b4]TRAINING[/color]   [color=#f2d27a]C[/color] plant flag   [color=#f2d27a]R[/color] back to flag   [color=#f2d27a]X[/color] remove flag"
 const TRAINING_PAD := "[color=#9ff0b4]TRAINING[/color]   [color=#f2d27a]Y[/color] plant flag   [color=#f2d27a]X[/color] back to flag   [color=#f2d27a]LB[/color] remove flag"
+const HINT_TOUCH := "[center]arrows [color=#f2d27a]aim[/color]   ball [color=#f2d27a]spin[/color]   eye [color=#f2d27a]look[/color]   hold the [color=#f2d27a]cue[/color] to strike[/center]"
+const TRAINING_TOUCH := "[color=#9ff0b4]TRAINING[/color]   flag buttons, top right: [color=#f2d27a]plant[/color], [color=#f2d27a]back[/color], [color=#f2d27a]remove[/color]"
 
 
 func _ready() -> void:
@@ -179,6 +182,10 @@ func _build_hud() -> void:
 		_training_hud.add_theme_constant_override("shadow_offset_y", 1)
 		hud.add_child(_training_hud)
 		_update_training_hud()
+	touch = TouchControls.new()
+	touch.training = training()
+	touch.active_changed.connect(func(_on: bool): _refresh_hints())
+	add_child(touch)
 	pause_menu = PAUSE_MENU.new()
 	pause_menu.game = self
 	hud.add_child(pause_menu)
@@ -187,6 +194,8 @@ func _build_hud() -> void:
 func _process(delta: float) -> void:
 	if not finished:
 		SaveData.run_time += delta
+	touch.suspended = finished
+	touch.ball_at = player.get_global_transform_with_canvas().origin
 	_update_screen(false)
 	_update_hint(delta)
 	_update_look(delta)
@@ -409,8 +418,17 @@ func _input(event: InputEvent) -> void:
 		pad = false
 	if pad != _using_pad:
 		_using_pad = pad
-		_hint.text = HINT_PAD if pad else HINT_KEYS
-		_update_training_hud()
+		_refresh_hints()
+
+
+## True while the on-screen buttons are showing.
+func touch_on() -> bool:
+	return touch != null and touch.active
+
+
+func _refresh_hints() -> void:
+	_hint.text = HINT_TOUCH if touch_on() else (HINT_PAD if _using_pad else HINT_KEYS)
+	_update_training_hud()
 
 
 # --- Reactive decor -----------------------------------------------------------------
@@ -664,5 +682,5 @@ func _refresh_flags() -> void:
 func _update_training_hud() -> void:
 	if _training_hud == null:
 		return
-	var keys := TRAINING_PAD if _using_pad else TRAINING_KEYS
+	var keys := TRAINING_TOUCH if touch_on() else (TRAINING_PAD if _using_pad else TRAINING_KEYS)
 	_training_hud.text = keys + "   flags [color=#9ff0b4]%d[/color]" % flags.size()
