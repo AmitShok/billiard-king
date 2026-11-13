@@ -22,6 +22,7 @@ var music_volume := 0.6
 var fullscreen := false
 var screen_shake := true
 var touch_controls := "auto"     # "auto" (touch devices only), "on" or "off"
+var _applied_fullscreen := false   # the window starts windowed
 
 # Which climb is being played. Each mode keeps its own run.
 var mode := CLASSIC
@@ -341,9 +342,13 @@ func collect_ball(number: int) -> void:
 
 
 func apply_settings() -> void:
-	var mode := DisplayServer.WINDOW_MODE_FULLSCREEN if fullscreen else DisplayServer.WINDOW_MODE_WINDOWED
-	if DisplayServer.get_name() != "headless" and DisplayServer.window_get_mode() != mode:
-		DisplayServer.window_set_mode(mode)
+	# Only when the Fullscreen setting itself changes: a phone goes fullscreen on
+	# its own (see the web page's head include), and a volume change mustn't undo it.
+	if fullscreen != _applied_fullscreen:
+		_applied_fullscreen = fullscreen
+		var mode := DisplayServer.WINDOW_MODE_FULLSCREEN if fullscreen else DisplayServer.WINDOW_MODE_WINDOWED
+		if DisplayServer.get_name() != "headless" and DisplayServer.window_get_mode() != mode:
+			DisplayServer.window_set_mode(mode)
 	# Phones: fill the screen. Whole-number scaling leaves wide black borders on them.
 	if TouchControls.touch_device():
 		get_tree().root.content_scale_stretch = Window.CONTENT_SCALE_STRETCH_FRACTIONAL

@@ -256,3 +256,21 @@ The rendered fire escape and rooftop screens show the rain behind the ledges. Al
 **All suites pass:** gameplay 46, menus 35, props 27, Hardcore 51, conditions 74, level 2 64, training 38, touch 57.
 
 **Not checked:** a real phone or tablet (iOS Safari especially), and a touchscreen laptop.
+
+## Phone layout on itch.io: 13 November 2026
+
+**Problem:** on the user's Android phone, in Chrome on itch.io, the main menu couldn't be used and the game stayed upright when the phone was rotated.
+
+**Reproduced** with an itch-style page (a 960×540 iframe) at 375×812 phone size: the game rendered at 960×540 inside the frame, so the menu sat off the right edge of the screen.
+
+**Fix:**
+- The first touch goes fullscreen and locks to landscape, through a script in the web export's head.
+- `SaveData.apply_settings` no longer forces windowed mode on every settings change.
+- README: tick Mobile friendly / Landscape on the itch.io page.
+
+**Verified:**
+- The script is in the exported `index.html`.
+- On the phone-size test page, a tap runs it and calls `requestFullscreen`.
+- All suites pass: gameplay 46, menus 35, props 27, Hardcore 51, conditions 74, level 2 64, training 38, touch 57.
+
+**Not checked:** the result itself. The built-in browser refuses fullscreen for every page ("Permissions check failed"), so whether fullscreen and the landscape lock take effect needs a real phone.
