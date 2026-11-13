@@ -274,3 +274,20 @@ The rendered fire escape and rooftop screens show the rain behind the ledges. Al
 - All suites pass: gameplay 46, menus 35, props 27, Hardcore 51, conditions 74, level 2 64, training 38, touch 57.
 
 **Not checked:** the result itself. The built-in browser refuses fullscreen for every page ("Permissions check failed"), so whether fullscreen and the landscape lock take effect needs a real phone.
+
+## iPhone: magnified, cut-off picture: 13 November 2026
+
+**Problem:** on the user's iPhone (Chrome, which runs on WebKit) on itch.io, the game was drawn magnified and cut off. It looked the same upright and sideways: the title was off to the right and the menu couldn't be reached.
+
+**Cause (likely):** Godot sized its canvas at the device pixel ratio (3× on an iPhone). WebKit's handling of `devicePixelRatio` is known to disagree with how it actually draws (WebKit bug 124862), and other engines show the same zoomed, cropped picture there. This could not be reproduced in Chromium.
+
+**Fix:**
+- `display/window/dpi/allow_hidpi.web=false`: the web canvas now matches the page size.
+- The canvas is scaled up with `image-rendering: pixelated` (in the export head include).
+
+**Verified:** emulated phone, 740×340 at 2×.
+- The canvas is 740×340 (it was 1480×680) and the whole title screen shows, sharp.
+- Taps open the menus, and the level shows with all touch buttons.
+- All suites pass.
+
+**Not checked:** the user's iPhone itself.
