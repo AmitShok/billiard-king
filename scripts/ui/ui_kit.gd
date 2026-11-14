@@ -44,14 +44,20 @@ static func label(parent: Node, text: String, color := Color("d8d0bc")) -> Label
 static func button(parent: Node, text: String, on_press: Callable) -> Button:
 	var b := Button.new()
 	b.text = text
+	wire_button(b, on_press)
+	parent.add_child(b)
+	return b
+
+
+## Gives a button (made in code or placed in a scene) the shared menu
+## behaviour: hover focuses it, focus and press make their sounds.
+static func wire_button(b: Button, on_press: Callable) -> void:
 	b.focus_mode = Control.FOCUS_ALL
 	b.mouse_entered.connect(b.grab_focus)
 	b.focus_entered.connect(func(): Sfx.play("ui_move", -6.0, 1.0, 0.0))
 	b.pressed.connect(func():
 		Sfx.play("ui_accept", -4.0, 1.0, 0.0)
 		on_press.call())
-	parent.add_child(b)
-	return b
 
 
 static func slider(parent: Node, text: String, value: float, on_change: Callable) -> HSlider:

@@ -72,6 +72,7 @@ function enableGlDebug() {
 	const counts = {};
 	let calls = 0;
 	const show = () => { out.textContent = lines.join('\n') + '\n-- calls checked: ' + calls + '  errors by call: ' + JSON.stringify(counts); };
+	setInterval(show, 1000);
 	const log = (s) => { lines.push(s); show(); };
 	const names = { 1280: 'INVALID_ENUM', 1281: 'INVALID_VALUE', 1282: 'INVALID_OPERATION', 1285: 'OUT_OF_MEMORY', 1286: 'INVALID_FRAMEBUFFER_OP', 37442: 'CONTEXT_LOST' };
 	const orig = HTMLCanvasElement.prototype.getContext;
