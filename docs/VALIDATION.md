@@ -378,4 +378,4 @@ Every failing build created its CanvasItems in code at startup, the empty lab pr
 
 **Rules ruled out earlier:** the export template is byte-identical to the user's working games; the project settings; the web page; the stretch mode; the GPU limits (iPhone: uniform block 16384, vertex uniform vectors 1024, full float precision).
 
-**Still built in code**, so not yet known to work on iPhone: level select, options, pause, ball rack, ending, goal pop-up, HUD and touch controls.
+**Other screens:** the level select, options, pause menu, Ball Rack, HUD and touch controls are still built in code, and the user checked that they draw correctly on the iPhone. Only the title screen needed the change.
