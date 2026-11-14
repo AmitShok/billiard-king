@@ -57,6 +57,68 @@ $GODOT_HEAD_INCLUDE
  </div>
 </div>
 <noscript>Enable JavaScript to play Vertical Billiard.</noscript>
+<pre id="gldebug" style="display:none;position:fixed;left:0;top:0;right:0;max-height:60%;overflow:auto;margin:0;padding:6px;z-index:20;background:rgba(0,0,0,0.85);color:#9ff0b4;font:11px/1.3 monospace;white-space:pre-wrap"></pre>
+<script>
+// Graphics report for phones without a developer console: add ?gldebug to the
+// address. Wraps the WebGL context Godot creates, records every GL error with
+// the call that raised it, shader compile/link failures, and the GPU's limits
+// and float precision, and prints it all over the game. Off otherwise.
+function enableGlDebug() {
+	if (window.__glDebugOn) return;
+	window.__glDebugOn = true;
+	const out = document.getElementById('gldebug');
+	out.style.display = 'block';
+	const lines = [];
+	const counts = {};
+	let calls = 0;
+	const show = () => { out.textContent = lines.join('\n') + '\n-- calls checked: ' + calls + '  errors by call: ' + JSON.stringify(counts); };
+	const log = (s) => { lines.push(s); show(); };
+	const names = { 1280: 'INVALID_ENUM', 1281: 'INVALID_VALUE', 1282: 'INVALID_OPERATION', 1285: 'OUT_OF_MEMORY', 1286: 'INVALID_FRAMEBUFFER_OP', 37442: 'CONTEXT_LOST' };
+	const orig = HTMLCanvasElement.prototype.getContext;
+	HTMLCanvasElement.prototype.getContext = function (type, attrs) {
+		const gl = orig.call(this, type, attrs);
+		if (!gl || gl.__wrapped || !/webgl/.test(type)) return gl;
+		gl.__wrapped = true;
+		lines.length = 0;   // Godot makes throwaway test contexts first; report only the latest
+		try {
+			const dbg = gl.getExtension('WEBGL_debug_renderer_info');
+			log('context ' + type + '  ' + gl.getParameter(gl.VERSION) + '  ' + gl.getParameter(gl.SHADING_LANGUAGE_VERSION));
+			log('gpu ' + (dbg ? gl.getParameter(dbg.UNMASKED_VENDOR_WEBGL) + ' / ' + gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER)));
+			log('attrs ' + JSON.stringify(gl.getContextAttributes()));
+			const p = (s, t) => { const f = gl.getShaderPrecisionFormat(s, t); return f.precision + '/' + f.rangeMax; };
+			log('float precision  vertex high ' + p(gl.VERTEX_SHADER, gl.HIGH_FLOAT) + ' med ' + p(gl.VERTEX_SHADER, gl.MEDIUM_FLOAT) + '  fragment high ' + p(gl.FRAGMENT_SHADER, gl.HIGH_FLOAT) + ' med ' + p(gl.FRAGMENT_SHADER, gl.MEDIUM_FLOAT));
+			log('int precision  vertex high ' + p(gl.VERTEX_SHADER, gl.HIGH_INT) + ' med ' + p(gl.VERTEX_SHADER, gl.MEDIUM_INT));
+			log('limits  texture ' + gl.getParameter(gl.MAX_TEXTURE_SIZE) + '  attribs ' + gl.getParameter(gl.MAX_VERTEX_ATTRIBS) + '  vertex uniform vectors ' + gl.getParameter(gl.MAX_VERTEX_UNIFORM_VECTORS) + '  uniform block ' + gl.getParameter(gl.MAX_UNIFORM_BLOCK_SIZE) + '  ubo bindings ' + gl.getParameter(gl.MAX_UNIFORM_BUFFER_BINDINGS) + '  varyings ' + gl.getParameter(gl.MAX_VARYING_VECTORS));
+			log('drawing buffer ' + gl.drawingBufferWidth + ' x ' + gl.drawingBufferHeight + '  canvas ' + this.width + ' x ' + this.height);
+		} catch (e) { log('info failed: ' + e.message); }
+		const proto = Object.getPrototypeOf(gl);
+		for (const name of Object.getOwnPropertyNames(proto)) {
+			if (name === 'getError' || name === 'getContextAttributes' || name === 'isContextLost') continue;
+			const d = Object.getOwnPropertyDescriptor(proto, name);
+			if (!d || typeof d.value !== 'function') continue;
+			const fn = d.value;
+			gl[name] = function () {
+				const r = fn.apply(gl, arguments);
+				if (calls < 400000) {
+					calls++;
+					const e = gl.getError();
+					if (e) {
+						counts[name] = (counts[name] || 0) + 1;
+						if (counts[name] <= 3) log('GL ERROR ' + (names[e] || e) + ' in ' + name + '(' + Array.from(arguments).slice(0, 6).map(a => typeof a === 'number' ? a : (a && a.constructor ? a.constructor.name : String(a))).join(', ') + ')');
+						else show();
+					}
+					if (name === 'compileShader' && !gl.getShaderParameter(arguments[0], gl.COMPILE_STATUS)) log('SHADER COMPILE FAILED: ' + (gl.getShaderInfoLog(arguments[0]) || '').slice(0, 400));
+					if (name === 'linkProgram' && !gl.getProgramParameter(arguments[0], gl.LINK_STATUS)) log('PROGRAM LINK FAILED: ' + (gl.getProgramInfoLog(arguments[0]) || '').slice(0, 400));
+				}
+				return r;
+			};
+		}
+		return gl;
+	};
+	window.addEventListener('error', (ev) => log('page error: ' + ev.message));
+}
+if (/gldebug/.test(location.search)) enableGlDebug();
+</script>
 <script src="$GODOT_URL"></script>
 <script>
 const config = $GODOT_CONFIG;
@@ -81,6 +143,14 @@ document.getElementById('canvas').addEventListener('webglcontextlost', () => sho
 window.addEventListener('error', (event) => showGameError(event.message || 'A game file could not be loaded.'));
 window.addEventListener('unhandledrejection', (event) => showGameError((event.reason && event.reason.message) || event.reason || 'The game could not finish loading.'));
 document.getElementById('portrait').onclick = () => document.getElementById('rotate').classList.add('dismissed');
+// Three quick taps on the heading switch on the graphics report (before Play).
+let headingTaps = [];
+document.querySelector('#start h1').addEventListener('click', () => {
+	const now = Date.now();
+	headingTaps = headingTaps.filter((t) => now - t < 1500);
+	headingTaps.push(now);
+	if (headingTaps.length >= 3) { enableGlDebug(); status.textContent = 'Graphics report on. Now tap Play.'; }
+});
 async function start(fullscreen) {
 	if (started) return;
 	if (fullscreen && document.documentElement.requestFullscreen) {
