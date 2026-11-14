@@ -369,3 +369,13 @@ The head-include scripts were dropped.
 - Chrome on desktop does the same.
 
 **Not checked:** the user's iPhone.
+
+## iPhone: fixed by laying the title screen out as nodes, 14 November 2026
+
+Rebuilt `scenes/ui/title.tscn` as real nodes instead of creating them in `title.gd`. The user confirmed the title screen now draws correctly on their iPhone, the first build that did.
+
+Every failing build created its CanvasItems in code at startup, the empty lab project included. Scenes with nodes saved in the `.tscn` work. The underlying engine or WebKit cause is unknown, and it can't be reproduced off the device.
+
+**Rules ruled out earlier:** the export template is byte-identical to the user's working games; the project settings; the web page; the stretch mode; the GPU limits (iPhone: uniform block 16384, vertex uniform vectors 1024, full float precision).
+
+**Still built in code**, so not yet known to work on iPhone: level select, options, pause, ball rack, ending, goal pop-up, HUD and touch controls.
