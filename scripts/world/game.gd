@@ -382,6 +382,7 @@ func _on_won() -> void:
 	Sfx.play("win", 0.0, 1.0, 0.0)
 	var ending: Control = ENDING.new()
 	ending.stats = stats
+	ending.back_requested.connect(quit_to_title)
 	hud.add_child(ending)
 
 

@@ -109,13 +109,52 @@ func _ready() -> void:
 	check("all five awards granted", [11, 12, 13, 14, 15].all(func(n): return SaveData.collected.has(n)), str(SaveData.collected))
 	check("run is closed and recorded", not SaveData.has_run and SaveData.wins == 1 and absf(SaveData.best_time - 900.0) < 5.0, "time %.1f wins %d" % [SaveData.best_time, SaveData.wins])
 	await _frames(5)
-	var ending_found := false
+	var ending: Control = null
 	for c in game.hud.get_children():
 		if c.get_script() == load("res://scripts/ui/ending.gd"):
-			ending_found = true
-	check("ending card shown", ending_found)
+			ending = c
+	check("ending card shown", ending != null)
 	check("controls locked after the win", not game.player.input_enabled)
+	# Returning: a real button, and a tap anywhere (taps used to be swallowed).
+	ending.back_requested.disconnect(game.quit_to_title)
+	var backs := [0]
+	ending.back_requested.connect(func(): backs[0] += 1)
+	var back_btn: Button = null
+	for b in ending.find_children("*", "Button", true, false):
+		if b.text == "Back to title":
+			back_btn = b
+	check("the win card has a Back to title button", back_btn != null)
+	for i in 400:
+		if ending.can_return():
+			break
+		await get_tree().process_frame
+	check("it is focused once the card fades in", back_btn != null and back_btn.has_focus() and not back_btn.disabled)
+	var tap := InputEventScreenTouch.new()
+	tap.position = Vector2(40, 40)
+	tap.pressed = true
+	get_tree().root.push_input(tap, true)
+	await _frames(1)
+	check("a tap anywhere returns to the title", backs[0] == 1, str(backs[0]))
+	ending.back()
+	check("only once", backs[0] == 1)
 	game.queue_free()
+	await _frames(2)
+	# A fresh card: the button and the Enter key also return.
+	var card: Control = load("res://scripts/ui/ending.gd").new()
+	add_child(card)
+	var presses := [0]
+	card.back_requested.connect(func(): presses[0] += 1)
+	for i in 400:
+		if card.can_return():
+			break
+		await get_tree().process_frame
+	var enter := InputEventAction.new()
+	enter.action = "ui_accept"
+	enter.pressed = true
+	get_tree().root.push_input(enter, true)
+	await _frames(1)
+	check("Enter on the focused button returns", presses[0] == 1, str(presses[0]))
+	card.queue_free()
 	await _frames(2)
 
 	DirAccess.remove_absolute(ProjectSettings.globalize_path(SaveData.path))
