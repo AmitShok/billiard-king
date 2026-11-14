@@ -59,7 +59,7 @@ func _touch(at: Vector2, pressed: bool, finger := 0) -> void:
 
 
 func _centre(b: TouchScreenButton) -> Vector2:
-	return b.position + b.texture_normal.get_size() / 2.0
+	return b.position + b.texture_normal.get_size() * b.scale / 2.0
 
 
 func _rest(game: Node2D, at: Vector2) -> void:
@@ -108,14 +108,17 @@ func _button_tests() -> void:
 	var apart := true
 	for i in t.buttons.size():
 		var a: TouchScreenButton = t.buttons[i]
-		var ra: float = (a.shape as CircleShape2D).radius
+		var ra: float = (a.shape as CircleShape2D).radius * a.scale.x
 		var ca := _centre(a)
 		if ca.x - ra < -4 or ca.y - ra < -4 or ca.x + ra > 516 or ca.y + ra > 292:
 			inside = false
 		for j in range(i + 1, t.buttons.size()):
 			var b: TouchScreenButton = t.buttons[j]
-			if ca.distance_to(_centre(b)) < ra + (b.shape as CircleShape2D).radius:
+			if ca.distance_to(_centre(b)) < ra + (b.shape as CircleShape2D).radius * b.scale.x:
 				apart = false
+	var aim_size: Vector2 = t.button("aim_left").texture_normal.get_size() * t.button("aim_left").scale
+	var cue_size: Vector2 = t.button("charge").texture_normal.get_size() * t.button("charge").scale
+	check("the buttons are thumb-sized (42 px, cue 66 px in the view)", aim_size.x >= 42.0 and cue_size.x >= 66.0, "%s %s" % [aim_size, cue_size])
 	check("every button sits on screen", inside)
 	check("no two buttons' touch areas overlap", apart)
 

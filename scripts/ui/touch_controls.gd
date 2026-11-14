@@ -13,24 +13,27 @@ const STRIKE := preload("res://assets/textures/touch_strike.png")
 const IDLE_ALPHA := 0.5
 const HELD_ALPHA := 0.95
 const UNDER_ALPHA := 0.15   # while the ball is behind a button, so it never hides it
-const SMALL := 28
-const BIG := 44
+const SMALL := 28   # art size of the small buttons (touch_buttons.png cells)
+const BIG := 44     # art size of the cue button (touch_strike.png frames)
+## Buttons are drawn and touched at this multiple of their art, so they're
+## comfortable under a thumb: 42 px small, 66 px cue, in the 512x288 view.
+const SCALE := 1.5
 ## Sheet column, action and centre (in the 512x288 view) of each button.
 const PLAY_BUTTONS := [
-	{ "col": 0, "action": "aim_left", "at": Vector2(22, 264), "slide": true },
-	{ "col": 1, "action": "aim_right", "at": Vector2(58, 264), "slide": true },
-	{ "col": 2, "action": "spin_up", "at": Vector2(22, 228) },
-	{ "col": 3, "action": "spin_down", "at": Vector2(58, 228) },
-	{ "col": 4, "action": "look_up", "at": Vector2(438, 228), "slide": true },
-	{ "col": 5, "action": "look_down", "at": Vector2(438, 264), "slide": true },
-	{ "col": 6, "action": "pause", "at": Vector2(492, 18) },
+	{ "col": 0, "action": "aim_left", "at": Vector2(26, 262), "slide": true },
+	{ "col": 1, "action": "aim_right", "at": Vector2(78, 262), "slide": true },
+	{ "col": 2, "action": "spin_up", "at": Vector2(26, 210) },
+	{ "col": 3, "action": "spin_down", "at": Vector2(78, 210) },
+	{ "col": 4, "action": "look_up", "at": Vector2(410, 210), "slide": true },
+	{ "col": 5, "action": "look_down", "at": Vector2(410, 262), "slide": true },
+	{ "col": 6, "action": "pause", "at": Vector2(488, 24) },
 ]
 const FLAG_BUTTONS := [
-	{ "col": 7, "action": "flag_place", "at": Vector2(456, 18) },
-	{ "col": 8, "action": "flag_return", "at": Vector2(424, 18) },
-	{ "col": 9, "action": "flag_remove", "at": Vector2(392, 18) },
+	{ "col": 7, "action": "flag_place", "at": Vector2(436, 24) },
+	{ "col": 8, "action": "flag_return", "at": Vector2(384, 24) },
+	{ "col": 9, "action": "flag_remove", "at": Vector2(332, 24) },
 ]
-const STRIKE_AT := Vector2(484, 258)
+const STRIKE_AT := Vector2(477, 253)
 
 ## Training adds the three flag buttons.
 var training := false
@@ -106,7 +109,8 @@ func _make(action: String, normal: Texture2D, pressed: Texture2D, size: int, at:
 	b.shape = shape
 	b.shape_centered = true
 	b.passby_press = slide
-	b.position = at - Vector2(size, size) / 2.0
+	b.scale = Vector2(SCALE, SCALE)   # scales the drawing and the touch area together
+	b.position = at - Vector2(size, size) * SCALE / 2.0
 	b.modulate.a = IDLE_ALPHA
 	# Buttons stop with the game: nothing is pressed under a menu.
 	b.process_mode = Node.PROCESS_MODE_PAUSABLE
@@ -143,7 +147,7 @@ func set_active(on: bool) -> void:
 
 ## True when the ball is behind (or right beside) this button.
 func covers_ball(b: TouchScreenButton) -> bool:
-	var size := b.texture_normal.get_size()
+	var size := b.texture_normal.get_size() * b.scale
 	return ball_at.distance_to(b.position + size / 2.0) < size.x / 2.0 + 10.0
 
 

@@ -62,8 +62,8 @@ const HINT_KEYS := "[center][color=#f2d27a]A D[/color] aim   [color=#f2d27a]W S[
 const HINT_PAD := "[center][color=#f2d27a]D-PAD[/color] aim and spin   [color=#f2d27a]R-STICK[/color] look   hold [color=#f2d27a]A[/color] to strike   [color=#f2d27a]START[/color] pause[/center]"
 const TRAINING_KEYS := "[color=#9ff0b4]TRAINING[/color]   [color=#f2d27a]C[/color] plant flag   [color=#f2d27a]R[/color] back to flag   [color=#f2d27a]X[/color] remove flag"
 const TRAINING_PAD := "[color=#9ff0b4]TRAINING[/color]   [color=#f2d27a]Y[/color] plant flag   [color=#f2d27a]X[/color] back to flag   [color=#f2d27a]LB[/color] remove flag"
-const HINT_TOUCH := "[center]arrows [color=#f2d27a]aim[/color]   ball [color=#f2d27a]spin[/color]   eye [color=#f2d27a]look[/color]   hold the [color=#f2d27a]cue[/color] to strike[/center]"
-const TRAINING_TOUCH := "[color=#9ff0b4]TRAINING[/color]   flag buttons, top right: [color=#f2d27a]plant[/color], [color=#f2d27a]back[/color], [color=#f2d27a]remove[/color]"
+const HINT_TOUCH := "[center]arrows [color=#f2d27a]aim[/color]   ball [color=#f2d27a]spin[/color]   eye [color=#f2d27a]look[/color]   hold [color=#f2d27a]cue[/color] to strike[/center]"
+const TRAINING_TOUCH := "[color=#9ff0b4]TRAINING[/color]   flags top right: [color=#f2d27a]plant[/color], [color=#f2d27a]back[/color], [color=#f2d27a]remove[/color]"
 
 
 func _ready() -> void:
