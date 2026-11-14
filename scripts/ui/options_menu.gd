@@ -45,6 +45,15 @@ func _ready() -> void:
 		touch.text = touch_label())
 	touch.text = touch_label()
 	controls.append(touch)
+	var size := UIKit.button(box, "", func(): pass)
+	size.pressed.connect(func():
+		var order: Array = TouchControls.SIZES
+		var i := order.find(SaveData.touch_size)
+		SaveData.touch_size = order[(i + 1) % order.size()] if i >= 0 else TouchControls.DEFAULT_SIZE
+		SaveData.apply_settings()
+		size.text = size_label())
+	size.text = size_label()
+	controls.append(size)
 	var reset := UIKit.button(box, "Reset all progress", func(): pass)
 	reset.pressed.connect(func():
 		if reset.text == CONFIRM_RESET:
@@ -78,6 +87,11 @@ func _reset_progress() -> void:
 ## Auto shows the on-screen buttons only on touch devices.
 static func touch_label() -> String:
 	return "Touch controls: %s" % { "on": "On", "off": "Off" }.get(SaveData.touch_controls, "Auto")
+
+
+## How big the on-screen touch buttons are drawn.
+static func size_label() -> String:
+	return "Button size: %sx" % String.num(TouchControls.size_scale(), 2)
 
 
 func _onoff(text: String, on: bool) -> String:

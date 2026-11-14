@@ -27,7 +27,10 @@ func _ready() -> void:
 	print("Training and menus")
 	await _training_tests()
 	await _menu_tests()
+	print("Button size")
+	await _size_tests()
 	SaveData.touch_controls = "auto"
+	SaveData.touch_size = TouchControls.DEFAULT_SIZE
 	DirAccess.remove_absolute(ProjectSettings.globalize_path(SaveData.path))
 	print("%d passed, %d failed" % [passed, failed])
 	get_tree().quit(1 if failed > 0 else 0)
@@ -299,6 +302,70 @@ func _menu_tests() -> void:
 	SaveData.touch_controls = "auto"
 	SaveData.load_data()
 	check("the setting is saved", SaveData.touch_controls == "on")
+
+
+func _size_tests() -> void:
+	# Every size: all twelve buttons (flags included) on screen, none overlapping.
+	for s in TouchControls.SIZES:
+		var at := TouchControls.layout(s)
+		var radius := func(action: String) -> float:
+			return ((TouchControls.BIG if action == "charge" else TouchControls.SMALL) / 2.0 + TouchControls.MARGIN) * s
+		var inside := true
+		var apart := true
+		var actions: Array = at.keys()
+		for i in actions.size():
+			var a: String = actions[i]
+			var ca: Vector2 = at[a]
+			var ra: float = radius.call(a)
+			if ca.x - ra < -0.01 or ca.y - ra < -0.01 or ca.x + ra > 512.01 or ca.y + ra > 288.01:
+				inside = false
+			for j in range(i + 1, actions.size()):
+				var b: String = actions[j]
+				if ca.distance_to(at[b]) < ra + radius.call(b) - 0.01:
+					apart = false
+		check("at %sx every button is on screen" % s, inside)
+		check("at %sx no two touch areas overlap" % s, apart)
+
+	# The Options button walks 1x .. 2x and saves.
+	SaveData.touch_size = TouchControls.DEFAULT_SIZE
+	var menu := OptionsMenu.new()
+	add_child(menu)
+	await _frames(2)
+	var btn: Button = null
+	for b in menu.find_children("*", "Button", true, false):
+		if b.text.begins_with("Button size"):
+			btn = b
+	check("Options has a Button size setting at 1.5x", btn != null and btn.text == "Button size: 1.5x", btn.text if btn else "")
+	var seen: Array = []
+	for i in TouchControls.SIZES.size():
+		btn.pressed.emit()
+		seen.append(SaveData.touch_size)
+	check("it cycles 1.75x, 2x, 1x, 1.25x and back to 1.5x", seen == [1.75, 2.0, 1.0, 1.25, 1.5], str(seen))
+	btn.pressed.emit()   # 1.75x
+	check("the label shows the size", btn.text == "Button size: 1.75x", btn.text)
+	menu.close()
+	await _frames(2)
+	SaveData.load_data()
+	check("the size is saved", is_equal_approx(SaveData.touch_size, 1.75), str(SaveData.touch_size))
+
+	# Live in a climb: the buttons resize at once, and the hints shorten when big.
+	SaveData.touch_controls = "on"
+	SaveData.touch_size = 1.0
+	var g := await _load(SaveData.TRAINING)
+	var t: TouchControls = g.touch
+	var small_cue: float = t.button("charge").scale.x
+	check("1x draws the buttons at their art size", is_equal_approx(small_cue, 1.0))
+	check("the full hints show at 1x", g._hint.text == g.HINT_TOUCH and g._training_hud.text.contains("plant"))
+	SaveData.touch_size = 2.0
+	SaveData.apply_settings()
+	await _frames(2)
+	check("2x resizes the buttons straight away", is_equal_approx(t.button("charge").scale.x, 2.0) and is_equal_approx(t.button("flag_remove").scale.x, 2.0))
+	check("and moves them to the 2x layout", _centre(t.button("charge")).distance_to(TouchControls.layout(2.0)["charge"]) < 0.5)
+	check("big buttons get the short hints", g._hint.text == g.HINT_TOUCH_SHORT and g._training_hud.text.contains("top right") and not g._training_hud.text.contains("plant"), g._training_hud.text)
+	SaveData.touch_size = TouchControls.DEFAULT_SIZE
+	SaveData.touch_controls = "auto"
+	SaveData.apply_settings()
+	await _close(g)
 
 
 func _physics(n: int) -> void:

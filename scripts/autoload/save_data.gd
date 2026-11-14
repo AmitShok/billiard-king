@@ -22,6 +22,7 @@ var music_volume := 0.6
 var fullscreen := false
 var screen_shake := true
 var touch_controls := "auto"     # "auto" (touch devices only), "on" or "off"
+var touch_size := 1.5            # touch button size, 1x to 2x (see TouchControls.SIZES)
 var _applied_fullscreen := false   # the window starts windowed
 
 # Which climb is being played. Each mode keeps its own run.
@@ -175,6 +176,7 @@ func load_data() -> void:
 	fullscreen = cfg.get_value("settings", "fullscreen", fullscreen)
 	screen_shake = cfg.get_value("settings", "shake", screen_shake)
 	touch_controls = cfg.get_value("settings", "touch", touch_controls)
+	touch_size = float(cfg.get_value("settings", "touch_size", touch_size))
 	_load_run(cfg)
 	collected.assign(cfg.get_value("rack", "collected", []))
 	skin = cfg.get_value("rack", "skin", 0)
@@ -220,6 +222,7 @@ func save() -> void:
 	cfg.set_value("settings", "fullscreen", fullscreen)
 	cfg.set_value("settings", "shake", screen_shake)
 	cfg.set_value("settings", "touch", touch_controls)
+	cfg.set_value("settings", "touch_size", touch_size)
 	var s := run_section()
 	if mode == TRAINING:
 		s = ""   # nothing about a training run is kept

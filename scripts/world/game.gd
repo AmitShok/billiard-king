@@ -64,6 +64,9 @@ const TRAINING_KEYS := "[color=#9ff0b4]TRAINING[/color]   [color=#f2d27a]C[/colo
 const TRAINING_PAD := "[color=#9ff0b4]TRAINING[/color]   [color=#f2d27a]Y[/color] plant flag   [color=#f2d27a]X[/color] back to flag   [color=#f2d27a]LB[/color] remove flag"
 const HINT_TOUCH := "[center]arrows [color=#f2d27a]aim[/color]   ball [color=#f2d27a]spin[/color]   eye [color=#f2d27a]look[/color]   hold [color=#f2d27a]cue[/color] to strike[/center]"
 const TRAINING_TOUCH := "[color=#9ff0b4]TRAINING[/color]   flags top right: [color=#f2d27a]plant[/color], [color=#f2d27a]back[/color], [color=#f2d27a]remove[/color]"
+## Shorter versions for big touch buttons, so the text never sits under one.
+const HINT_TOUCH_SHORT := "[center]hold the [color=#f2d27a]cue[/color] to strike[/center]"
+const TRAINING_TOUCH_SHORT := "[color=#9ff0b4]TRAINING[/color]   flags top right"
 
 
 func _ready() -> void:
@@ -185,6 +188,7 @@ func _build_hud() -> void:
 	touch = TouchControls.new()
 	touch.training = training()
 	touch.active_changed.connect(func(_on: bool): _refresh_hints())
+	SaveData.settings_changed.connect(_refresh_hints)   # the button size changes the hints
 	add_child(touch)
 	pause_menu = PAUSE_MENU.new()
 	pause_menu.game = self
@@ -428,7 +432,8 @@ func touch_on() -> bool:
 
 
 func _refresh_hints() -> void:
-	_hint.text = HINT_TOUCH if touch_on() else (HINT_PAD if _using_pad else HINT_KEYS)
+	var roomy := TouchControls.size_scale() <= TouchControls.ROOMY_SIZE
+	_hint.text = (HINT_TOUCH if roomy else HINT_TOUCH_SHORT) if touch_on() else (HINT_PAD if _using_pad else HINT_KEYS)
 	_update_training_hud()
 
 
@@ -683,5 +688,6 @@ func _refresh_flags() -> void:
 func _update_training_hud() -> void:
 	if _training_hud == null:
 		return
-	var keys := TRAINING_TOUCH if touch_on() else (TRAINING_PAD if _using_pad else TRAINING_KEYS)
+	var roomy := TouchControls.size_scale() <= TouchControls.ROOMY_SIZE
+	var keys := (TRAINING_TOUCH if roomy else TRAINING_TOUCH_SHORT) if touch_on() else (TRAINING_PAD if _using_pad else TRAINING_KEYS)
 	_training_hud.text = keys + "   flags [color=#9ff0b4]%d[/color]" % flags.size()
