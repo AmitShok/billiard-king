@@ -157,15 +157,63 @@ func record(for_mode: String, for_level: int) -> Dictionary:
 	return records.get("%s_%d" % [for_mode, for_level], { "wins": 0, "best_time": 0.0, "best_strokes": 0 })
 
 
+## The save, read back: the file in user://, or the browser's own copy
+## (web builds) when that is newer. See _write().
 func _read() -> ConfigFile:
 	var cfg := ConfigFile.new()
 	cfg.load(path)
+	var text := _mirror_get()
+	if text != "":
+		var copy := ConfigFile.new()
+		if copy.parse(text) == OK and saved_at(copy) > saved_at(cfg):
+			return copy
 	return cfg
 
 
+## When a save was written (seconds since 1970; 0 for saves older than the stamp).
+static func saved_at(cfg: ConfigFile) -> float:
+	return float(cfg.get_value("meta", "saved_at", 0.0))
+
+
+## Writes the save. On the web, user:// is an in-memory folder that Godot copies
+## to the browser's IndexedDB a moment later, in the background: closing the tab
+## first, or a browser that won't give an iframe IndexedDB (iPhones on itch.io),
+## lost the progress. So each save is also put straight into localStorage,
+## which is written at once, and _read() takes whichever copy is newer.
+func _write(cfg: ConfigFile) -> void:
+	cfg.set_value("meta", "saved_at", Time.get_unix_time_from_system())
+	cfg.save(path)
+	_mirror_set(cfg.encode_to_text())
+
+
+## Tests: stand in for the browser's localStorage outside a web build.
+var fake_web_store := false
+var _fake_store := {}
+
+
+func _mirror_key() -> String:
+	return "vertical_billiard:" + path
+
+
+func _mirror_get() -> String:
+	if OS.has_feature("web"):
+		var v = JavaScriptBridge.eval("(function(){try{return localStorage.getItem(%s)||''}catch(e){return ''}})()" % JSON.stringify(_mirror_key()))
+		return v if v is String else ""
+	if fake_web_store:
+		return _fake_store.get(_mirror_key(), "")
+	return ""
+
+
+func _mirror_set(text: String) -> void:
+	if OS.has_feature("web"):
+		JavaScriptBridge.eval("try{localStorage.setItem(%s,%s)}catch(e){}" % [JSON.stringify(_mirror_key()), JSON.stringify(text)])
+	elif fake_web_store:
+		_fake_store[_mirror_key()] = text
+
+
 func load_data() -> void:
-	var cfg := ConfigFile.new()
-	if cfg.load(path) != OK:
+	var cfg := _read()
+	if cfg.get_sections().is_empty():
 		return
 	master_volume = cfg.get_value("settings", "master", master_volume)
 	sfx_volume = cfg.get_value("settings", "sfx", sfx_volume)
@@ -237,7 +285,7 @@ func save() -> void:
 	cfg.set_value("rack", "hc_best_strokes", hc_best_strokes)
 	cfg.set_value("rack", "records", records)
 	cfg.set_value("rack", "all_unlocked", all_unlocked)
-	cfg.save(path)
+	_write(cfg)
 
 
 func _write_run(cfg: ConfigFile, s: String) -> void:
@@ -312,7 +360,7 @@ func reset_progress() -> void:
 	for section in cfg.get_sections():
 		if section.begins_with("run") or section == "rack":
 			cfg.erase_section(section)
-	cfg.save(path)
+	_write(cfg)
 	mode = CLASSIC
 	level = 1
 	_load_run(cfg)

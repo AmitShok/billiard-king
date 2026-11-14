@@ -326,6 +326,14 @@ func _on_settled() -> void:
 	save_progress()
 
 
+## Leaving the game (tab hidden, app switched, window unfocused) saves too,
+## so closing a phone's browser tab right after never costs progress.
+func _notification(what: int) -> void:
+	if what in [NOTIFICATION_APPLICATION_FOCUS_OUT, NOTIFICATION_WM_WINDOW_FOCUS_OUT, NOTIFICATION_APPLICATION_PAUSED, NOTIFICATION_WM_CLOSE_REQUEST]:
+		if player != null and is_inside_tree():
+			save_progress()
+
+
 func save_progress() -> void:
 	if finished:
 		return

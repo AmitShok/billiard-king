@@ -158,6 +158,8 @@ The game renders at 512×288 and scales by whole numbers (1536×864 window by de
 
 Saves live in `user://vertical_billiard.cfg` (on Windows, `%APPDATA%\Godot\app_userdata\Vertical Billiard\`). A save from when the game was called Billiard King is copied across on first launch. The file holds settings, the run in progress (ball position, aim, time, strokes, falls, zones seen) and the Ball Rack. Tests use separate `test_*.cfg` profiles and never touch your save.
 
+**In the browser** the save is kept twice. Godot's `user://` copy goes to IndexedDB in the background, and every save is also written straight into localStorage, stamped with the time; on load the newer copy wins. Closing a phone's tab right after a shot, or a browser that gives itch.io's frame no IndexedDB, no longer loses progress. Leaving the game (tab hidden, app switched) also saves.
+
 ## Project structure
 
 ```

@@ -306,6 +306,13 @@ func _game_tests() -> void:
 	check("pause stops the tree", get_tree().paused)
 	game.pause_menu.close()
 	check("resume restarts it", not get_tree().paused)
+
+	# Leaving the game (tab hidden, app switched) saves straight away.
+	game.player.aim_deg = 25.0
+	game.notification(Node.NOTIFICATION_APPLICATION_FOCUS_OUT)
+	var on_disk := ConfigFile.new()
+	on_disk.load(SaveData.path)
+	check("leaving the game saves at once", is_equal_approx(on_disk.get_value(SaveData.run_section(), "aim", 0.0), 25.0), str(on_disk.get_value(SaveData.run_section(), "aim", 0.0)))
 	game.queue_free()
 	await get_tree().process_frame
 

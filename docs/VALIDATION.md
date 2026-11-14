@@ -393,3 +393,23 @@ The player never used it, so it's gone:
 **Re-run:** level 1 solver PASS (493 resting spots, all 6 lost balls reachable, 46 strokes, hardest 5 of 238).
 
 All suites pass: gameplay 45, menus 35, props 27, Hardcore 51, conditions 74, level 2 64, training 38, touch 75.
+
+## Web saves survive a closed tab: 14 November 2026
+
+**Problem:** on the user's iPhone, closing the Chrome tab lost progress. On the web, `user://` is an in-memory folder that Godot copies to IndexedDB in the background, a moment after each save. A tab closed before that copy finishes, or an iframe with no usable IndexedDB (itch.io serves the game from itch.zone inside itch.io), kept nothing.
+
+**Fix:**
+- `SaveData._write()` stamps `meta/saved_at` and also writes the save into localStorage, which is synchronous.
+- `_read()` uses whichever copy is newer.
+- The game saves on focus-out, app-pause and close notifications too.
+
+**Tests:**
+- menu suite (stand-in store): the save is restored when the file is gone, including the climb in progress, and the newer copy wins either way;
+- gameplay suite: leaving the game saves at once.
+
+**Browser:** release export, fresh origin:
+- played one stroke; the localStorage copy held the run (1 stroke, ball at x 302.9, aim 35);
+- deleted the `/userfs` IndexedDB database and confirmed it was gone, then reloaded;
+- Normal mode offered Continue, and the ball came back at x ≈ 302 with no new-climb pop-up.
+
+**Not checked:** the user's iPhone.

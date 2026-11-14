@@ -41,6 +41,45 @@ func _ready() -> void:
 	DirAccess.remove_absolute(old_file)
 	SaveData.path = keep_path
 
+	print("Web saves")
+	# On the web each save is also kept in the browser's localStorage, so a
+	# closed tab (or an iframe with no IndexedDB) can't lose it. A stand-in
+	# store plays the browser's part here.
+	SaveData.fake_web_store = true
+	SaveData.wins = 3
+	SaveData.set_run(SaveData.CLASSIC, 1)
+	SaveData.start_new_run()
+	SaveData.ball_pos = Vector2(123, -456)
+	SaveData.save()
+	check("a save is stamped with its time", SaveData.saved_at(SaveData._read()) > 0.0)
+	DirAccess.remove_absolute(ProjectSettings.globalize_path(SaveData.path))
+	SaveData.wins = 0
+	SaveData.has_run = false
+	SaveData.ball_pos = Vector2.ZERO
+	SaveData.load_data()
+	check("with the save file gone, the browser copy brings progress back", SaveData.wins == 3, str(SaveData.wins))
+	check("including the climb in progress", SaveData.has_run and SaveData.ball_pos == Vector2(123, -456), str(SaveData.ball_pos))
+	# The newer copy wins: a newer file beats an older browser copy...
+	var newer := ConfigFile.new()
+	newer.set_value("meta", "saved_at", Time.get_unix_time_from_system() + 100.0)
+	newer.set_value("rack", "wins", 9)
+	newer.save(SaveData.path)
+	SaveData.load_data()
+	check("a newer save file beats an older browser copy", SaveData.wins == 9, str(SaveData.wins))
+	# ...and a newer browser copy beats an older file.
+	var older := ConfigFile.new()
+	older.set_value("meta", "saved_at", 1.0)
+	older.set_value("rack", "wins", 2)
+	older.save(SaveData.path)
+	SaveData._fake_store[SaveData._mirror_key()] = newer.encode_to_text()
+	SaveData.load_data()
+	check("a newer browser copy beats an older save file", SaveData.wins == 9, str(SaveData.wins))
+	SaveData.fake_web_store = false
+	SaveData._fake_store.clear()
+	SaveData.wins = 0
+	SaveData.has_run = false
+	SaveData.save()
+
 	print("Title")
 	var title: Control = load("res://scenes/ui/title.tscn").instantiate()
 	add_child(title)
