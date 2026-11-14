@@ -29,6 +29,8 @@ func _ready() -> void:
 	await _menu_tests()
 	print("Button size")
 	await _size_tests()
+	print("Arrange buttons")
+	await _arrange_tests()
 	SaveData.touch_controls = "auto"
 	SaveData.touch_size = TouchControls.DEFAULT_SIZE
 	DirAccess.remove_absolute(ProjectSettings.globalize_path(SaveData.path))
@@ -360,6 +362,127 @@ func _size_tests() -> void:
 	SaveData.touch_controls = "auto"
 	SaveData.apply_settings()
 	await _close(g)
+
+
+func _push(ev: InputEvent) -> void:
+	get_tree().root.push_input(ev, true)
+
+
+func _finger_drag(from: Vector2, to: Vector2) -> void:
+	var press := InputEventScreenTouch.new()
+	press.position = from
+	press.pressed = true
+	_push(press)
+	await _frames(1)
+	for i in 4:
+		var drag := InputEventScreenDrag.new()
+		drag.position = from.lerp(to, (i + 1) / 4.0)
+		_push(drag)
+		await _frames(1)
+	var up := InputEventScreenTouch.new()
+	up.position = to
+	up.pressed = false
+	_push(up)
+	await _frames(1)
+
+
+func _mouse_drag(from: Vector2, to: Vector2) -> void:
+	var press := InputEventMouseButton.new()
+	press.button_index = MOUSE_BUTTON_LEFT
+	press.position = from
+	press.pressed = true
+	_push(press)
+	await _frames(1)
+	var move := InputEventMouseMotion.new()
+	move.position = to
+	_push(move)
+	await _frames(1)
+	var up := InputEventMouseButton.new()
+	up.button_index = MOUSE_BUTTON_LEFT
+	up.position = to
+	up.pressed = false
+	_push(up)
+	await _frames(1)
+
+
+func _open_arrange() -> Array:
+	var menu := OptionsMenu.new()
+	add_child(menu)
+	await _frames(2)
+	var btn: Button = null
+	for b in menu.find_children("*", "Button", true, false):
+		if b.text == "Arrange touch buttons":
+			btn = b
+	if btn == null:
+		return [menu, null]
+	btn.pressed.emit()
+	await _frames(2)
+	var eds := menu.find_children("*", "TouchLayoutEditor", true, false)
+	return [menu, eds[0] if eds.size() > 0 else null]
+
+
+func _arrange_tests() -> void:
+	SaveData.touch_size = TouchControls.DEFAULT_SIZE
+	SaveData.touch_layout = {}
+	var opened := await _open_arrange()
+	var menu: OptionsMenu = opened[0]
+	var ed: TouchLayoutEditor = opened[1]
+	check("Options opens the Arrange buttons screen", ed != null)
+	var defaults := TouchControls.layout(TouchControls.DEFAULT_SIZE)
+	var previews: Array = ed.find_children("Preview_*", "TextureRect", true, false)
+	check("it shows every button, flags and cue included", previews.size() == TouchControls.all_actions().size(), str(previews.size()))
+	check("they start in the default layout", ed.centre_of("aim_left").distance_to(defaults["aim_left"]) < 0.5)
+
+	await _finger_drag(defaults["aim_left"], Vector2(256, 150))
+	check("a finger drags a button anywhere", ed.centre_of("aim_left").distance_to(Vector2(256, 150)) < 0.5, str(ed.centre_of("aim_left")))
+	await _mouse_drag(defaults["pause"], Vector2(300, 60))
+	check("so does the mouse", ed.centre_of("pause").distance_to(Vector2(300, 60)) < 0.5, str(ed.centre_of("pause")))
+	await _finger_drag(defaults["charge"], Vector2(700, 400))
+	var h := TouchControls.half_size("charge", TouchControls.DEFAULT_SIZE)
+	check("a button dragged off the edge stays on screen", ed.centre_of("charge").is_equal_approx(Vector2(512 - h, 288 - h)), str(ed.centre_of("charge")))
+	await _finger_drag(Vector2(256, 30), Vector2(256, 60))
+	check("dragging empty space moves nothing", ed.centre_of("look_up").distance_to(defaults["look_up"]) < 0.5)
+	ed.close()
+	await _frames(2)
+	check("Done saves only the moved buttons", SaveData.touch_layout.size() == 3 and SaveData.touch_layout.has("aim_left") and SaveData.touch_layout.has("pause") and SaveData.touch_layout.has("charge"), str(SaveData.touch_layout.keys()))
+	menu.close()
+	await _frames(2)
+	SaveData.touch_layout = {}
+	SaveData.load_data()
+	check("the arrangement is saved", SaveData.touch_layout.get("aim_left", Vector2.ZERO).distance_to(Vector2(256, 150)) < 0.5, str(SaveData.touch_layout))
+
+	# In a climb the real buttons sit where they were put.
+	SaveData.touch_controls = "on"
+	var g := await _load(SaveData.CLASSIC)
+	var t: TouchControls = g.touch
+	check("the real aim button is where it was dragged", _centre(t.button("aim_left")).distance_to(Vector2(256, 150)) < 0.5, str(_centre(t.button("aim_left"))))
+	check("untouched buttons keep their default spot", _centre(t.button("look_up")).distance_to(defaults["look_up"]) < 0.5)
+	_touch(Vector2(256, 150), true)
+	await _physics(2)
+	check("and it works there", Input.is_action_pressed("aim_left"))
+	_touch(Vector2(256, 150), false)
+	await _physics(2)
+	SaveData.touch_size = 2.0
+	SaveData.apply_settings()
+	await _frames(1)
+	var h2 := TouchControls.half_size("charge", 2.0)
+	check("a bigger size keeps moved buttons on screen", _centre(t.button("charge")).is_equal_approx(Vector2(512 - h2, 288 - h2)), str(_centre(t.button("charge"))))
+	SaveData.touch_size = TouchControls.DEFAULT_SIZE
+	SaveData.apply_settings()
+	await _close(g)
+
+	# Reset layout puts everything back.
+	opened = await _open_arrange()
+	menu = opened[0]
+	ed = opened[1]
+	ed.reset_layout()
+	check("Reset layout moves every button back", ed.centre_of("aim_left").distance_to(defaults["aim_left"]) < 0.5 and ed.centre_of("charge").distance_to(defaults["charge"]) < 0.5)
+	ed.close()
+	await _frames(2)
+	check("and Done saves the default layout", SaveData.touch_layout.is_empty(), str(SaveData.touch_layout))
+	menu.close()
+	await _frames(2)
+	SaveData.touch_controls = "auto"
 
 
 func _physics(n: int) -> void:

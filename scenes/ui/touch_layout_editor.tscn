@@ -1,0 +1,68 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/touch_layout_editor.gd" id="1_editor"]
+[ext_resource type="Theme" path="res://resources/ui_theme.tres" id="2_theme"]
+
+[node name="TouchLayoutEditor" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource("2_theme")
+script = ExtResource("1_editor")
+
+[node name="Dim" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.04, 0.03, 0.04, 0.82)
+
+[node name="Center" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="Panel" type="PanelContainer" parent="Center"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+
+[node name="Box" type="VBoxContainer" parent="Center/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 3
+
+[node name="Heading" type="Label" parent="Center/Panel/Box"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.94902, 0.823529, 0.478431, 1)
+theme_override_font_sizes/font_size = 16
+text = "Arrange buttons"
+horizontal_alignment = 1
+
+[node name="Hint" type="Label" parent="Center/Panel/Box"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.847059, 0.815686, 0.737255, 1)
+text = "Drag each button where it feels best.
+The flags only show in Training."
+horizontal_alignment = 1
+
+[node name="Row" type="HBoxContainer" parent="Center/Panel/Box"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 6
+
+[node name="Reset" type="Button" parent="Center/Panel/Box/Row"]
+layout_mode = 2
+text = "Reset layout"
+
+[node name="Done" type="Button" parent="Center/Panel/Box/Row"]
+layout_mode = 2
+text = "Done"
+
+[node name="Previews" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2

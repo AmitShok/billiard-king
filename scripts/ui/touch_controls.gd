@@ -75,6 +75,32 @@ static func layout(s: float) -> Dictionary:
 	return at
 
 
+## Half the drawn size of a button at size multiple s.
+static func half_size(action: String, s: float) -> float:
+	return (BIG if action == "charge" else SMALL) / 2.0 * s
+
+
+## Keeps a button's drawing fully on screen.
+static func clamp_centre(action: String, p: Vector2, s: float) -> Vector2:
+	var h := half_size(action, s)
+	return Vector2(clampf(p.x, h, 512.0 - h), clampf(p.y, h, 288.0 - h))
+
+
+## Where every button goes: the default layout, with any button the player
+## moved (Options > Arrange touch buttons) at its saved spot.
+static func centres(s: float) -> Dictionary:
+	var at := layout(s)
+	for action in SaveData.touch_layout:
+		if at.has(action):
+			at[action] = clamp_centre(action, SaveData.touch_layout[action], s)
+	return at
+
+
+## Every button the layout knows, in drawing order (the cue last).
+static func all_actions() -> Array:
+	return COLUMNS.keys() + FLAG_COLUMNS.keys() + ["charge"]
+
+
 ## Whether the buttons should show when a climb starts.
 static func wanted() -> bool:
 	match SaveData.touch_controls:
@@ -119,6 +145,19 @@ func _region(col: int, row: int, size: int, tex: Texture2D) -> AtlasTexture:
 	return a
 
 
+## A button's picture (idle or held), for the arrange screen.
+static func icon(action: String, pressed := false) -> AtlasTexture:
+	var a := AtlasTexture.new()
+	if action == "charge":
+		a.atlas = STRIKE
+		a.region = Rect2((1 if pressed else 0) * BIG, 0, BIG, BIG)
+	else:
+		var col: int = COLUMNS.get(action, FLAG_COLUMNS.get(action, 0))
+		a.atlas = SHEET
+		a.region = Rect2(col * SMALL, (1 if pressed else 0) * SMALL, SMALL, SMALL)
+	return a
+
+
 func _make(action: String, normal: Texture2D, pressed: Texture2D, size: int, slide: bool) -> TouchScreenButton:
 	var b := TouchScreenButton.new()
 	b.name = "Touch_" + action
@@ -143,10 +182,10 @@ func _add(action: String, col: int) -> void:
 	_make(action, _region(col, 0, SMALL, SHEET), _region(col, 1, SMALL, SHEET), SMALL, SLIDE.has(action))
 
 
-## Sizes and places every button for the current Button size setting.
+## Sizes and places every button for the current size and arrangement.
 func apply_size() -> void:
 	var s := size_scale()
-	var at := layout(s)
+	var at := centres(s)
 	for b in buttons:
 		var art := b.texture_normal.get_size()
 		b.scale = Vector2(s, s)   # scales the drawing and the touch area together

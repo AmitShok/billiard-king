@@ -54,6 +54,12 @@ func _ready() -> void:
 		size.text = size_label())
 	size.text = size_label()
 	controls.append(size)
+	var arrange := UIKit.button(box, "Arrange touch buttons", func(): pass)
+	arrange.pressed.connect(func():
+		var editor := TouchLayoutEditor.create()
+		add_child(editor)
+		editor.closed.connect(func(): arrange.grab_focus.call_deferred()))
+	controls.append(arrange)
 	var reset := UIKit.button(box, "Reset all progress", func(): pass)
 	reset.pressed.connect(func():
 		if reset.text == CONFIRM_RESET:
