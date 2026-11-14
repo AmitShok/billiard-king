@@ -15,9 +15,6 @@ var _logo: Array[Control] = []
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	theme = UIKit.theme()
-	if SaveData.url_flag("probe"):
-		add_child(WebProbe.new())   # the iPhone rendering test pattern instead
-		return
 	SaveData.set_run(SaveData.CLASSIC, 1)
 	Sfx.set_ambience(0)
 	Sfx.play_music(Sfx.MUSIC[0])
@@ -67,11 +64,10 @@ func _ready() -> void:
 			t.texture = at
 			t.position = Vector2(i * 16, FELT_Y + row * 16)
 			add_child(t)
-	if not SaveData.url_flag("noball"):   # iPhone experiment: the title without its shader ball
-		_ball = BallVisual.new()
-		_ball.number = SaveData.skin
-		_ball.diameter = 16
-		add_child(_ball)
+	_ball = BallVisual.new()
+	_ball.number = SaveData.skin
+	_ball.diameter = 16
+	add_child(_ball)
 
 	# Logo.
 	var logo := Label.new()
@@ -146,14 +142,11 @@ func _open(kind: Variant) -> void:
 	_menu.visible = false
 	m.closed.connect(func():
 		_menu.visible = true
-		if _ball:
-			_ball.number = SaveData.skin
+		_ball.number = SaveData.skin
 		_build_menu())
 
 
 func _process(delta: float) -> void:
-	if _ball == null:
-		return   # the probe pattern, or ?noball
 	_ball_x += _ball_v * delta
 	if _ball_x < 24.0 or _ball_x > 488.0:
 		_ball_v = -_ball_v

@@ -23,8 +23,6 @@ var fullscreen := false
 var screen_shake := true
 var touch_controls := "auto"     # "auto" (touch devices only), "on" or "off"
 var _applied_fullscreen := false   # the window starts windowed
-var _url_flags: Array[String] = []   # web address words, see url_flag()
-var _plain_material: ShaderMaterial
 
 # Which climb is being played. Each mode keeps its own run.
 var mode := CLASSIC
@@ -64,27 +62,8 @@ func _ready() -> void:
 	if path == "user://vertical_billiard.cfg":
 		adopt_old_save(OS.get_user_data_dir().get_base_dir().path_join("Billiard King/billiard_king.cfg"))
 	_setup_input()
-	if OS.has_feature("web"):
-		var search = JavaScriptBridge.eval("location.search")
-		if search is String:
-			for part in search.trim_prefix("?").split("&", false):
-				_url_flags.append(part.get_slice("=", 0).to_lower())
 	load_data()
 	apply_settings()
-	if url_flag("shader"):
-		# iPhone experiment: a do-nothing custom shader on every 2D item that
-		# has no material of its own (the custom-shader ball drew correctly).
-		_plain_material = ShaderMaterial.new()
-		_plain_material.shader = Shader.new()
-		_plain_material.shader.code = "shader_type canvas_item;\n"
-		get_tree().node_added.connect(_give_plain_material)
-	if OS.has_feature("web"):
-		var t := Timer.new()
-		t.wait_time = 0.5
-		t.autostart = true
-		t.process_mode = Node.PROCESS_MODE_ALWAYS
-		t.timeout.connect(_report_size)
-		add_child(t)
 
 
 ## The game used to be called Billiard King, and Godot keeps saves in a folder
@@ -371,35 +350,13 @@ func apply_settings() -> void:
 		if DisplayServer.get_name() != "headless" and DisplayServer.window_get_mode() != mode:
 			DisplayServer.window_set_mode(mode)
 	# Phones and tablets: fill the screen (whole-number scaling leaves wide black
-	# borders), and draw straight at screen resolution. The default draws into a
-	# 512x288 image and copies it up scaled; on iPhones that copy came out shifted
-	# and cut off.
-	if TouchControls.touch_device() and not url_flag("viewport"):
+	# borders) and draw straight at screen resolution, which keeps text sharp at
+	# fractional scales.
+	if TouchControls.touch_device():
 		var root := get_tree().root
 		root.content_scale_stretch = Window.CONTENT_SCALE_STRETCH_FRACTIONAL
 		root.content_scale_mode = Window.CONTENT_SCALE_MODE_CANVAS_ITEMS
 	settings_changed.emit()
-
-
-## Words in the web address (?probe&shader...), for the iPhone experiments.
-func url_flag(flag: String) -> bool:
-	return _url_flags.has(flag)
-
-
-func url_flags_text() -> String:
-	return " ".join(_url_flags) if not _url_flags.is_empty() else "none"
-
-
-func _give_plain_material(node: Node) -> void:
-	if node is CanvasItem and node.material == null:
-		node.material = _plain_material
-
-
-## Web only: what Godot itself thinks the screen is, for the ?debug readout.
-func _report_size() -> void:
-	var root := get_tree().root
-	var info := "godot window %s  view %s  scale %s %s" % [DisplayServer.window_get_size(), root.get_visible_rect().size, root.content_scale_mode, root.content_scale_stretch]
-	JavaScriptBridge.eval("window.__godotInfo = %s;" % JSON.stringify(info))
 
 
 static func format_time(seconds: float) -> String:

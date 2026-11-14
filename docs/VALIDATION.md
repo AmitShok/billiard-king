@@ -322,3 +322,27 @@ Every browser size is right, and it is still cut off without itch.io. The letter
 - all suites pass.
 
 **Not checked:** the iPhone itself.
+
+## iPhone drawing bug: experiments, 13 to 14 November 2026 (not fixed)
+
+**Symptom** (the user's iPhone, Chrome, which runs WebKit, sideways, on and off itch.io): most 2D items don't draw. A test pattern of colour blocks, tiles from one texture, separate textures and letters showed:
+- only the full-screen background rectangle and the text, and the text was shifted right;
+- the one custom-shader ball (`probe&ball`) in exactly the right place;
+- on the title screen, only the backdrop and the ball correct.
+
+**Measured correct on the phone:** page 729×314, canvas 2187×942 at dpr 3, Godot window 2187×942, view 512×288.
+
+**Ruled out:** each of these changed nothing on the phone.
+- itch.io's frame (it fails at the direct address too).
+- Pinning the page with `position: fixed`.
+- hidpi off.
+- `viewport` against `canvas_items` stretch, and the phone-only runtime scaling code (`?viewport`).
+- A do-nothing custom shader on every item (`?shader`).
+- The title's rolling ball (`?noball`).
+- These project settings, each tested as its own export: `snap_2d_transforms_to_pixel` off; `scale_mode` fractional; both together; `gl_compatibility/item_buffer_size=128`; Godot's default boot splash; Sample web audio; the default physics rate; splash, audio and physics together.
+
+**Not the engine either:** the user's working Godot 4.7 games (Chicken Punch, Sugar Rush) ship byte-for-byte the same `index.wasm` (39,509,339 bytes) and the same `index.js`. Sugar Rush also uses `viewport` stretch with GL Compatibility.
+
+**Next:** a clean test with empty storage (Incognito), then building the game up from a new empty Godot project, a piece at a time, until it breaks.
+
+The test switches (`?probe`, `?shader`, `?noball`, `?viewport`) and the `?debug` readout were removed afterwards.
