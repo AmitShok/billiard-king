@@ -82,7 +82,7 @@ A controls hint appears on the rail of the bottom table while the ball sits ther
 
 **Touchscreens.** The buttons appear only on a phone, tablet or touchscreen computer. In the default **Auto** setting a key or gamepad press hides them and a touch brings them back; **Options > Touch controls** can also force them **On** or **Off**. Menus work by tapping, a tap dismisses the goal pop-up and the ending, and holding a phone upright shows a reminder to turn it sideways. On touch devices the picture fills the screen instead of scaling by whole numbers, and it's drawn straight at screen resolution, so text stays sharp.
 
-**Known issue: iPhone.** In the web build on iPhones (Chrome and Safari both run Apple's WebKit), most 2D drawing goes wrong: plain shapes and pictures vanish and text lands in the wrong place. Computers and Android are fine. The cause is still being tracked down; see VALIDATION.md.
+**Known issue: iPhone.** In the web build on iPhones (Chrome and Safari both run Apple's WebKit), most 2D drawing goes wrong: plain shapes and pictures vanish and text lands in the wrong place. Computers and Android are fine. The game now ships its own web page (`web/shell.html`), built like the author's Sugar Rush page, which runs correctly on the same iPhone: the canvas fills the page from the start and Godot only starts after the player taps **Play**. See VALIDATION.md.
 
 You can only strike from flat felt; slopes make you slide. A full charge fires by itself. If you hold the charge button while you land, the charge starts on touchdown.
 

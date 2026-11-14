@@ -346,3 +346,26 @@ Every browser size is right, and it is still cut off without itch.io. The letter
 **Next:** a clean test with empty storage (Incognito), then building the game up from a new empty Godot project, a piece at a time, until it breaks.
 
 The test switches (`?probe`, `?shader`, `?noball`, `?viewport`) and the `?debug` readout were removed afterwards.
+
+## iPhone: own web page, 14 November 2026
+
+**Lab result:** a brand-new, empty Godot 4.7 project (only colour blocks and text) also drew wrongly on the user's iPhone. So did every other lab build. The game's content and settings are not the cause.
+
+**The difference:** the user's Sugar Rush works on the same iPhone with the same engine files. It ships a custom HTML shell:
+- the canvas is styled at 100% × 100% of the page from the start;
+- `engine.startGame()` only runs after a tap on Play.
+
+Godot's default shell starts the engine at once, on a 300×150 canvas.
+
+**Change:** `web/shell.html`, set as the preset's `html/custom_html_shell` (and excluded from the pack). It is modelled on Sugar Rush's page:
+- Play and Play full screen buttons; the full-screen button also locks landscape where the browser allows it;
+- a turn-sideways overlay on phones held upright;
+- an error box that shows script errors and lost graphics context.
+
+The head-include scripts were dropped.
+
+**Verified:**
+- WebKit (Playwright, iPhone 13 landscape) shows the start page; tapping Play draws the full title screen with no page errors.
+- Chrome on desktop does the same.
+
+**Not checked:** the user's iPhone.
