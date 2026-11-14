@@ -27,7 +27,7 @@ Somewhere above the Back Room, past Lucky's Neon Bar and the Royal Club, there's
 ## Features
 
 - **Jump King's commitment.** You charge a shot and release it, with no air control. The camera shows one screen at a time and glides quickly to the next as you cross an edge, so you never lose the ball. There are no checkpoints, and the game saves you wherever the ball comes to rest. Time, strokes and falls are tracked.
-- **Billiard shot-making.** You aim in 5° notches and the cue pulls back as the shot charges. **English** shapes the landing: follow keeps you running forward and draw checks you up or rolls you back.
+- **Billiard shot-making.** You aim in 5° notches and the cue pulls back as the shot charges. There's no spin to fiddle with: where you aim and how long you charge is the whole shot.
 - **Fallosophy's pinball.** Big numbered bumper balls kick you away in their brass collars. Rubber cushions stay lively, and pockets swallow you and drop you far below through the ball return.
 - **Ballgame's collection.** Twenty-four lost balls are hidden across the levels, six in each, and seven more are earned by finishing. Each one becomes a ball you can climb as, picked from the **Ball Rack**.
 - **Balls that really roll.** Every ball is a pixel-art sphere drawn with spherical UV mapping, so numbers, stripes and the cue ball's red dots roll across the surface.
@@ -39,7 +39,7 @@ Somewhere above the Back Room, past Lucky's Neon Bar and the Royal Club, there's
 - **A room that reacts.** Lamps and chandeliers swing on their chains, windows shatter and stay broken, neon shorts out, portraits hang crooked, beads slide along the score wire and chalk gets knocked off ledges. All of it is cosmetic: the ball's path never changes.
 - **Three zones and a summit:** the Back Room, Lucky's Neon Bar, the Royal Club (fast felt) and the King's Table under the moon.
 - **Training mode.** Practise any level you've opened, Geometry Dash style: rest on the felt and press **C** to plant a checkpoint flag, **R** to go straight back to the newest flag, **X** to pull it up and fall back on the one before. Flags wave, stream out in the wind, flutter as you roll past and glow while they're the one R returns to. Training has no lost balls, and nothing in it is saved, recorded or unlocked.
-- **Plays on phones and tablets.** On a touchscreen, round brass buttons appear over the game: arrows to aim, spin and look on the left, a big cue button to strike on the right, pause at the top, and the flag buttons in Training. They're see-through, and fade almost away when the ball is behind one. They only show on touch devices, so they never get in the way on a computer.
+- **Plays on phones and tablets.** On a touchscreen, round brass buttons appear over the game: arrows to aim on the left, look buttons and a big cue button to strike on the right, pause at the top, and the flag buttons in Training. They're see-through, and fade almost away when the ball is behind one. They only show on touch devices, so they never get in the way on a computer.
 - **Proven climbable.** A headless solver fires every shot from every resting spot using the real physics. It checks that the gold pocket can be reached and measures how forgiving each jump is.
 
 ## Screenshots
@@ -70,7 +70,6 @@ Somewhere above the Back Room, past Lucky's Neon Bar and the Royal Club, there's
 | Action | Keyboard | Gamepad | Touch |
 | --- | --- | --- | --- |
 | Aim (5° notches, hold to sweep) | A / D or ← / → | D-pad / left stick | Arrow buttons, bottom left |
-| English: follow / draw | W / S | D-pad / left stick | Ball buttons above the arrows |
 | Look up / down (camera peek) | ↑ / ↓ (hold) | Right stick | Eye buttons, bottom right |
 | Charge, release to strike | Space, Z or J (hold) | A | Cue button (hold) |
 | Pause | Esc or P | Start | Pause button, top right |
@@ -157,7 +156,7 @@ The game renders at 512×288 and scales by whole numbers (1536×864 window by de
 
 **Options** has a **Reset all progress** button (press it twice) that wipes every run, the Ball Rack and all records, but keeps your settings. When running from the Godot editor or a debug export, Options also shows **Test: unlock everything**, which opens every level and fills the Ball Rack; release exports hide it.
 
-Saves live in `user://vertical_billiard.cfg` (on Windows, `%APPDATA%\Godot\app_userdata\Vertical Billiard\`). A save from when the game was called Billiard King is copied across on first launch. The file holds settings, the run in progress (ball position, aim, spin, time, strokes, falls, zones seen) and the Ball Rack. Tests use separate `test_*.cfg` profiles and never touch your save.
+Saves live in `user://vertical_billiard.cfg` (on Windows, `%APPDATA%\Godot\app_userdata\Vertical Billiard\`). A save from when the game was called Billiard King is copied across on first launch. The file holds settings, the run in progress (ball position, aim, time, strokes, falls, zones seen) and the Ball Rack. Tests use separate `test_*.cfg` profiles and never touch your save.
 
 ## Project structure
 

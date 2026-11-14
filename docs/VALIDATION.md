@@ -379,3 +379,17 @@ Every failing build created its CanvasItems in code at startup, the empty lab pr
 **Rules ruled out earlier:** the export template is byte-identical to the user's working games; the project settings; the web page; the stretch mode; the GPU limits (iPhone: uniform block 16384, vertex uniform vectors 1024, full float precision).
 
 **Other screens:** the level select, options, pause menu, Ball Rack, HUD and touch controls are still built in code, and the user checked that they draw correctly on the iPhone. Only the title screen needed the change.
+
+## Spin (english) removed: 14 November 2026
+
+The player never used it, so it's gone:
+- the W/S, D-pad and left-stick spin controls;
+- the touch spin buttons and the spin icon (`spin_icon.png`; `touch_buttons.png` is now 8 columns);
+- `BallSim`'s `pending_spin` and its `SPIN_*` constants;
+- the saved `spin` value. Old saves load, and the key is erased on the next save.
+
+`BallSim.shoot(aim, ticks)` keeps exactly the old spin-0 behaviour, including the strike's tumble. The route solver always fired spin-0 shots, so every climbability result stands.
+
+**Re-run:** level 1 solver PASS (493 resting spots, all 6 lost balls reachable, 46 strokes, hardest 5 of 238).
+
+All suites pass: gameplay 45, menus 35, props 27, Hardcore 51, conditions 74, level 2 64, training 38, touch 75.

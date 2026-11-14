@@ -8,8 +8,6 @@ extends RefCounted
 ## - no air control: once struck, the ball is committed
 ## - felt grips: landings bleed speed, rolling stops in a short, learnable distance
 ## - wood rails bounce at half speed, rubber cushions and bumpers stay lively
-## - english (spin) set before the shot shapes the first landing:
-##   follow keeps running forward, draw checks up or pulls back
 
 const DT := 1.0 / 120.0
 const RADIUS := 7.0
@@ -21,8 +19,6 @@ const MIN_SPEED := 150.0
 const MAX_SPEED := 580.0
 const AIM_STEP_DEG := 5
 const AIM_LIMIT_DEG := 80
-const SPIN_LEVELS := 2              # -2 draw .. +2 follow
-const SPIN_SPEED := 75.0            # px/s added along the shot per spin level on first landing
 
 const ROLL_DECEL := [420.0, 380.0, 150.0, 340.0, 380.0, 360.0, 300.0, 400.0, 420.0]  # felt drag per tile zone (Royal Club felt is fast)
 const CHARGE_BRAKE := 1400.0
@@ -54,7 +50,6 @@ var ground_normal := Vector2.UP
 var ground_zone := 0
 var resting := false
 var in_pocket := false
-var pending_spin := 0.0             # px/s along the shot, applied on first floor contact
 var shot_dir_x := 0.0
 var spin_rate := 0.0                # visual angular speed about the view axis (rad/s)
 var tumble_rate := 0.0              # visual angular speed about the horizontal axis
@@ -82,7 +77,6 @@ func reset(at: Vector2) -> void:
 	grounded = false
 	resting = false
 	in_pocket = false
-	pending_spin = 0.0
 	spin_rate = 0.0
 	tumble_rate = 0.0
 	takeoff_y = at.y
@@ -103,7 +97,7 @@ static func shot_speed(charge_ticks: int) -> float:
 	return lerpf(MIN_SPEED, MAX_SPEED, t)
 
 
-func shoot(aim_deg: float, charge_ticks: int, spin_level: int) -> void:
+func shoot(aim_deg: float, charge_ticks: int) -> void:
 	var dir := aim_vector(aim_deg)
 	var speed := shot_speed(charge_ticks)
 	# Shots keep the platform's momentum.
@@ -112,14 +106,13 @@ func shoot(aim_deg: float, charge_ticks: int, spin_level: int) -> void:
 	grounded = false
 	resting = false
 	shot_dir_x = signf(dir.x) if absf(dir.x) > 0.05 else 0.0
-	pending_spin = spin_level * SPIN_SPEED
 	takeoff_y = pos.y
 	apex_y = pos.y
-	# Cue strike puts a little roll on the ball, plus the chosen english.
+	# The cue strike puts a little roll on the ball.
 	spin_rate = shot_dir_x * speed / RADIUS * 0.35
-	tumble_rate = (0.6 + 0.4 * absf(spin_level)) * signf(spin_level if spin_level != 0 else 1) * speed / RADIUS * 0.3
+	tumble_rate = 0.6 * speed / RADIUS * 0.3
 	# Reported with the next step so consumers see it alongside the flight.
-	_queued.append({ "type": Event.SHOT, "speed": speed, "spin": spin_level })
+	_queued.append({ "type": Event.SHOT, "speed": speed })
 
 
 ## Holding a charge on the felt plants the ball.
@@ -270,12 +263,6 @@ func _respond(c: Dictionary, n: Vector2, vn: float) -> void:
 	if not is_floor:
 		spin_rate = -spin_rate * 0.6
 	vt *= grip
-	if is_floor and pending_spin != 0.0:
-		# English bites on the first floor contact after the shot.
-		var along_x := signf(t.x) if absf(t.x) > 0.01 else 1.0
-		vt += pending_spin * shot_dir_x * along_x
-		pending_spin = 0.0
-		tumble_rate = 0.0
 	vel = t * vt - n * vn * e
 
 

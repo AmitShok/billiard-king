@@ -100,9 +100,10 @@ func _button_tests() -> void:
 	var t: TouchControls = g.touch
 	check("turned on, the buttons show", g.touch_on() and t.buttons.all(func(b): return b.visible))
 	var actions: Array = t.buttons.map(func(b): return String(b.action))
-	for a in ["aim_left", "aim_right", "spin_up", "spin_down", "look_up", "look_down", "pause", "charge"]:
+	for a in ["aim_left", "aim_right", "look_up", "look_down", "pause", "charge"]:
 		check("there is a button for " + a, actions.has(a))
 	check("no flag buttons outside training", not actions.has("flag_place"))
+	check("no spin buttons", not actions.has("spin_up") and not actions.has("spin_down"))
 	check("the hint talks about the buttons", g._hint.text == g.HINT_TOUCH)
 	check("idle buttons are see-through", t.buttons.all(func(b): return b.modulate.a < 0.6))
 
@@ -137,13 +138,6 @@ func _button_tests() -> void:
 	_touch(_centre(right), false)
 	await _physics(2)
 	check("letting go releases it", not Input.is_action_pressed("aim_right"))
-	# Spin.
-	var spin0: int = g.player.spin_level
-	_touch(_centre(t.button("spin_up")), true)
-	await _physics(2)
-	_touch(_centre(t.button("spin_up")), false)
-	await _physics(2)
-	check("a tap on the spin button adds one spin", g.player.spin_level == spin0 + 1, str(g.player.spin_level))
 	# Look.
 	_touch(_centre(t.button("look_up")), true)
 	await _frames(20)

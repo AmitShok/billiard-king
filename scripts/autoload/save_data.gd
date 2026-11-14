@@ -35,7 +35,6 @@ var ball_pos := Vector2.ZERO
 var white_pos := Vector2.ZERO   # Hardcore: where the white ball rests
 var world_time := 0.0           # where the moving platforms and traps are
 var aim_deg := 0.0
-var spin_level := 0
 var run_time := 0.0
 var strokes := 0
 var falls := 0
@@ -80,8 +79,6 @@ func _setup_input() -> void:
 		"charge": [KEY_SPACE, KEY_Z, KEY_J, JOY_BUTTON_A],
 		"aim_left": [KEY_A, KEY_LEFT, JOY_BUTTON_DPAD_LEFT],
 		"aim_right": [KEY_D, KEY_RIGHT, JOY_BUTTON_DPAD_RIGHT],
-		"spin_up": [KEY_W, JOY_BUTTON_DPAD_UP],
-		"spin_down": [KEY_S, JOY_BUTTON_DPAD_DOWN],
 		"look_up": [KEY_UP],
 		"look_down": [KEY_DOWN],
 		"pause": [KEY_ESCAPE, KEY_P, JOY_BUTTON_START],
@@ -104,7 +101,7 @@ func _setup_input() -> void:
 				j.button_index = code
 				ev = j
 			InputMap.action_add_event(action, ev)
-	var axes := { "aim_left": [JOY_AXIS_LEFT_X, -1.0], "aim_right": [JOY_AXIS_LEFT_X, 1.0], "spin_up": [JOY_AXIS_LEFT_Y, -1.0], "spin_down": [JOY_AXIS_LEFT_Y, 1.0], "look_up": [JOY_AXIS_RIGHT_Y, -1.0], "look_down": [JOY_AXIS_RIGHT_Y, 1.0] }
+	var axes := { "aim_left": [JOY_AXIS_LEFT_X, -1.0], "aim_right": [JOY_AXIS_LEFT_X, 1.0], "look_up": [JOY_AXIS_RIGHT_Y, -1.0], "look_down": [JOY_AXIS_RIGHT_Y, 1.0] }
 	for action in axes:
 		var m := InputEventJoypadMotion.new()
 		m.axis = axes[action][0]
@@ -201,7 +198,6 @@ func _load_run(cfg: ConfigFile) -> void:
 	white_pos = cfg.get_value(s, "white_pos", Vector2.ZERO)
 	world_time = cfg.get_value(s, "world_time", 0.0)
 	aim_deg = cfg.get_value(s, "aim", 0.0)
-	spin_level = cfg.get_value(s, "spin", 0)
 	run_time = cfg.get_value(s, "time", 0.0)
 	strokes = cfg.get_value(s, "strokes", 0)
 	falls = cfg.get_value(s, "falls", 0)
@@ -242,12 +238,13 @@ func save() -> void:
 
 
 func _write_run(cfg: ConfigFile, s: String) -> void:
+	if cfg.has_section_key(s, "spin"):
+		cfg.erase_section_key(s, "spin")   # spin (english) was removed from the game
 	cfg.set_value(s, "active", has_run)
 	cfg.set_value(s, "pos", ball_pos)
 	cfg.set_value(s, "white_pos", white_pos)
 	cfg.set_value(s, "world_time", world_time)
 	cfg.set_value(s, "aim", aim_deg)
-	cfg.set_value(s, "spin", spin_level)
 	cfg.set_value(s, "time", run_time)
 	cfg.set_value(s, "strokes", strokes)
 	cfg.set_value(s, "falls", falls)
@@ -262,7 +259,6 @@ func start_new_run() -> void:
 	white_pos = Vector2.ZERO
 	world_time = 0.0
 	aim_deg = 0.0
-	spin_level = 0
 	run_time = 0.0
 	strokes = 0
 	falls = 0

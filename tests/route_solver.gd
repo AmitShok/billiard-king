@@ -310,7 +310,7 @@ func _shot(node: Dictionary, moment: float, aim: int, ticks: int) -> Dictionary:
 	else:
 		sim.reset(node.pos)
 	sim.grounded = true
-	sim.shoot(aim, ticks, 0)
+	sim.shoot(aim, ticks)
 	var lost: Array = []
 	var result := { "goal": false, "end": {}, "lost": lost }
 	for i in MAX_STEPS:

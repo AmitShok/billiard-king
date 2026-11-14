@@ -58,11 +58,11 @@ var flags: Array[CheckpointFlag] = []   # Training: oldest first, the last is wh
 var _training_hud: RichTextLabel
 var touch: TouchControls         # on-screen buttons, shown on touch devices
 
-const HINT_KEYS := "[center][color=#f2d27a]A D[/color] aim   [color=#f2d27a]W S[/color] spin   [color=#f2d27a]UP DOWN[/color] look   hold [color=#f2d27a]SPACE[/color] to strike   [color=#f2d27a]ESC[/color] pause[/center]"
-const HINT_PAD := "[center][color=#f2d27a]D-PAD[/color] aim and spin   [color=#f2d27a]R-STICK[/color] look   hold [color=#f2d27a]A[/color] to strike   [color=#f2d27a]START[/color] pause[/center]"
+const HINT_KEYS := "[center][color=#f2d27a]A D[/color] aim   [color=#f2d27a]UP DOWN[/color] look   hold [color=#f2d27a]SPACE[/color] to strike   [color=#f2d27a]ESC[/color] pause[/center]"
+const HINT_PAD := "[center][color=#f2d27a]D-PAD[/color] aim   [color=#f2d27a]R-STICK[/color] look   hold [color=#f2d27a]A[/color] to strike   [color=#f2d27a]START[/color] pause[/center]"
 const TRAINING_KEYS := "[color=#9ff0b4]TRAINING[/color]   [color=#f2d27a]C[/color] plant flag   [color=#f2d27a]R[/color] back to flag   [color=#f2d27a]X[/color] remove flag"
 const TRAINING_PAD := "[color=#9ff0b4]TRAINING[/color]   [color=#f2d27a]Y[/color] plant flag   [color=#f2d27a]X[/color] back to flag   [color=#f2d27a]LB[/color] remove flag"
-const HINT_TOUCH := "[center]arrows [color=#f2d27a]aim[/color]   ball [color=#f2d27a]spin[/color]   eye [color=#f2d27a]look[/color]   hold [color=#f2d27a]cue[/color] to strike[/center]"
+const HINT_TOUCH := "[center]arrows [color=#f2d27a]aim[/color]   eye [color=#f2d27a]look[/color]   hold [color=#f2d27a]cue[/color] to strike[/center]"
 const TRAINING_TOUCH := "[color=#9ff0b4]TRAINING[/color]   flags top right: [color=#f2d27a]plant[/color], [color=#f2d27a]back[/color], [color=#f2d27a]remove[/color]"
 ## Shorter versions for big touch buttons, so the text never sits under one.
 const HINT_TOUCH_SHORT := "[center]hold the [color=#f2d27a]cue[/color] to strike[/center]"
@@ -86,7 +86,6 @@ func _ready() -> void:
 		SaveData.start_new_run()
 	player.place(start)
 	player.aim_deg = SaveData.aim_deg
-	player.spin_level = SaveData.spin_level
 
 	camera = Camera2D.new()
 	camera.anchor_mode = Camera2D.ANCHOR_MODE_DRAG_CENTER
@@ -335,7 +334,6 @@ func save_progress() -> void:
 	if white and white.sim.resting and not white.sim.in_pocket:
 		SaveData.white_pos = white.sim.pos
 	SaveData.aim_deg = player.aim_deg
-	SaveData.spin_level = player.spin_level
 	SaveData.world_time = tower.world.time
 	SaveData.save()
 

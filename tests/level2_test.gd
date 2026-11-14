@@ -85,7 +85,7 @@ func _platform_tests() -> void:
 		m.advance(BallSim.DT)
 		r.step(m)
 	var pv: Vector2 = m.platforms[0].vel
-	r.shoot(0.0, 40, 0)
+	r.shoot(0.0, 40)
 	check("shots inherit the platform's velocity", absf(r.vel.x - pv.x) < 1.0 and r.riding == -1 and absf(pv.x) > 20.0, "%s vs %s" % [r.vel, pv])
 	m.advance(BallSim.DT)
 	r.step(m)
@@ -120,7 +120,7 @@ func _platform_tests() -> void:
 	for run in 2:
 		var d := _world(Vector2(0, 0), Vector2(200, -60), 3.0)
 		var b := _rider(d)
-		b.shoot(30.0, 50, 1)
+		b.shoot(30.0, 50)
 		for i in 300:
 			d.advance(BallSim.DT)
 			b.step(d)

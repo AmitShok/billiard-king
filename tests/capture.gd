@@ -35,7 +35,6 @@ func _ready() -> void:
 	# A real shot through input: charging, flight, landing.
 	game.player.place(Vector2(200, -232))
 	game.player.aim_deg = 35.0
-	game.player.spin_level = 1
 	await _physics(30)
 	Input.action_press("charge")
 	await _physics(50)

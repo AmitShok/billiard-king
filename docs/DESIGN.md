@@ -4,14 +4,13 @@ You are the cue ball, and you have to climb a pool hall tower. The design takes 
 
 - **Jump King**: you charge a shot and release it. There is no air control and no checkpoints. The camera shows one screen at a time; where Jump King cuts, this camera glides to the next screen in about a third of a second so the ball is never lost (see Camera). A missed shot can drop you several screens. Falls and time are counted. Your position is saved where the ball rests.
 - **Fallosophy**: pinball-style vertical climbing. Brass-collared bumper balls kick you away, rubber cushions stay lively, and pockets swallow the ball and drop it far below through the ball return.
-- **Ballgame**: you *are* the ball, and you shape your bounces and rolls with english. Strokes are counted like golf. Lost balls are hidden around the course and unlock as skins in the Ball Rack.
+- **Ballgame**: you *are* the ball, and every bounce and roll comes from the shot you chose. Strokes are counted like golf. Lost balls are hidden around the course and unlock as skins in the Ball Rack.
 
 ## Controls
 
 | Action | Keyboard | Gamepad |
 | --- | --- | --- |
 | Aim one 5° notch | A / D or Left / Right (hold to sweep) | D-pad / left stick |
-| English: follow / draw | W / S | D-pad / left stick |
 | Look up / down | Up / Down arrows (hold) | Right stick |
 | Charge, release to strike | Space, Z or J (hold) | A |
 | Pause | Esc or P | Start |
@@ -19,7 +18,7 @@ You are the cue ball, and you have to climb a pool hall tower. The design takes 
 
 On touchscreens the same actions have on-screen buttons (see Touch controls below).
 
-Holding Look pans the camera up to 56 px toward the next or previous screen, easing in at 160 px/s and back at 260 px/s. It never peeks below the bottom floor or above the summit. Looking is view only: the screen change, the ball and its physics are untouched. You can aim and set spin at any time. You can only strike while the ball sits on felt that is flatter than about 30°, so on slopes you slide just like in Jump King. If you are holding the charge button when the ball lands, the charge starts on touchdown. A full charge fires by itself.
+Holding Look pans the camera up to 56 px toward the next or previous screen, easing in at 160 px/s and back at 260 px/s. It never peeks below the bottom floor or above the summit. Looking is view only: the screen change, the ball and its physics are untouched. You can aim at any time. You can only strike while the ball sits on felt that is flatter than about 30°, so on slopes you slide just like in Jump King. If you are holding the charge button when the ball lands, the charge starts on touchdown. A full charge fires by itself.
 
 ## Tuning
 
@@ -30,7 +29,6 @@ Holding Look pans the camera up to 56 px toward the next or previous screen, eas
 | Shot speed | 150 to 580 px/s, linear over a 0.7 s charge (84 ticks) |
 | Full-power height | 187 px (about 11.7 tiles, 0.65 screen) |
 | Aim | ±80° from vertical, 5° notches |
-| English | ±2 levels, 75 px/s per level added along the shot on first touchdown |
 | Felt rolling drag | 420 / 380 / 150 px/s² (Back Room / Neon Bar / Royal Club fast felt) |
 | Landing grip | 40% of tangential speed kept on hard landings (>260 px/s), 75% on soft ones |
 | Floor bounce | 0.3, dead below 140 px/s |
@@ -195,10 +193,10 @@ The Rooftops storm and the Fire Escape used to have rain streaks painted into th
 
 ## Touch controls
 
-`TouchControls` is a CanvasLayer of Godot `TouchScreenButton`s, one per action: aim left and right, spin up and down, look up and down, pause, the big cue button for charge, and the three flag buttons in Training. Each button presses its input action exactly as the key does, so the game and the ball read touch through the same `Input` calls and need no touch code of their own. `TouchScreenButton` only reacts to real touches, never to the mouse, so a click on a computer can't press one.
+`TouchControls` is a CanvasLayer of Godot `TouchScreenButton`s, one per action: aim left and right, look up and down, pause, the big cue button for charge, and the three flag buttons in Training. Each button presses its input action exactly as the key does, so the game and the ball read touch through the same `Input` calls and need no touch code of their own. `TouchScreenButton` only reacts to real touches, never to the mouse, so a click on a computer can't press one.
 
 **When they show.** The setting is `SaveData.touch_controls`: `auto` (the default), `on` or `off`. Auto shows the buttons only when `DisplayServer.is_touchscreen_available()` (or the mobile or web_android / web_ios features) says the device has a touchscreen. In Auto a key or pad press hides them and releases anything they held, and a touch brings them back, so a touchscreen laptop used with a keyboard stays clean. Options cycles the setting.
 
-**Layout** (in the 512×288 view): aim arrows bottom left with the spin buttons above, the look buttons bottom right beside the 44 px cue button, pause in the top-right corner, and the flags in a row beside it. Buttons are drawn and touched at a multiple of their art set by **Options > Button size** (1× to 2× in quarter steps, default 1.5×: 42 px, the cue 66 px). `TouchControls.layout()` places them from the screen corners for that size, each group hugging its corner and neighbours exactly a touch area apart, so nothing overlaps or leaves the screen at any size; above 1.5× the hints shorten so they never sit under a button. Buttons sit at 50% opacity, light up while held and drop to 15% while the ball is behind one, so they never hide it. They live on layer 4, under the HUD, and are pausable: they hide and release under the pause menu, the goal pop-up and the ending.
+**Layout** (in the 512×288 view): aim arrows bottom left, the look buttons bottom right beside the 44 px cue button, pause in the top-right corner, and the flags in a row beside it. Buttons are drawn and touched at a multiple of their art set by **Options > Button size** (1× to 2× in quarter steps, default 1.5×: 42 px, the cue 66 px). `TouchControls.layout()` places them from the screen corners for that size, each group hugging its corner and neighbours exactly a touch area apart, so nothing overlaps or leaves the screen at any size; above 1.5× the hints shorten so they never sit under a button. Buttons sit at 50% opacity, light up while held and drop to 15% while the ball is behind one, so they never hide it. They live on layer 4, under the HUD, and are pausable: they hide and release under the pause menu, the goal pop-up and the ending.
 
 **Phones.** On a touch device the window scales fractionally instead of by whole numbers, so the picture fills a phone screen; integer scaling left wide black borders. It also switches to `canvas_items` stretch, drawing straight at screen resolution, which keeps the pixel font sharp at fractional scales. The touch buttons place the ball relative to the camera, so their fading works in either mode. A tap dismisses the goal pop-up and the ending, and menus are tapped like any Godot button. In portrait, a "Turn your device sideways" line shows. On the web, a script in the export's `html/head_include` makes the first touch go fullscreen and lock to landscape. It runs inside the browser's own `pointerup` handler, because both calls need a user gesture and a lock only works in fullscreen. The Options Fullscreen setting is only applied when it changes, so a volume change can't drop a phone out of fullscreen. The art is drawn by `tools/art_touch.lua`: round brass rims around green felt, matching the table.

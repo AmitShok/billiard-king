@@ -1,7 +1,6 @@
 -- Vertical Billiard: UI pieces.
 --   panel.png      24x24 nine-slice: walnut frame, felt inset (8px margins)
 --   panel_focus.png 24x24 brass-edged variant for focused buttons
---   spin_icon.png  5 frames of 13x13: cue-ball strike point, draw 2 .. follow 2
 --   aseprite -b --script-param root=<project> --script tools/art_ui.lua
 local A = dofile(app.params["root"] .. "/tools/art_lib.lua")
 
@@ -25,18 +24,6 @@ end
 panel("panel", "2a1a10", "120a06", { "16382a", "1a4030" })
 panel("panel_focus", "fff0a8", "c49a40", { "1e5038", "225840" })
 
-do
-  local c = A.canvas(13 * 5, 13)
-  for f = 0, 4 do
-    local ox = f * 13
-    c:disc(ox + 6.5, 6.5, 6, "1c1a1f"); c:disc(ox + 6.5, 6.5, 5, "f4eedc")
-    c:px(ox + 4, 4, "ffffff")
-    c:hline(ox + 3, ox + 9, 6, "d8d0bc")
-    local dy = ({ 3, 1.5, 0, -1.5, -3 })[f + 1]
-    c:disc(ox + 6.5, 6.5 + dy, 1.5, "c8302e")
-  end
-  c:save("spin_icon")
-end
 print("UI exported.")
 
 -- Game icon (64x64): a classic black 8-ball, lit from the top left.

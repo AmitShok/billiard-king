@@ -25,8 +25,8 @@ const DEFAULT_SIZE := 1.5
 ## Above this size the hints shorten so they never sit under a button.
 const ROOMY_SIZE := 1.5
 ## Sheet column of each small button, and the ones a sliding thumb can press.
-const COLUMNS := { "aim_left": 0, "aim_right": 1, "spin_up": 2, "spin_down": 3, "look_up": 4, "look_down": 5, "pause": 6 }
-const FLAG_COLUMNS := { "flag_place": 7, "flag_return": 8, "flag_remove": 9 }
+const COLUMNS := { "aim_left": 0, "aim_right": 1, "look_up": 2, "look_down": 3, "pause": 4 }
+const FLAG_COLUMNS := { "flag_place": 5, "flag_return": 6, "flag_remove": 7 }
 const SLIDE := ["aim_left", "aim_right", "look_up", "look_down"]
 
 ## Training adds the three flag buttons.
@@ -64,8 +64,6 @@ static func layout(s: float) -> Dictionary:
 	var at := {}
 	at["aim_left"] = Vector2(EDGE + rs, low)
 	at["aim_right"] = Vector2(EDGE + rs + step, low)
-	at["spin_up"] = Vector2(EDGE + rs, low - step)
-	at["spin_down"] = Vector2(EDGE + rs + step, low - step)
 	at["charge"] = Vector2(512.0 - EDGE - rb, 288.0 - EDGE - rb)
 	var look_x: float = at["charge"].x - rb - GAP - rs
 	at["look_down"] = Vector2(look_x, low)

@@ -1,5 +1,5 @@
 extends Node
-## Gameplay checks: physics feel, seams, english, pockets, lost balls,
+## Gameplay checks: physics feel, seams, pockets, lost balls,
 ## input through the real game scene, camera cuts and save/load.
 ##   godot --headless --path . res://tests/gameplay_test.tscn -- --save-profile=test
 
@@ -65,7 +65,7 @@ func _physics_tests() -> void:
 	check("settled ball can be struck", s.can_shoot())
 
 	# Straight-up full shot reaches the designed height.
-	s.shoot(0, BallSim.CHARGE_TICKS, 0)
+	s.shoot(0, BallSim.CHARGE_TICKS)
 	var top := s.pos.y
 	for i in 400:
 		s.step(w)
@@ -127,15 +127,6 @@ func _physics_tests() -> void:
 			on_slope_shootable = true
 	check("ball rolls down a slope", sb.vel.x < -20.0, str(sb.vel))
 	check("cannot strike from a steep slope", not on_slope_shootable)
-
-	# English: follow carries further than plain, draw stops shorter.
-	var lands := []
-	for spin in [-2, 0, 2]:
-		var e := _settled_sim(w, Vector2(0, -20))
-		e.shoot(40, 50, spin)
-		_run(e, w)
-		lands.append(e.pos.x)
-	check("follow > plain > draw on landing", lands[2] > lands[1] + 8.0 and lands[1] > lands[0] + 8.0, str(lands))
 
 	# A big drop is a splat (the Jump King fall).
 	var fw := _flat_world()
@@ -199,10 +190,10 @@ func _physics_tests() -> void:
 
 	# Determinism: the same shot gives the same result.
 	var r1 := _settled_sim(w, Vector2(0, -20))
-	r1.shoot(-35, 61, 1)
+	r1.shoot(-35, 61)
 	_run(r1, w)
 	var r2 := _settled_sim(w, Vector2(0, -20))
-	r2.shoot(-35, 61, 1)
+	r2.shoot(-35, 61)
 	_run(r2, w)
 	check("identical shots give identical results", r1.pos == r2.pos)
 
@@ -224,12 +215,7 @@ func _game_tests() -> void:
 	Input.action_release("aim_right")
 	await _physics_frames(2)
 	check("one tap nudges aim one notch", is_equal_approx(p.aim_deg, BallSim.AIM_STEP_DEG), str(p.aim_deg))
-	Input.action_press("spin_up")
-	await _physics_frames(2)
-	Input.action_release("spin_up")
-	check("spin up sets follow", p.spin_level == 1)
 	p.aim_deg = 0.0
-	p.spin_level = 0
 	var strokes := SaveData.strokes
 	Input.action_press("charge")
 	await _physics_frames(20)
@@ -294,12 +280,13 @@ func _game_tests() -> void:
 	p.place(Vector2(200, -300 - 140))
 	await _physics_frames(200)
 	var rest_pos := p.sim.pos
-	check("up arrow is look, not spin", not InputMap.action_has_event("spin_up", _key(KEY_UP)) and InputMap.action_has_event("look_up", _key(KEY_UP)))
-	var spin_before := p.spin_level
+	check("up arrow is look", InputMap.action_has_event("look_up", _key(KEY_UP)))
+	check("spin is gone: no spin controls", not InputMap.has_action("spin_up") and not InputMap.has_action("spin_down"))
+	var aim_before := p.aim_deg
 	Input.action_press("look_up")
 	await _physics_frames(90)
 	check("holding look up pans the camera up", absf(game.camera.offset.y + game.LOOK_RANGE) < 1.5, str(game.camera.offset))
-	check("looking changes nothing about the ball", p.sim.pos == rest_pos and p.spin_level == spin_before and game.screen == 1)
+	check("looking changes nothing about the ball", p.sim.pos == rest_pos and p.aim_deg == aim_before and game.screen == 1)
 	Input.action_release("look_up")
 	await _physics_frames(60)
 	check("camera eases back on release", absf(game.camera.offset.y) < 0.5, str(game.camera.offset))

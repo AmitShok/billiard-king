@@ -1,7 +1,7 @@
 class_name PlayerBall
 extends Node2D
 ## The cue ball you play. Wraps BallSim with input, the cue, sounds and juice.
-## Controls (Jump King rules): aim and set spin any time, hold to charge while
+## Controls (Jump King rules): aim any time, hold to charge while
 ## the ball sits on flat felt, release to strike. Nothing can be changed in
 ## the air.
 
@@ -20,7 +20,6 @@ signal ball_hit(impact: float)
 signal trapped(event: Dictionary)
 
 const DUST := preload("res://assets/textures/dust.png")
-const SPIN_ICON := preload("res://assets/textures/spin_icon.png")
 
 const AIM_REPEAT_DELAY := 0.2
 const AIM_REPEAT := 0.055
@@ -30,7 +29,6 @@ const POCKET_TIME := 0.9
 var sim := BallSim.new()
 var world: CollisionWorld
 var aim_deg := 0.0
-var spin_level := 0
 var charging := false
 var charge_ticks := 0
 var input_enabled := true
@@ -42,7 +40,6 @@ var _aim_hold := 0.0
 var _aim_dir := 0
 var _visual: BallVisual
 var _cue: CueStick
-var _spin_icon: Sprite2D
 var _squash := Vector2.ONE
 var _pocket_timer := 0.0
 var _pocket_exit := Vector2.ZERO
@@ -56,12 +53,6 @@ func _ready() -> void:
 	_visual = BallVisual.new()
 	_visual.diameter = 16
 	add_child(_visual)
-	_spin_icon = Sprite2D.new()
-	_spin_icon.texture = SPIN_ICON
-	_spin_icon.hframes = 5
-	_spin_icon.position = Vector2(0, -20)
-	_spin_icon.modulate.a = 0.0
-	add_child(_spin_icon)
 	set_skin(SaveData.skin)
 
 
@@ -124,10 +115,6 @@ func _read_aim_input(dt: float) -> void:
 		if _aim_hold > AIM_REPEAT_DELAY:
 			_aim_hold -= AIM_REPEAT
 			_nudge_aim(dir)
-	if Input.is_action_just_pressed("spin_up"):
-		_set_spin(spin_level + 1)
-	if Input.is_action_just_pressed("spin_down"):
-		_set_spin(spin_level - 1)
 
 
 func _nudge_aim(dir: int) -> void:
@@ -135,14 +122,6 @@ func _nudge_aim(dir: int) -> void:
 	if next != aim_deg:
 		aim_deg = next
 		Sfx.play("aim_tick", -14.0, 1.0 + aim_deg / 400.0, 0.0)
-
-
-func _set_spin(level: int) -> void:
-	var next := clampi(level, -BallSim.SPIN_LEVELS, BallSim.SPIN_LEVELS)
-	if next != spin_level:
-		spin_level = next
-		Sfx.play("aim_tick", -10.0, 0.8 + 0.1 * spin_level, 0.0)
-	_spin_icon.modulate.a = 1.0
 
 
 func _read_charge_input() -> void:
@@ -164,9 +143,9 @@ func _read_charge_input() -> void:
 		strike()
 
 
-## Fires the shot with the current aim, charge and spin.
+## Fires the shot with the current aim and charge.
 func strike() -> void:
-	sim.shoot(aim_deg, maxi(charge_ticks, 1), spin_level)
+	sim.shoot(aim_deg, maxi(charge_ticks, 1))
 	charging = false
 	charge_ticks = 0
 	_cue.strike = 1.0
@@ -269,10 +248,6 @@ func _process(delta: float) -> void:
 	_cue.charge = float(charge_ticks) / BallSim.CHARGE_TICKS if charging else 0.0
 	var guide_target := (0.6 if charging else 1.0) if show_cue else 0.0
 	_cue.guide_alpha = move_toward(_cue.guide_alpha, guide_target, dt * 6.0)
-	_spin_icon.frame = spin_level + BallSim.SPIN_LEVELS
-	var spin_target := 1.0 if (show_cue and spin_level != 0) else 0.0
-	_spin_icon.modulate.a = move_toward(_spin_icon.modulate.a, spin_target, dt * (12.0 if spin_target == 0.0 else 6.0))
-	_spin_icon.position = Vector2(-16 if aim_deg > 0.0 else 16, -14)
 
 
 ## One physics tick. With a partner ball (Hardcore) both balls advance in two

@@ -1,6 +1,6 @@
 -- Vertical Billiard: on-screen buttons for touchscreens (phones and tablets).
---   touch_buttons (280x56) ten 28x28 round brass buttons; top row idle, bottom row pressed.
---     columns: aim left, aim right, spin up, spin down, look up, look down,
+--   touch_buttons (224x56) eight 28x28 round brass buttons; top row idle, bottom row pressed.
+--     columns: aim left, aim right, look up, look down,
 --              pause, plant flag, back to flag, remove flag
 --   touch_strike  (88x44)  the big strike button; idle, pressed
 -- The game shows them only on touch devices (see scripts/ui/touch_controls.gd).
@@ -53,19 +53,6 @@ local ARROW = {
   "....aaa....",
   ".....aa....",
   "......a....",
-}
-local SPIN = {
-  ".....a.....",
-  "....aaa....",
-  "...aa.aa...",
-  "..aa...aa..",
-  "...........",
-  "....bbb....",
-  "...bbbbb...",
-  "...bbcbb...",
-  "...bbbbb...",
-  "....bbb....",
-  "...........",
 }
 local LOOK = {
   ".....a.....",
@@ -134,12 +121,12 @@ local REMOVE = {
 }
 
 local ICONS = {
-  ARROW, flip_x(ARROW), SPIN, flip_y(SPIN), LOOK, flip_y(LOOK),
+  ARROW, flip_x(ARROW), LOOK, flip_y(LOOK),
   PAUSE, PLANT, RETURN, REMOVE,
 }
 
 do
-  local c = A.canvas(280, 56)
+  local c = A.canvas(#ICONS * 28, 56)
   for row = 0, 1 do
     local pressed = row == 1
     local pal = {

@@ -45,7 +45,7 @@ func _peak_of_shot(w: CollisionWorld) -> float:
 		w.advance(BallSim.DT)
 		s.step(w)
 	var start := s.pos.y
-	s.shoot(0.0, BallSim.CHARGE_TICKS, 0)
+	s.shoot(0.0, BallSim.CHARGE_TICKS)
 	var top := s.pos.y
 	for i in 900:
 		w.advance(BallSim.DT)
@@ -111,7 +111,7 @@ func _wind_tests() -> void:
 		for i in 30:
 			s.step(world)
 		world.set_time(setup[1])
-		s.shoot(0.0, 60, 0)
+		s.shoot(0.0, 60)
 		for i in 60:
 			world.advance(BallSim.DT)
 			s.step(world)
@@ -125,7 +125,7 @@ func _wind_tests() -> void:
 		for i in 30:
 			s.step(setup)
 		setup.set_time(1.0)
-		s.shoot(0.0, 40, 0)
+		s.shoot(0.0, 40)
 		var top := 0.0
 		for i in 120:
 			setup.advance(BallSim.DT)
@@ -167,7 +167,7 @@ func _wind_tests() -> void:
 		var b := BallSim.new()
 		b.reset(Vector2(0, -8))
 		b.grounded = true
-		b.shoot(25.0, 60, 0)
+		b.shoot(25.0, 60)
 		for i in 300:
 			d.advance(BallSim.DT)
 			b.step(d)
